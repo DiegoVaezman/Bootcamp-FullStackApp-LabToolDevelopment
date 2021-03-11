@@ -1,4 +1,4 @@
 documentos/
 obsolet/
 .env
-'node_modules'
+node_modules

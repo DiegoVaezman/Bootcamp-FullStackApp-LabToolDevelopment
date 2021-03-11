@@ -9,7 +9,11 @@ const router = new Router()
 router.get("/", (req, res) => {
 
     Order.find({})
-    .then(order => res.send(order))
+    .then(order => {
+        if (order.length == 0) {
+            return res.send({msg: "There are no orders"})
+        }
+        res.send(order)})
     .catch(error => console.log(error))
 })
 
@@ -27,7 +31,7 @@ router.post("/neworder/:id", (req, res) => {
 
 //buscar el id en producto, si no existe el producto mensaje de q no está ese producto
     if (!amount || !claimant) {
-        return res.status(400).send({ msg: "Amount and claimant is required"})
+        return res.status(400).send({ msg: "Amount and claimant are required"})
     }
     
     Product.find({_id : product}).then(products => {

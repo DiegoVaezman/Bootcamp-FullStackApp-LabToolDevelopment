@@ -9,9 +9,13 @@ const router = new Router()
 
 
 router.get("/", (req, res) => {
-
+    
     Comment.find({})
-    .then(comment => res.send(comment))
+    .then(comment => {
+        if (comment.length == 0) {
+            return res.send({msg: "There are no comments"})
+        }
+        res.send(comment)})
     .catch(error => console.log(error))
 })
 
@@ -73,14 +77,15 @@ router.delete("/deletecomment/:id", (req, res) => {
 router.put("/:id/modify", (req, res) => {
 
     //Actualiza el texto del comentario
-    Comment.updateOne({ _id : req.params.id}, {$set: {text: req.body.text} }, function(err, result) {
+
+    const text = req.body.text
+    
+    Comment.updateOne({ _id : req.params.id}, {$set: {text: text} }, function(err, result) {
         if (err) throw err;
         res.send({msg: "Comment modified"})
         console.log(`Comment ${req.params.id} modified on Comments collection`)
     })
 })
-
-
 
 
 module.exports = router

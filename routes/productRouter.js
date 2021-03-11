@@ -9,7 +9,12 @@ const router = new Router()
 router.get("/", (req, res) => {
 
     Product.find({})
-    .then(product => res.send(product))
+    .then(product => {
+        if (product.length == 0) {
+            return res.send({msg: "There are no products"})
+        }
+        res.send(product)})
+    .catch(error => console.log(error))
 })
 
 
@@ -25,7 +30,7 @@ router.post("/newproduct", (req, res) => {
     const information = req.body.information
 
     if (!name || !type || !price || !catalog_number) {
-        return res.status(400).send({ msg: "Name, type, catalog_number and price is required"})
+        return res.status(400).send({ msg: "Name, type, catalog_number and price are required"})
     }
 
     Product.find({catalog_number : catalog_number}).then( product => {
