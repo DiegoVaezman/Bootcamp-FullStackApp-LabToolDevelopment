@@ -1,0 +1,45 @@
+require("dotenv").config();
+const mongoose = require("mongoose");
+const express = require("express");
+const app = express();
+
+
+const PORT = process.env.PORT
+const MONGODB_URL = process.env.MONGODB_URL
+
+
+
+mongoose.connect(MONGODB_URL, {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true}) //devuelve una promise
+.then( () => {
+    //aquí dentro irán los get y post etc..
+
+    app.use(express.urlencoded())  //realmente es necesario????
+    app.use(express.json())
+
+
+    const userRouter = require("./routes/userRouter")
+    const commentRouter = require("./routes/commentRouter")
+    const productRouter = require("./routes/productRouter")
+    const stockRouter = require("./routes/stockRouter")
+    const orderRouter = require("./routes/orderRouter")
+    app.use("/user", userRouter)
+    app.use("/comment", commentRouter)
+    app.use("/product", productRouter)
+    app.use("/stock", stockRouter)
+    app.use("/order", orderRouter)
+
+    
+
+    app.listen(PORT, () => 
+    console.log(`Server running on port:${PORT}`));
+
+})
+
+.catch((error) => {
+    console.log(error)
+
+    if(mongoose.connection.readyState === 1)
+    return mongoose.disconnect()
+    .catch(console.error)
+    .then(() => process.exit())
+})
