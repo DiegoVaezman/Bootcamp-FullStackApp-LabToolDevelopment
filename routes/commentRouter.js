@@ -37,7 +37,6 @@ router.get("/:id", (req, res) => {
 
 router.post("/newcomment/:id", (req, res) => {
 
-
     const text = req.body.text
     const owner = req.body.owner   //sera el id del usuario logueado.
     const order = req.params.id
@@ -63,21 +62,18 @@ router.post("/newcomment/:id", (req, res) => {
 
 router.delete("/deletecomment/:id", (req, res) => {
 
-   
     //elimina el comentario de la coleccion de comentarios
     Comment.deleteOne({ _id : req.params.id}, function (err, result){
         if (err) throw err;
         res.send((result.deletedCount === 1) ? {msg:"success"} : {msg:"error"});
         console.log("Deleted comment on Comments collection")
     })
-
 })
 
 
 router.put("/:id/modify", (req, res) => {
 
     //Actualiza el texto del comentario
-
     const text = req.body.text
     
     Comment.updateOne({ _id : req.params.id}, {$set: {text: text} }, function(err, result) {

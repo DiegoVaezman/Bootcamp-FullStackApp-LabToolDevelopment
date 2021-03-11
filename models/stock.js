@@ -11,7 +11,7 @@ const stock = new Schema({
     amount: {
         type: Number,
         required: true,
-        trim: true
+        minimum: 0
     },
     storage: {
         type: String,
@@ -22,20 +22,18 @@ const stock = new Schema({
         default: false
     },
     limit: {
-        type: Number,
-        trim: true,
+        type: Number
     },
     status: {
-        type: String,  //in stock or in stock and pending to arrived...
-        trim: true
+        type: String,  
+        enum: ["In stock", "Out of stock"]
     },
     ordered: {
         type: Boolean
     },
     recived: {
         type: Date,
-        required: true,
-        trim: true
+        required: true
     }
 })
 

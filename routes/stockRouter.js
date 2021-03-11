@@ -14,123 +14,114 @@ router.get("/", (req, res) => {
             return res.send({msg: "There are no items"})
         }
         res.send(stock)})
+    .catch(error => console.log(error))
 })
 
 
 
 router.post("/newitem/:id", (req, res) => {
 
-
-
-    Order.find({_id : req.params.id}).then(order => {
-        if (order.length == 0) {
+    Order.findById(req.params.id).then(order => {
+        if (!order) {
             console.log(`This order_Id dose not exist.`)
             return res.status(204).send({ msg: "This order_Id dose not exist."})   //204 no content
         }
-        else if (order[0].status !== "validated") {
+        if (order.status !== "validated") {
             console.log(`The status order is not "validated"`)
             return res.status(405).send({ msg: 'The status order is not "validated"'})  //405 Method Not Allowed
         }
-        else {
-            const product = order[0].product        //sera el id del producto dentro del pedido q se busca con la ruta id
-            const amount = order[0].amount    //sera la que aparece en el pedido
-            const storage = req.body.storage   //nuevo campo de formulario
-            const limit = req.body.limit         //nuevo campo d formulario   
-            const status = "in stock"        //hay q pensarlo...
-            let ordered = false   
-            const recived = Date.now()            //se queda asi
+
+        const product = order.product        //sera el id del producto dentro del pedido q se busca con la ruta id
+        const amount = order.amount    //sera la que aparece en el pedido
+        const storage = req.body.storage   //campo de formulario
+        const limit = req.body.limit         //campo de formulario   
+        const status = "In stock"        
+        let ordered = false   
+        const recived = Date.now()        
 
 
-            //Actualiza el status del order a recived
-            Order.updateOne({_id : req.params.id}, {$set: {status : "recived"} }, function(err, result) {
-                if (err) {
-                    console.log(err)
-                };
-                console.log(`Order status modified to "recived"`)
-            })
+        //Actualiza el status del order a recived
+        Order.updateOne({_id : req.params.id}, {$set: {status : "recived"} }, function(err, result) {
+            if (err) {
+                console.log(err)
+            };
+            console.log(`Order status modified to "recived"`)
+        })
 
 
-            //si existen más pedidos de ese producto -> ordered se mantiene en true
-            Order.find({ $and: [{product: order[0].product}, {status : { $in: ["validated", "waiting"] }}] }).then(ordersfound => {
-                console.log(ordersfound)
-                if (ordersfound.length > 1) {
-                    ordered = true
-                }
+        //si existen más pedidos de ese producto -> ordered se mantiene en true
+        Order.find({ $and: [{product: order.product}, {status : { $in: ["validated", "waiting"] }}] }).then(ordersfound => {
+            if (ordersfound.length > 1) {
+                ordered = true
+            }
 
-                //si el producto existe en stock, lo actualiza
-                Stock.find({product : product}).then(item => {
-                    if (item.length > 0) {
 
-                        const totalAmount = Number(item[0].amount) + Number(amount)
-
-                    
-                        Stock.updateOne({ product : product}, {$set: {amount: totalAmount, status: "in stock", recived: Date.now(), ordered: ordered} }, function(err, result) {
-                            if (err) {
-                                console.log(err)
-                                return res.send({ msg: "An error ocurred updating item"})
-                            };
-                            console.log(`Item modified in Stock collection`)
-                            return res.send({ msg: "The Item is already in stock and was updated in Stock collection"})
-                        })
-                    }
+            Stock.findOne({product : product}).then(item => {
+                if (!item) {
 
                     //si no existe el producto en stock, crea el item y lo guarda en la colleción de Stocks
-                    else {
-         
-                        const item = new Stock({
-                            product : product,    
-                            amount : amount,
-                            storage : storage,
-                            limit : limit,
-                            status : status,
-                            ordered : ordered,
-                            recived : recived
-                        })
-                        
-                        item.save()
-                        .then(doc => res.send(doc)) 
-                        .catch(error => console.log(error))
-                        console.log("New item added in Stock collection")
-                        
-                    }
+                    const newitem = new Stock({
+                        product : product,    
+                        amount : amount,
+                        storage : storage,
+                        limit : limit,
+                        status : status,
+                        ordered : ordered,
+                        recived : recived
+                    })
+
+                    newitem.save()
+                    .then(doc => res.send(doc)) 
+                    .catch(error => console.log(error))
+                    console.log("New item added in Stock collection")
+                    return
+                }
+
+                //si ya existe en stock, se actualiza
+                const totalAmount = Number(item.amount) + Number(amount)
+
+                Stock.updateOne({ product : product}, {$set: {amount: totalAmount, status: "In stock", recived: Date.now(), ordered: ordered} }, function(err, result) {
+                    if (err) {
+                        console.log(err)
+                        return res.send({ msg: "An error ocurred updating item"})
+                    };
+                    console.log(`Item modified in Stock collection`)
+                    return res.send({ msg: "The Item is already in stock and was updated in Stock collection"})
                 })
-            })   
-        }
+            })
+        })   
     })
 })
 
 
 router.put("/reduce/:id", (req, res) => {
 
-    Stock.find({_id : req.params.id}).then(item => {
-        if (item[0].length == 0) {
+    Stock.findById(req.params.id).then(item => {
+        if (!item) {
             console.log(`This itme_id dose not exist.`)
             return res.status(204).send({ msg: "This item_id dose not exist."})
         }
-        else if (item[0].amount == 0) {
-            return res.send({msg: "There is no item to reduce"})
-            }
-        else {
-            const amount = Number(item[0].amount) - 1
-
-            //si la cantidad llega a 0, se cambia el status del item a "out of stock"
-            let status = item[0].status
-            if (amount == 0) {
-                status = "Out of stock"
-            }
-
-            Stock.updateOne({ _id : req.params.id}, {$set: {amount: amount, status : status} }, function(err, result) {
-                if (err) {
-                    console.log(err)
-                    return res.send({ msg: "An error ocurred reducing the amount."})
-                };
-                res.send({ msg:"Success"})
-                console.log("Item amount modified")
-            })
-
-
-           //-----------------------------AQUÍ VA EL LÍMITE. --------------------------------- 
+        if (item.amount == 0) {
+            return res.send({msg: "There is no item amount to reduce"})
         }
+        
+        const amount = item.amount - 1
+
+        //si la cantidad llega a 0, se cambia el status del item a "out of stock"
+        let status = item.status
+        if (amount == 0) {
+            status = "Out of stock"
+        }
+
+        Stock.updateOne({ _id : req.params.id}, {$set: {amount: amount, status : status} }, function(err, result) {
+            if (err) {
+                console.log(err)
+                return res.send({ msg: "An error ocurred reducing the amount."})
+            };
+            res.send({ msg:"Success"})
+            console.log("Item amount modified")
+        })
+           //-----------------------------AQUÍ VA EL LÍMITE. --------------------------------- 
     })
     .catch(error => console.log(error))
 })
@@ -149,8 +140,6 @@ router.put("/:id/modify", (req, res) => {
         console.log(`Item ${req.params.id} modified on Stock collection`)
     })
 })
-
-
 
 
 

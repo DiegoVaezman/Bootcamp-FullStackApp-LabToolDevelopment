@@ -37,24 +37,22 @@ router.post("/newproduct", (req, res) => {
         if (product.length > 0) {
             return res.status(208).send({ msg: "The product is already in Products collection"})
         }
-        else {
 
-            //Crea el producto y lo guarda en la collección de productos
-            const product = new Product({
-                catalog_number : catalog_number,
-                name : name,
-                type : type,
-                trading_house : trading_house,
-                reference_number : reference_number,
-                price : price,
-                information : information
-            })
-        
-            product.save()
-            .then(doc => res.send(doc)) 
-            .catch(error => console.log(error))
-            console.log("New product added in Product collection")
-        }
+        //Crea el producto y lo guarda en la collección de productos
+        const newproduct = new Product({
+            catalog_number : catalog_number,
+            name : name,
+            type : type,
+            trading_house : trading_house,
+            reference_number : reference_number,
+            price : price,
+            information : information
+        })
+    
+        newproduct.save()
+        .then(doc => res.send(doc)) 
+        .catch(error => console.log(error))
+        console.log("New product added in Product collection")
     })
 })
 

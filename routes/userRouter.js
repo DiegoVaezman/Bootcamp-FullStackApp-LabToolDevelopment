@@ -44,7 +44,6 @@ router.post("/newuser", (req, res) => {
         password: password,
         rol: rol
     })
-
     user.save()
     .then(doc => res.send(doc)) 
     .catch(error => console.log(error))
@@ -59,9 +58,7 @@ router.get("/:id/comments", (req, res) => {
         if (comment.length == 0) {
             return res.send({ msg: "There are not comments from this user"})
         }
-        else{
-            res.send(comment)
-        }
+        res.send(comment)
     })
     .catch(error => console.log(error))
 
@@ -72,12 +69,12 @@ router.get("/:id/comments", (req, res) => {
 
 router.delete("/deleteuser/:id", (req, res) => {
     
-        //elimino usuario de User collection
-        User.deleteOne({ _id : req.params.id}, function (err, result){
-            if (err) throw err;
-            res.send((result.deletedCount === 1) ? {msg:"success"} : {msg:"error"});
-            console.log("Deleted user on User collection")
-        })
+    //elimino usuario de User collection
+    User.deleteOne({ _id : req.params.id}, function (err, result){
+        if (err) throw err;
+        res.send((result.deletedCount === 1) ? {msg:"success"} : {msg:"error"});
+        console.log("Deleted user on User collection")
+    })
     
 })
 
