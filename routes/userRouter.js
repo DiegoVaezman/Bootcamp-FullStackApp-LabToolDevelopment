@@ -41,9 +41,8 @@ router.post("/newuser", (req, res) => {
     //cifrado de contraseña
     bcrypt.hash(password, 10, function(err, hash) {
         if (err) throw err;
-        console.log(hash)
-    
 
+        //crea nuevo usuario
         const user = new User({
             fullname: fullname,
             position: position,
