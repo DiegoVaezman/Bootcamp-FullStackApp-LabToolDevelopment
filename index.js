@@ -11,7 +11,6 @@ const MONGODB_URL = process.env.MONGODB_URL
 
 mongoose.connect(MONGODB_URL, {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true}) //devuelve una promise
 .then( () => {
-    //aquí dentro irán los get y post etc..
 
     app.use(express.urlencoded())  //realmente es necesario????
     app.use(express.json())
@@ -22,11 +21,13 @@ mongoose.connect(MONGODB_URL, {useUnifiedTopology: true, useNewUrlParser: true, 
     const productRouter = require("./routes/productRouter")
     const stockRouter = require("./routes/stockRouter")
     const orderRouter = require("./routes/orderRouter")
+    const loginRouter = require("./routes/loginRouter")
     app.use("/user", userRouter)
     app.use("/comment", commentRouter)
     app.use("/product", productRouter)
     app.use("/stock", stockRouter)
     app.use("/order", orderRouter)
+    app.use("/login", loginRouter)
 
     
 

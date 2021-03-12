@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.18",
     "nodemon": "^2.0.7",
     "validator": "^13.5.2"
@@ -15,7 +17,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "inspect" : "node inspect index.js"
+    "inspect": "node inspect index.js"
   },
   "author": "Vaezman",
   "license": "ISC"

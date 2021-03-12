@@ -1,6 +1,7 @@
 const User = require("../models/user")
 const Comment = require("../models/comment")
 const Router = require("express").Router
+const bcrypt = require("bcrypt");
 
 
 
@@ -37,16 +38,23 @@ router.post("/newuser", (req, res) => {
         return res.status(400).send({ msg: "password must be at least 6 characters long"})
     }
 
-    const user = new User({
-        fullname: fullname,
-        position: position,
-        email: email,
-        password: password,
-        rol: rol
+    //cifrado de contraseña
+    bcrypt.hash(password, 10, function(err, hash) {
+        if (err) throw err;
+        console.log(hash)
+    
+
+        const user = new User({
+            fullname: fullname,
+            position: position,
+            email: email,
+            password: hash,
+            rol: rol
+        })
+        user.save()
+        .then(doc => res.send(doc)) 
+        .catch(error => console.log(error))
     })
-    user.save()
-    .then(doc => res.send(doc)) 
-    .catch(error => console.log(error))
 })
 
 
