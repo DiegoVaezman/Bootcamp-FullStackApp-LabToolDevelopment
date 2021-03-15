@@ -1,6 +1,6 @@
 const Router = require("express").Router
 const Order = require("../models/order")
-
+const Product = require("../models/product")
 
 const router = new Router()
 
@@ -41,11 +41,11 @@ router.post("/neworder/:id", (req, res) => {
         }
     
         
-        //actualiza el estado del item a "ordered"
-        Stock.updateOne({ product : product}, {$set: {ordered: true} }, function(err, result) {
+        //actualiza el estado del item a "request"
+        Stock.updateOne({ product : product}, {$set: {request: true} }, function(err, result) {
             if (err) {
                 console.log(err)
-                return res.send({ msg: "An error ocurred updating ordered status to true"})
+                return res.send({ msg: "An error ocurred updating request status to true"})
             };
         })
         //Crea el pedido y lo guarda en la collección de Orders

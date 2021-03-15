@@ -1,6 +1,6 @@
 const Router = require("express").Router
 const Stock = require("../models/stock")
-
+const Order = require("../models/order")
 
 const router = new Router()
 
@@ -36,7 +36,7 @@ router.post("/newitem/:id", (req, res) => {
         const storage = req.body.storage   //campo de formulario
         const limit = req.body.limit         //campo de formulario   
         const status = "In stock"        
-        let ordered = false   
+        let request = false   
         const recived = Date.now()        
 
 
@@ -49,10 +49,10 @@ router.post("/newitem/:id", (req, res) => {
         })
 
 
-        //si existen más pedidos de ese producto -> ordered se mantiene en true
+        //si existen más pedidos de ese producto -> request se mantiene en true
         Order.find({ $and: [{product: order.product}, {status : { $in: ["validated", "waiting"] }}] }).then(ordersfound => {
             if (ordersfound.length > 1) {
-                ordered = true
+                request = true
             }
 
 
@@ -66,7 +66,7 @@ router.post("/newitem/:id", (req, res) => {
                         storage : storage,
                         limit : limit,
                         status : status,
-                        ordered : ordered,
+                        request : request,
                         recived : recived
                     })
 
@@ -80,7 +80,7 @@ router.post("/newitem/:id", (req, res) => {
                 //si ya existe en stock, se actualiza
                 const totalAmount = Number(item.amount) + Number(amount)
 
-                Stock.updateOne({ product : product}, {$set: {amount: totalAmount, status: "In stock", recived: Date.now(), ordered: ordered} }, function(err, result) {
+                Stock.updateOne({ product : product}, {$set: {amount: totalAmount, status: "In stock", recived: Date.now(), request: request} }, function(err, result) {
                     if (err) {
                         console.log(err)
                         return res.send({ msg: "An error ocurred updating item"})

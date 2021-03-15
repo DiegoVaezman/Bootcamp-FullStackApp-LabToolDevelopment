@@ -1,5 +1,5 @@
 const Comment = require("../models/comment")
-const User = require("../models/user")
+const Order = require("../models/order")
 const Router = require("express").Router
 
 
@@ -44,18 +44,22 @@ router.post("/newcomment/:id", (req, res) => {
     if (!text || !owner) {
         return res.status(400).send("Missing parameters")
     }
-    //Crea el comentario y lo guarda en la collección de comentarios
-  
-    const comment = new Comment({
-        owner: owner,
-        text: text,
-        order : order
-    })
+    Order.findById(req.params.id).then(orderfound => {
+        if (!orderfound) {
+            console.log(`This order_id dose not exist.`)
+            return res.status(204).send({ msg: "This order_id dose not exist."})
+        }
 
-    comment.save()
-    .then(doc => res.send(doc)) 
-    .catch(error => console.log(error))
-    
+        //Crea el comentario y lo guarda en la collección de comentarios
+        const comment = new Comment({
+            owner: owner,
+            text: text,
+            order : order
+        })
+        comment.save()
+        .then(doc => res.send(doc)) 
+        .catch(error => console.log(error))
+    })
 })
 
 

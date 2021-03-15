@@ -23,6 +23,7 @@ router.post("/", (req, res) => {
 
     User.findOne({email : email}).then(user => {
         if (!user) return res.status(403).send({msg: "Email incorrect."})
+
         bcrypt.compare(password, user.password).then(samepassword => {
             if (!samepassword) {
                 res.status(403).send({msg: "Password incorrect"});
@@ -32,8 +33,7 @@ router.post("/", (req, res) => {
             const token = jwt.sign(userPayload, "secret password", {
                 expiresIn: 60 * 60 * 24
             })
-            console.log(token)
-            res.send(token)
+            res.json({token: token, msg: "correct authentication"})
         })
     })
     .catch(error => {
@@ -44,6 +44,7 @@ router.post("/", (req, res) => {
     
 
 
+//intentando hacer la autenticación de usuario mediante async/awayt
 
 
 //     async function authenticateUser(req, res) {
@@ -58,7 +59,6 @@ router.post("/", (req, res) => {
 //                 console.log(comparepassword)
 //                 res.send("ok")
 //             }
-            
 //         } catch(err) {
 //             console.log(err)
 //         }

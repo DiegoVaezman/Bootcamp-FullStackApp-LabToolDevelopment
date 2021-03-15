@@ -28,7 +28,7 @@ const stock = new Schema({
         type: String,  
         enum: ["In stock", "Out of stock"]
     },
-    ordered: {
+    request: {
         type: Boolean
     },
     recived: {

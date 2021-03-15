@@ -2,11 +2,9 @@ const User = require("../models/user")
 const Comment = require("../models/comment")
 const Router = require("express").Router
 const bcrypt = require("bcrypt");
-
-
+const protectedRoute = require("../middlewares/protectedRoute")
 
 const router = new Router()
-
 
 
 
@@ -59,13 +57,18 @@ router.post("/newuser", (req, res) => {
 
 
 
-router.get("/:id/comments", (req, res) => {
-
-    Comment.find({owner : req.params.id}).then(comment => {
+router.get("/comments", protectedRoute, (req, res) => {
+    
+    //¿UNA VEZ QUE LA ID DEL USUARIO SE TOMA DEL USUARIO LOGUEADO (TOKEN), ¿HAY QUE QUITARLO DE LA RUTA (:ID)
+    //con req.decoded.id obtenemos el id del usuario logueado gracias al token que contiene los datos del usuario.
+    //cambiando el req.params.id que toma la id de la url por el decoded ya no sería necesario la id en la ruta....
+    console.log(req.decoded.id)
+    Comment.find({owner : req.decoded.id}).then(comment => {
         if (comment.length == 0) {
             return res.send({ msg: "There are not comments from this user"})
         }
         res.send(comment)
+        
     })
     .catch(error => console.log(error))
 
