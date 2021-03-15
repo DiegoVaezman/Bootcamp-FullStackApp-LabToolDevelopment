@@ -1,6 +1,7 @@
 const Router = require("express").Router
 const Order = require("../models/order")
 const Product = require("../models/product")
+const protectedRoute = require("../middlewares/protectedRoute")
 
 const router = new Router()
 
@@ -19,18 +20,18 @@ router.get("/", (req, res) => {
 
 
 
-router.post("/neworder/:id", (req, res) => {
+router.post("/neworder/:id", protectedRoute, (req, res) => {
 
     
     const product = req.params.id
     const amount = req.body.amount      //se requiere por formulario
-    const claimant = req.body.claimant    // se debe cambiar por el id del usuario logueado
+    const user = req.decoded.id    // usuario logueado
     const status = "waiting"        //cambiará cuando se valide y cuando llegue.
 
 
 
 //buscar el id en producto, si no existe el producto mensaje de q no está ese producto
-    if (!amount || !claimant) {
+    if (!amount || !user) {
         return res.status(400).send({ msg: "Amount and claimant are required"})
     }
     
@@ -52,7 +53,7 @@ router.post("/neworder/:id", (req, res) => {
         const order = new Order({
             product :product,
             amount : amount,
-            claimant :claimant,
+            user :user,
             status : status,
             date : Date.now()
         })
@@ -66,7 +67,12 @@ router.post("/neworder/:id", (req, res) => {
 })
 
 
-router.put("/validate/:id", (req, res) => {
+router.put("/validate/:id", protectedRoute, (req, res) => {
+
+    //Comprobar que el usuario logueado tiene rol validator
+    if (req.decoded.rol !== "validator") {
+        return res.status(401).send({ msg: "You do not have permission for validate an order"})
+    }
 
     Order.findById(req.params.id).then(orders => {
         if (!orders) {
@@ -85,7 +91,29 @@ router.put("/validate/:id", (req, res) => {
 })
 
 
+//RECHAZAR UN ORDER
+router.put("/reject/:id", protectedRoute, (req, res) => {
 
+    //Comprobar que el usuario logueado tiene rol validator
+    if (req.decoded.rol !== "validator") {
+        return res.status(401).send({ msg: "You do not have permission for reject an order"})
+    }
+
+    Order.findById(req.params.id).then(orders => {
+        if (!orders) {
+            console.log(`This order_id dose not exist.`)
+            return res.status(204).send({ msg: "This order_id dose not exist."})
+        }
+
+        Order.updateOne({ _id : req.params.id}, {$set: {status: "rejected"} }, function(err, result) {
+            if (err) {
+                console.log(err)
+                return res.send({ msg: "An error ocurred rejecting the order."})
+            };
+            res.send({ msg:"Order rejected"})
+        })
+    })
+})
 
 
 
@@ -133,6 +161,18 @@ router.get("/recived", (req, res) => {
     .then(orders => {
         if (orders.length == 0) {
             return res.send({ msg: "There is not recived order"})
+        }
+            res.send(orders)
+    })
+    .catch(error => console.log(error))
+})
+
+router.get("/rejected", (req, res) => {
+
+    Order.find({status : "rejected"})
+    .then(orders => {
+        if (orders.length == 0) {
+            return res.send({ msg: "There is not rejected order"})
         }
             res.send(orders)
     })

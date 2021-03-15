@@ -108,7 +108,7 @@ router.put("/reduce/:id", (req, res) => {
         const amount = item.amount - 1
 
         //si la cantidad llega a 0, se cambia el status del item a "out of stock"
-        let status = item.status
+        let status = item.status  //esto puedo borrarlo no?
         if (amount == 0) {
             status = "Out of stock"
         }
@@ -118,10 +118,44 @@ router.put("/reduce/:id", (req, res) => {
                 console.log(err)
                 return res.send({ msg: "An error ocurred reducing the amount."})
             };
-            res.send({ msg:"Success"})
-            console.log("Item amount modified")
+            
+            
+        
+           //-----------------------------LÍMITE. --------------------------------- 
+
+            if (item.control === true && amount <= item.limit) {
+
+                //comprueba que no hay pedido automático para este producto
+                Order.findOne({user:"Automatic order"}).then(orderfound => {
+                    if (orderfound) {
+                        console.log("Item amount modified")
+                        return res.send({ msg:"Amount reduced"})
+                    }
+                
+            
+                    //actualiza el estado del item a "request"
+                    Stock.updateOne({ product : item.product}, {$set: {request: true} }, function(err, result) {
+                        if (err) {
+                            console.log(err)
+                            return res.send({ msg: "An error ocurred updating request status to true"})
+                        };
+                    })
+                    //Crea el pedido y lo guarda en la collección de Orders
+                    const order = new Order({
+                        product : item.product,
+                        amount : item.automaticamount,
+                        user : "Automatic order",
+                        status : "waiting",
+                        date : Date.now()
+                    })
+                
+                    order.save()
+                    .then(doc => res.send({msg: "Amount reduced and new order registered", doc : doc}))
+                    .catch(error => console.log(error))
+                    console.log("New order added in Orders collection")
+                })
+            }
         })
-           //-----------------------------AQUÍ VA EL LÍMITE. --------------------------------- 
     })
     .catch(error => console.log(error))
 })
@@ -133,8 +167,9 @@ router.put("/:id/modify", (req, res) => {
     const storage = req.body.storage
     const limit = req.body.limit
     const control = req.body.control
+    const automaticamount = req.body.automaticamount
 
-    Stock.updateOne({ _id : req.params.id}, {$set: {amount : amount, storage : storage, limit : limit, control : control} }, function(err, result) {
+    Stock.updateOne({ _id : req.params.id}, {$set: {amount : amount, storage : storage, limit : limit, control : control, automaticamount : automaticamount} }, function(err, result) {
         if (err) throw err;
         res.send({msg: "success"})
         console.log(`Item ${req.params.id} modified on Stock collection`)

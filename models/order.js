@@ -13,14 +13,14 @@ const order = new Schema({
         required: true,
         trim: true
     },
-    claimant: {
+    user: {
         type: String,
         trim: true,
         require: true
     },
     status: {
         type: String,  
-        enum:['waiting','validated', 'recived'],
+        enum:['waiting','validated', 'recived', 'rejected'],
         require: true
     },
     date: {

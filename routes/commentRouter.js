@@ -1,7 +1,7 @@
 const Comment = require("../models/comment")
 const Order = require("../models/order")
 const Router = require("express").Router
-
+const protectedRoute = require("../middlewares/protectedRoute")
 
 
 const router = new Router()
@@ -35,10 +35,11 @@ router.get("/:id", (req, res) => {
 
 
 
-router.post("/newcomment/:id", (req, res) => {
+router.post("/newcomment/:id", protectedRoute, (req, res) => {
+
 
     const text = req.body.text
-    const owner = req.body.owner   //sera el id del usuario logueado.
+    const owner = req.decoded.id   //sera el id del usuario logueado.
     const order = req.params.id
 
     if (!text || !owner) {
@@ -75,6 +76,9 @@ router.delete("/deletecomment/:id", (req, res) => {
 })
 
 
+
+
+//REALMENTE NECESARIO??
 router.put("/:id/modify", (req, res) => {
 
     //Actualiza el texto del comentario

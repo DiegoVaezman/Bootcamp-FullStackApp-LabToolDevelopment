@@ -2,6 +2,8 @@ const User = require("../models/user")
 const Router = require("express").Router
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const tokenpass = process.env.TOKENPASS
 
 const router = new Router();
 
@@ -30,7 +32,7 @@ router.post("/", (req, res) => {
             }
             //Genera el token
             const userPayload = {id: user._id, username: user.fullname, rol: user.rol}
-            const token = jwt.sign(userPayload, "secret password", {
+            const token = jwt.sign(userPayload, tokenpass, {
                 expiresIn: 60 * 60 * 24
             })
             res.json({token: token, msg: "correct authentication"})

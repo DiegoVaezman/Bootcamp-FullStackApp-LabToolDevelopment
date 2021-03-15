@@ -59,9 +59,6 @@ router.post("/newuser", (req, res) => {
 
 router.get("/comments", protectedRoute, (req, res) => {
     
-    //¿UNA VEZ QUE LA ID DEL USUARIO SE TOMA DEL USUARIO LOGUEADO (TOKEN), ¿HAY QUE QUITARLO DE LA RUTA (:ID)
-    //con req.decoded.id obtenemos el id del usuario logueado gracias al token que contiene los datos del usuario.
-    //cambiando el req.params.id que toma la id de la url por el decoded ya no sería necesario la id en la ruta....
     console.log(req.decoded.id)
     Comment.find({owner : req.decoded.id}).then(comment => {
         if (comment.length == 0) {
@@ -77,10 +74,10 @@ router.get("/comments", protectedRoute, (req, res) => {
 
 
 
-router.delete("/deleteuser/:id", (req, res) => {
+router.delete("/deleteuser", protectedRoute, (req, res) => {
     
     //elimino usuario de User collection
-    User.deleteOne({ _id : req.params.id}, function (err, result){
+    User.deleteOne({ _id : req.decoded.id}, function (err, result){
         if (err) throw err;
         res.send((result.deletedCount === 1) ? {msg:"success"} : {msg:"error"});
         console.log("Deleted user on User collection")

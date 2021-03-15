@@ -24,6 +24,9 @@ const stock = new Schema({
     limit: {
         type: Number
     },
+    automaticamount: {
+        type: Number
+    },
     status: {
         type: String,  
         enum: ["In stock", "Out of stock"]
