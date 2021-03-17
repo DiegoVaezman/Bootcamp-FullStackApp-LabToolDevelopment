@@ -3,6 +3,7 @@ const Comment = require("../models/comment")
 const Router = require("express").Router
 const bcrypt = require("bcrypt");
 const protectedRoute = require("../middlewares/protectedRoute")
+const {validatePassword, validateEmail, validateString} = require("../helpers/validations")
 
 const router = new Router()
 
@@ -10,13 +11,17 @@ const router = new Router()
 
 
 router.get("/", (req, res) => {
-    User.find({})
-    .then(users => {
+
+    User.find({}, function (err, users) {
+        if (err) {
+            res.status(400).send({ msg: err.message})
+            console.log(err)
+        }
         if (users.length == 0) {
             return res.send({msg: "There are no users"})
         }
-        res.send(users)})
-    .catch(error => console.log(error))
+        res.send(users)
+    })
 })
 
 
@@ -32,26 +37,32 @@ router.post("/newuser", (req, res) => {
     if (!fullname || !email || !password || !rol) {
         return res.status(400).send({ msg: "Fullname, email, password and rol are required"})
     }
-    if (password.length < 6) {
-        return res.status(400).send({ msg: "password must be at least 6 characters long"})
-    }
 
-    //cifrado de contraseña
-    bcrypt.hash(password, 10, function(err, hash) {
-        if (err) throw err;
+    try {
+        validatePassword(password)
+        validateEmail(email)
+        validateString(fullname)
 
-        //crea nuevo usuario
-        const user = new User({
-            fullname: fullname,
-            position: position,
-            email: email,
-            password: hash,
-            rol: rol
+        bcrypt.hash(password, 10, function(err, hash) {
+            if (err) throw err;
+
+            const user = new User({
+                fullname: fullname,
+                position: position,
+                email: email,
+                password: hash,
+                rol: rol
+            })
+            user.save()
+            .then(doc => res.send(doc)) 
+            .catch(error => {
+                res.status(400).send({msg: error.message})
+                console.log(error)
+            })
         })
-        user.save()
-        .then(doc => res.send(doc)) 
-        .catch(error => console.log(error))
-    })
+    } catch (error) {
+        res.status(400).send({ msg: error.message})
+    }
 })
 
 
@@ -59,16 +70,16 @@ router.post("/newuser", (req, res) => {
 
 router.get("/comments", protectedRoute, (req, res) => {
     
-    console.log(req.decoded.id)
-    Comment.find({owner : req.decoded.id}).then(comment => {
-        if (comment.length == 0) {
+    Comment.find({owner : req.decoded.id}, function (err, comments) {
+        if (err) {
+            res.status(400).send({ msg: err.message})
+            console.log(err)
+        }
+        if (comments.length == 0) {
             return res.send({ msg: "There are not comments from this user"})
         }
-        res.send(comment)
-        
+        res.send(comments)
     })
-    .catch(error => console.log(error))
-
 })
 
 
@@ -76,24 +87,35 @@ router.get("/comments", protectedRoute, (req, res) => {
 
 router.delete("/deleteuser", protectedRoute, (req, res) => {
     
-    //elimino usuario de User collection
+    //elimino usuario logueado de User collection
     User.deleteOne({ _id : req.decoded.id}, function (err, result){
-        if (err) throw err;
-        res.send((result.deletedCount === 1) ? {msg:"success"} : {msg:"error"});
+        if (err) {
+            res.status(400).send({ msg: err.message})
+            console.log(err)
+        }
+        res.send({msg:"User deleted"});
         console.log("Deleted user on User collection")
     })
-    
 })
 
 
 
-router.put("/:id/modify", (req, res) => {
+router.put("/modify", protectedRoute, (req, res) => {
     
-    User.updateOne({ _id : req.params.id}, {$set: req.body }, function(err, result) {
-        if (err) throw err;
-        res.send({msg: "User modified"})
-        console.log(`User ${req.params.id} modified on User collection`)
-    })
+    const fullname = req.body.fullname
+    const position = req.body.position
+
+    try {
+        validateFullname(fullname)
+        
+        User.updateOne({ _id : req.decoded.id}, {$set: {fullname : fullname, position : position} }, function(err, result) {
+            if (err) throw err;
+            res.send({msg: "User modified"})
+            console.log(`User ${req.decoded.id} modified on User collection`)
+        })
+    } catch (error) {
+        res.status(401).send({ msg: error.message})
+    }
 })
 
 

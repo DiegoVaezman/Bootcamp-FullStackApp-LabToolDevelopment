@@ -4,9 +4,10 @@ const model = require("mongoose").model;
 
 const order = new Schema({
     product: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true,
-        trim: true
+        trim: true,
+        ref: "product"
     },
     amount: {
         type: Number,

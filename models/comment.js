@@ -6,16 +6,20 @@ const model = require("mongoose").model;
 
 const comment = new Schema({
     owner: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        required: true,
+        trim: true,
+        ref: "user"
     },
     text: {
         type: String,
         required: true
     },
     order: {
-        type: String,
-        required: true
+        type: Schema.Types.ObjectId,
+        required: true,
+        trim: true,
+        ref: "order"
     },
     date: {
         type: Date,
