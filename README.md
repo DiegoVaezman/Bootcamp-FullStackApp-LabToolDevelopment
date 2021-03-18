@@ -54,7 +54,8 @@ get user/
 ```
 post user/newuser 
 ```
-^ Ruta pública que permite el regístro de usuarios con los parámetros validados de fullname(string), position(string), email(email-string), password(string) y rol("user"/"validator"). Devuelve el documento creado.
+^ Ruta pública que permite el regístro de usuarios con los parámetros validados de fullname(string), position(string), email(email-string), password(string) y rol("user"/"validator"). 
+<br>Devuelve el documento creado.
 
 ```
 get user/comment 
@@ -64,12 +65,14 @@ get user/comment
 ```
 delete user/deleteuser 
 ```
-^ Ruta privada que elimina el documento del usuario logueado de la base de datos. Devuelve un mensaje de confirmación.
+^ Ruta privada que elimina el documento del usuario logueado de la base de datos. 
+<br>Devuelve un mensaje de confirmación.
 
 ```
 put user/modify 
 ```
-^ Ruta privada que permite modificar los parámetros de "fullname" y "position" en el documento del usuario logueado. Devuelve un mensaje de confirmación.
+^ Ruta privada que permite modificar los parámetros de "fullname" y "position" en el documento del usuario logueado. 
+<br>Devuelve un mensaje de confirmación.
 
 
 **Producto:**
@@ -134,8 +137,10 @@ get order/waiting
 get /order/validated 
 ```
 ^ Ruta privada que devuelve los pedidos con status "validated".
-
-get order/rejected -> Ruta privada que devuelve los pedidos con status "rejected".
+```
+get order/rejected 
+```
+^ Ruta privada que devuelve los pedidos con status "rejected".
 
 ```
 get order/recived 
@@ -145,7 +150,10 @@ get order/recived
 
 **Comentarios:**
 
-get comment/ -> Ruta privada que devuelve todos los comentarios.
+```
+get comment/ 
+```
+^ Ruta privada que devuelve todos los comentarios.
 
 ```
 get comment/id(pedido) 
@@ -185,8 +193,9 @@ post stock/newitem/id(pedido)
 put stock/reduce/id(ítem) 
 ```
 ^ Ruta privada que reduce la cantidad del ítem en el stock en una unidad. En caso de alcanzar 0 unidades modifica el status del ítem a "Out of stock". 
-<br>LÍMITE -> En caso de que el ítem tenga el parámetro "control" establecido en "true", la cantidad de ítem alcance el valor del parámetro "limit" y que no exista actualmente un pedido automático en estado "waiting" o "validated" se crea un nuevo pedido automático con la cantidad establecida en el parámero "automaticamount". 
-<br>Al mismo tiempo modifica el parámetro "request" del ítem a "true". Devuelve un mensaje de confirmación de cantidad reducida o cantidad reducida y pedido automático creado.
+<br>LÍMITE -> En caso de que el ítem tenga el parámetro "control" establecido en "true", la cantidad de ítem alcance el valor del parámetro "limit" y que no exista actualmente un pedido automático en estado "waiting" o "validated", se crea un nuevo pedido automático con la cantidad establecida en el parámero "automaticamount". 
+<br>Al mismo tiempo modifica el parámetro "request" del ítem a "true". 
+<br>Devuelve un mensaje de confirmación de cantidad reducida o cantidad reducida y pedido automático creado.
 
 ```
 put stock/id(ítem)/modify 
@@ -208,7 +217,7 @@ delete stock/deleteitem/id(ítem)
 post login/ 
 ```
 ^ Ruta pública que permite loguearse a través de los parámetros "email" y "password" del usuario. 
-<br>En caso de confirmación devuelve un token válido por 24 horas con información del usuario ("id","fullname", "rol").
+<br>En caso de confirmación devuelve un token válido por 24 horas con información del usuario ("id","fullname", "position" y "rol").
 
 
 ## **Tecnologías usadas**
