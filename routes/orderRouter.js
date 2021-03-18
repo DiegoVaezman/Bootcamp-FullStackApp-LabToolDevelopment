@@ -47,7 +47,7 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
             try {
                 validateNumber(amount)
             } catch (error) {
-                res.status(400).send({ msg: error.message})  
+                return res.status(400).send({ msg: error.message})  
             }
             
 
@@ -138,7 +138,7 @@ router.put("/reject/:id", protectedRoute, (req, res) => {
 
 
 
-router.delete("/deleteorder/:id", (req, res) => {
+router.delete("/deleteorder/:id", protectedRoute, (req, res) => {
     try {
         validateId(req.params.id)
         
@@ -160,7 +160,7 @@ router.delete("/deleteorder/:id", (req, res) => {
 })
 
 
-router.get("/waiting", (req, res) => {
+router.get("/waiting", protectedRoute, (req, res) => {
     
     Order.find({status : "waiting"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
@@ -172,7 +172,7 @@ router.get("/waiting", (req, res) => {
 })
 
 
-router.get("/validated", (req, res) => {
+router.get("/validated", protectedRoute, (req, res) => {
 
     Order.find({status : "validated"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
@@ -184,7 +184,7 @@ router.get("/validated", (req, res) => {
 })
 
 
-router.get("/recived", (req, res) => {
+router.get("/recived", protectedRoute, (req, res) => {
 
     Order.find({status : "recived"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
@@ -195,7 +195,7 @@ router.get("/recived", (req, res) => {
     })
 })
 
-router.get("/rejected", (req, res) => {
+router.get("/rejected", protectedRoute, (req, res) => {
 
     Order.find({status : "rejected"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})

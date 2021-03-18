@@ -33,7 +33,8 @@ const user = new Schema({
     },
     rol: {
         type: String,
-        require: true
+        require: true,
+        enum:['user','validator']
     }
 })
 

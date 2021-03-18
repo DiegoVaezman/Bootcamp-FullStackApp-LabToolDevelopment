@@ -10,7 +10,7 @@ const router = new Router()
 
 
 
-router.get("/", (req, res) => {
+router.get("/", protectedRoute, (req, res) => {
 
     User.find({}, function (err, users) {
         if (err) {
@@ -109,11 +109,18 @@ router.delete("/deleteuser", protectedRoute, (req, res) => {
 
 router.put("/modify", protectedRoute, (req, res) => {
     
-    const fullname = req.body.fullname
-    const position = req.body.position
+    let fullname = req.body.fullname
+    let position = req.body.position
 
     try {
-        validateFullname(fullname)
+        if (fullname == undefined) {
+            fullname = req.decoded.fullname
+        }
+        if (position == undefined) {
+            position = req.decoded.position
+        }
+        validateString(fullname)
+        validateString(position)
         
         User.updateOne({ _id : req.decoded.id}, {$set: {fullname : fullname, position : position} }, function(err, result) {
             if (err) throw err;

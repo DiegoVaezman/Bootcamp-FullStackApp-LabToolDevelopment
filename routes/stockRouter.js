@@ -1,13 +1,14 @@
 const Router = require("express").Router
 const Stock = require("../models/stock")
 const Order = require("../models/order")
+const protectedRoute = require("../middlewares/protectedRoute")
 const {validateId, validateNumber, validateBoolean, validateString} = require("../helpers/validations")
 
 const router = new Router()
 
 
 
-router.get("/", (req, res) => {
+router.get("/", protectedRoute, (req, res) => {
 
     Stock.find({}, function (err, stocks) {
         if (err) {
@@ -23,7 +24,7 @@ router.get("/", (req, res) => {
 
 
 
-router.post("/newitem/:id", (req, res) => {
+router.post("/newitem/:id", protectedRoute, (req, res) => {
 
     try {
         validateId(req.params.id)
@@ -97,7 +98,7 @@ router.post("/newitem/:id", (req, res) => {
 })
 
 
-router.put("/reduce/:id", (req, res) => {
+router.put("/reduce/:id", protectedRoute, (req, res) => {
     try {
         validateId(req.params.id)
     
@@ -126,7 +127,7 @@ router.put("/reduce/:id", (req, res) => {
                 if (item.control === true && amount <= item.limit) {
 
                     //comprueba que no hay pedido automático para este producto
-                    Order.findOne({ $and: [{user:"Automatic order"}, {status : { $in: ["validated", "waiting"]} }] }, function (err, orderfound) {
+                    Order.findOne({ $and: [{user:"6053a5cf6c15b8560c74af9a"}, {status : { $in: ["validated", "waiting"]} }] }, function (err, orderfound) {
                         if (err) throw err;
                         if (orderfound) {
                             console.log("Item amount modified")
@@ -137,11 +138,11 @@ router.put("/reduce/:id", (req, res) => {
                             if (err) throw err;
                             console.log(`Item request modified to true`)
                         })
-                        //Crea el pedido y lo guarda en la collección de Orders
+                        //Crea el pedido y lo guarda en la colección de Orders
                         const order = new Order({
                             product : item.product,
                             amount : item.automaticamount,
-                            user : "Automatic order",
+                            user : "6053a5cf6c15b8560c74af9a",
                             status : "waiting",
                             date : Date.now()
                         })
@@ -163,7 +164,7 @@ router.put("/reduce/:id", (req, res) => {
 
 
 
-router.put("/:id/modify", (req, res) => {
+router.put("/:id/modify", protectedRoute, (req, res) => {
 
     try {
         validateId(req.params.id)
@@ -221,7 +222,7 @@ router.put("/:id/modify", (req, res) => {
 
 
 
-router.delete("/deleteitem/:id", (req, res) => {
+router.delete("/deleteitem/:id", protectedRoute, (req, res) => {
 
     try {
         validateId(req.params.id)

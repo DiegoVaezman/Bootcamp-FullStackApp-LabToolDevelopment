@@ -1,12 +1,13 @@
 const Router = require("express").Router
 const Product = require("../models/product")
+const protectedRoute = require("../middlewares/protectedRoute")
 const {validateNumber, validateString, validateId} = require("../helpers/validations")
 
 const router = new Router()
 
 
 
-router.get("/", (req, res) => {
+router.get("/", protectedRoute, (req, res) => {
 
     Product.find({}, function (err, products) {
         if (err) {
@@ -21,7 +22,7 @@ router.get("/", (req, res) => {
 
 
 
-router.post("/newproduct", (req, res) => {
+router.post("/newproduct", protectedRoute, (req, res) => {
 
     try {
         const catalog_number = req.body.catalog_number    
@@ -74,7 +75,7 @@ router.post("/newproduct", (req, res) => {
 
 
 
-router.delete("/deleteproduct/:id", (req, res) => {
+router.delete("/deleteproduct/:id", protectedRoute,(req, res) => {
 
     try {
         validateId(req.params.id)

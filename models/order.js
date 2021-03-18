@@ -15,9 +15,10 @@ const order = new Schema({
         trim: true
     },
     user: {
-        type: String,
+        type: Schema.Types.ObjectId,
         trim: true,
-        require: true
+        require: true,
+        ref: "user"
     },
     status: {
         type: String,  

@@ -27,7 +27,7 @@ router.post("/", (req, res) => {
                     return res.status(400).send({msg: "Password incorrect"});
                 }
                 //Genera el token
-                const userPayload = {id: user._id, username: user.fullname, rol: user.rol}
+                const userPayload = {id: user._id, fullname: user.fullname, position: user.position, rol: user.rol}
                 const token = jwt.sign(userPayload, tokenpass, {
                     expiresIn: 60 * 60 * 24
                 })

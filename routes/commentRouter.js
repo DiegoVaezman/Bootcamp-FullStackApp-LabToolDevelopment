@@ -8,7 +8,7 @@ const router = new Router()
 
 
 
-router.get("/", (req, res) => {
+router.get("/", protectedRoute, (req, res) => {
     
     Comment.find({}, function (err, comments){
         if (err) {
@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
 
 
 //ver los comentarios de un pedido
-router.get("/:id", (req, res) => {
+router.get("/:id", protectedRoute, (req, res) => {
     try {
         validateId(req.params.id)
 
