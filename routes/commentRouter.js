@@ -93,16 +93,28 @@ router.post("/newcomment/:id", protectedRoute, (req, res) => {
 
 
 
-router.delete("/deletecomment/:id", (req, res) => {
+router.delete("/deletecomment/:id", protectedRoute,(req, res) => {
     try {
         validateId(req.params.id)
-    
-        //elimina el comentario de la coleccion de comentarios
-        Comment.deleteOne({ _id : req.params.id}, function (err, result){
-            if (err) throw err;
-            res.send({msg:"Comment deleted"});
-            console.log("Deleted comment on Comments collection")
-        })
+        
+        Comment.findById(req.params.id, function (err, comment) {
+            if(err) throw err;
+            if (!comment) {
+                console.log(`This comment_id dose not exist.`)
+                return res.status(400).send({ msg: "This comment_id dose not exist."})
+            }
+            if(comment.owner != req.decoded.id) {
+                console.log(`You do not have permission for delete this comment`)
+                return res.status(401).send({msg : `You do not have permission for delete this comment`})
+            }
+            
+            //elimina el comentario de la coleccion de comentarios
+            Comment.deleteOne({ _id : req.params.id}, function (err, result){
+                if (err) throw err;
+                res.send({msg:"Comment deleted"});
+                console.log("Deleted comment on Comments collection")
+            })
+        })  
     } catch (error) {
         res.status(400).send({ msg: error.message})
     }

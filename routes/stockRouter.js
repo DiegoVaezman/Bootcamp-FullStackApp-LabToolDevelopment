@@ -1,7 +1,7 @@
 const Router = require("express").Router
 const Stock = require("../models/stock")
 const Order = require("../models/order")
-const {validateId} = require("../helpers/validations")
+const {validateId, validateNumber, validateBoolean, validateString} = require("../helpers/validations")
 
 const router = new Router()
 
@@ -111,7 +111,7 @@ router.put("/reduce/:id", (req, res) => {
                 return res.send({msg: "There is no item amount to reduce"})
             }
             
-            const amount = item.amount - 1
+            const amount = Number(item.amount) - 1
 
             //si la cantidad llega a 0, se cambia el status del item a "out of stock"
             let status = item.status
@@ -168,24 +168,53 @@ router.put("/:id/modify", (req, res) => {
     try {
         validateId(req.params.id)
     
-        const amount = req.body.amount
-        const storage = req.body.storage
-        const limit = req.body.limit
-        const control = req.body.control
-        const automaticamount = req.body.automaticamount
-
-
-        // if (amount !== Number || limit !== Number || control !== Boolean || automaticamount !== Number) {
-        //     return res.status(400).send({ msg: "Parameter type error"})
-        // }
-
-        Stock.updateOne({ _id : req.params.id}, {$set: {amount : amount, storage : storage, limit : limit, control : control, automaticamount : automaticamount} }, function(err, result) {
+        Stock.findById(req.params.id, function (err, item){
             if (err) throw err;
-            res.send({msg: "Item modified"})
-            console.log(`Item ${req.params.id} modified on Stock collection`)
-        })
+            if (!item) {
+                console.log(`This item_id dose not exist.`)
+                return res.status(400).send({ msg: "This item_id dose not exist."})
+            }
+        
+            let amount = req.body.amount
+            let storage = req.body.storage
+            let limit = req.body.limit
+            let control = req.body.control
+            let automaticamount = req.body.automaticamount
 
+            if (amount == undefined) {
+                amount = item.amount
+            }
+            if (storage == undefined) {
+                storage = item.storage
+            }
+            if (limit == undefined) {
+                limit = item.limit
+            } 
+            if (automaticamount == undefined) {
+                automaticamount = item.automaticamount
+            } 
+            if (control == undefined) {
+                control = item.control
+            }
+
+            try {
+            validateNumber(amount)
+            validateString(storage)
+            validateNumber(limit)
+            validateNumber(automaticamount)    
+            validateBoolean(control)
+            } catch (error) {
+                res.status(400).send({ msg: error.message})  
+            }
+            
+            Stock.updateOne({ _id : req.params.id}, {$set: {amount : amount, storage : storage, limit : limit, control : control, automaticamount : automaticamount} }, function(err, result) {
+                if (err) throw err;
+                res.send({msg: "Item modified"})
+                console.log(`Item ${req.params.id} modified on Stock collection`)
+            })
+        })
     } catch (error) {
+        console.log("voy al catch")
         res.status(400).send({ msg: error.message})
     }
 })
@@ -197,10 +226,16 @@ router.delete("/deleteitem/:id", (req, res) => {
     try {
         validateId(req.params.id)
 
-        Stock.deleteOne({ _id : req.params.id}, function (err, result){
-            if (err) throw err;
-            res.send({msg:"Item deleted"});
-            console.log("Deleted item in Stock collection")
+        Stock.findById(req.params.id, function (err, item) {
+            if (!item) {
+                console.log(`This item_id dose not exist.`)
+                return res.status(400).send({ msg: "This item_id dose not exist."})
+            }
+            Stock.deleteOne({ _id : req.params.id}, function (err, result){
+                if (err) throw err;
+                res.send({msg:"Item deleted"});
+                console.log("Deleted item in Stock collection")
+            })
         })
     } catch (error) {
         res.status(400).send({ msg: error.message})

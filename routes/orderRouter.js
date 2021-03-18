@@ -28,28 +28,30 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
     try {
         validateId(req.params.id)
 
-        const product = req.params.id
-        const amount = req.body.amount      //se requiere por formulario
-        const user = req.decoded.id    
-        const status = "waiting"       
-
-        if (!amount || !user) {
-            return res.status(400).send({ msg: "Amount and user are required"})
-        }
-        
-        // if (amount !== Number) {
-        //     return res.status(400).send({ msg: "Parameter type error"})
-        // }
-
-        // validateNumber(amount)
-
         Product.findById(req.params.id, function (err, products) {
             if (err) throw err;
             if (!products) {
                 console.log(`This product_Id dose not exist.`)
                 return res.status(400).send({ msg: "This product_Id dose not exist."})
             }
-        
+
+            const product = req.params.id
+            const amount = req.body.amount      //se requiere por formulario
+            const user = req.decoded.id    
+            const status = "waiting"       
+
+            if (!amount) {
+                return res.status(400).send({ msg: "Amount is required"})
+            }
+            
+            try {
+                validateNumber(amount)
+            } catch (error) {
+                res.status(400).send({ msg: error.message})  
+            }
+            
+
+    
             //actualiza el estado del item a "request"
             Stock.updateOne({ product : product}, {$set: {request: true} }, function(err, result) {
                 console.log(`Item request modified to true`)
@@ -140,11 +142,17 @@ router.delete("/deleteorder/:id", (req, res) => {
     try {
         validateId(req.params.id)
         
-        //elimina el producto de la coleccion de cproducto
-        Order.deleteOne({ _id : req.params.id}, function (err, result){
-            if (err) throw err;
-            res.send({msg:"Order deleted"});
-            console.log("Deleted order in Stock collection")
+        Order.findById(req.params.id, function (err, order) {
+            if (!order) {
+                console.log(`This order_id dose not exist.`)
+                return res.status(400).send({ msg: "This order_id dose not exist."})
+            }
+            //elimina el producto de la coleccion de cproducto
+            Order.deleteOne({ _id : req.params.id}, function (err, result){
+                if (err) throw err;
+                res.send({msg:"Order deleted"});
+                console.log("Deleted order in Stock collection")
+            })
         })
     } catch (error) {
         res.status(400).send({ msg: error.message})  

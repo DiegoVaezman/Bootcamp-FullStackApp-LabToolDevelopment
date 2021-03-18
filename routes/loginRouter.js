@@ -12,14 +12,11 @@ const router = new Router();
 
 router.post("/", (req, res) => {
     try {
-        
-    
         const email = req.body.email
         const password = req.body.password
 
         validateEmail(email)
         validatePassword(password)
-
 
         User.findOne({email : email}, function (err, user){
             if (err) throw err;
@@ -27,7 +24,7 @@ router.post("/", (req, res) => {
 
             bcrypt.compare(password, user.password).then(samepassword => {
                 if (!samepassword) {
-                    res.status(400).send({msg: "Password incorrect"});
+                    return res.status(400).send({msg: "Password incorrect"});
                 }
                 //Genera el token
                 const userPayload = {id: user._id, username: user.fullname, rol: user.rol}

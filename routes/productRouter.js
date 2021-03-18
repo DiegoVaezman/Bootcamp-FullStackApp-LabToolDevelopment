@@ -36,13 +36,10 @@ router.post("/newproduct", (req, res) => {
             return res.status(400).send({ msg: "Name, type, catalog_number and price are required"})
         }
 
-        // if (catalog_number !== Number || price !== Number) {
-        //     return res.status(400).send({ msg: "Parameter type error"})    estos se borran
-        // }
-
-        // validateNumber(catalog_number)
-        // validateNumber(price)
-        //validateString() ???
+        validateNumber(catalog_number)
+        validateNumber(price)
+        validateString(name)
+        validateString(type)
 
         
         Product.find({catalog_number : catalog_number}, function (err, product) {
@@ -81,11 +78,18 @@ router.delete("/deleteproduct/:id", (req, res) => {
 
     try {
         validateId(req.params.id)
-        //elimina el producto de la coleccion de cproducto
-        Product.deleteOne({ _id : req.params.id}, function (err, result){
-            if (err) throw err;
-            res.send({msg:"Product deleted"});
-            console.log("Deleted product in products collection")
+
+        Product.findById(req.params.id, function (err, product) {
+            if (!product) {
+                console.log(`This product_id dose not exist.`)
+                return res.status(400).send({ msg: "This product_id dose not exist."})
+            }
+            //elimina el producto de la coleccion de cproducto
+            Product.deleteOne({ _id : req.params.id}, function (err, result){
+                if (err) throw err;
+                res.send({msg:"Product deleted"});
+                console.log("Deleted product in products collection")
+            })
         })
     } catch (error) {
         res.status(400).send({ msg: error.message}) 

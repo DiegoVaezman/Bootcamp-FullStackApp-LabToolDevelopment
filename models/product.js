@@ -6,7 +6,8 @@ const product = new Schema({
     catalog_number: {
         type: Number,
         required: true,
-        trim: true
+        trim: true,
+        unique: true
     },
     name: {
         type: String,

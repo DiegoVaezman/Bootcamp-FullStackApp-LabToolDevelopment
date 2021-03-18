@@ -43,21 +43,28 @@ router.post("/newuser", (req, res) => {
         validateEmail(email)
         validateString(fullname)
 
-        bcrypt.hash(password, 10, function(err, hash) {
+        User.findOne({email:email}, function (err, user){
             if (err) throw err;
+            if (user) {
+                return res.send({msg: `User email already registered`})
+            }
+        
+            bcrypt.hash(password, 10, function(err, hash) {
+                if (err) throw err;
 
-            const user = new User({
-                fullname: fullname,
-                position: position,
-                email: email,
-                password: hash,
-                rol: rol
-            })
-            user.save()
-            .then(doc => res.send(doc)) 
-            .catch(error => {
-                res.status(400).send({msg: error.message})
-                console.log(error)
+                const user = new User({
+                    fullname: fullname,
+                    position: position,
+                    email: email,
+                    password: hash,
+                    rol: rol
+                })
+                user.save()
+                .then(doc => res.send(doc)) 
+                .catch(error => {
+                    res.status(400).send({msg: error.message})
+                    console.log(error)
+                })
             })
         })
     } catch (error) {
