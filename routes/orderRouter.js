@@ -13,12 +13,11 @@ router.get("/", (req, res) => {
     Order.find({}, function (err, orders) {
         if (err) {
             res.status(400).send({ msg: err.message})
-            console.log(err)
         }
         if (orders.length == 0) {
-            return res.send({msg: "There are no orders"})
+            return res.status(200).send({msg: "There are no orders"})
         }
-        res.send(orders)})
+        res.status(200).send(orders)})
 })
 
 
@@ -31,7 +30,6 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
         Product.findById(req.params.id, function (err, products) {
             if (err) throw err;
             if (!products) {
-                console.log(`This product_Id dose not exist.`)
                 return res.status(400).send({ msg: "This product_Id dose not exist."})
             }
 
@@ -54,8 +52,8 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
     
             //actualiza el estado del item a "request"
             Stock.updateOne({ product : product}, {$set: {request: true} }, function(err, result) {
-                console.log(`Item request modified to true`)
                 if (err) throw err;
+                console.log(`Item request modified to true`)
             })
 
             //Crea el pedido y lo guarda en la collección de Orders
@@ -68,12 +66,10 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
             })
         
             order.save()
-            .then(doc => res.send(doc)) 
+            .then(doc => res.status(201).send(doc)) 
             .catch(error => {
                 res.status(400).send({msg: error.message})
-                console.log(error)
             })
-            console.log("New order added in Orders collection")
         })
     } catch (error) {
         res.status(400).send({ msg: error.message})
@@ -94,13 +90,12 @@ router.put("/validate/:id", protectedRoute, (req, res) => {
         Order.findById(req.params.id, function (err, order){
             if(err) throw err;
             if (!order) {
-                console.log(`This order_id dose not exist.`)
                 return res.status(400).send({ msg: "This order_id dose not exist."})
             }
 
             Order.updateOne({ _id : req.params.id}, {$set: {status: "validated"} }, function(err, result) {
                 if (err) throw err;
-                res.send({ msg:"Order validated"})
+                res.status(200).send({ msg:"Order validated"})
             })
         })
     } catch (error) {
@@ -122,13 +117,12 @@ router.put("/reject/:id", protectedRoute, (req, res) => {
         Order.findById(req.params.id, function (err, orders){
             if (err) throw err;
             if (!orders) {
-                console.log(`This order_id dose not exist.`)
                 return res.status(400).send({ msg: "This order_id dose not exist."})
             }
 
             Order.updateOne({ _id : req.params.id}, {$set: {status: "rejected"} }, function(err, result) {
                 if (err) throw err;
-                res.send({ msg:"Order rejected"})
+                res.status(200).send({ msg:"Order rejected"})
             })
         })
     } catch (error) {
@@ -144,14 +138,12 @@ router.delete("/deleteorder/:id", protectedRoute, (req, res) => {
         
         Order.findById(req.params.id, function (err, order) {
             if (!order) {
-                console.log(`This order_id dose not exist.`)
                 return res.status(400).send({ msg: "This order_id dose not exist."})
             }
             //elimina el producto de la coleccion de cproducto
             Order.deleteOne({ _id : req.params.id}, function (err, result){
                 if (err) throw err;
-                res.send({msg:"Order deleted"});
-                console.log("Deleted order in Stock collection")
+                res.status(200).send({msg:"Order deleted"});
             })
         })
     } catch (error) {
@@ -165,9 +157,9 @@ router.get("/waiting", protectedRoute, (req, res) => {
     Order.find({status : "waiting"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
-            return res.send({ msg: "There is not order pending to validate"})
+            return res.status(200).send({ msg: "There is not order pending to validate"})
         }
-        res.send(orders)
+        res.status(200).send(orders)
     })
 })
 
@@ -177,9 +169,9 @@ router.get("/validated", protectedRoute, (req, res) => {
     Order.find({status : "validated"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
-            return res.send({ msg: "There is not validated order"})
+            return res.status(200).send({ msg: "There is not validated order"})
         }
-        res.send(orders)
+        res.status(200).send(orders)
     })
 })
 
@@ -189,9 +181,9 @@ router.get("/recived", protectedRoute, (req, res) => {
     Order.find({status : "recived"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
-            return res.send({ msg: "There is not recived order"})
+            return res.status(200).send({ msg: "There is not recived order"})
         }
-        res.send(orders)
+        res.status(200).send(orders)
     })
 })
 
@@ -200,9 +192,9 @@ router.get("/rejected", protectedRoute, (req, res) => {
     Order.find({status : "rejected"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
-            return res.send({ msg: "There is not rejected order"})
+            return res.status(200).send({ msg: "There is not rejected order"})
         }
-        res.send(orders)
+        res.status(200).send(orders)
     })
 })
 

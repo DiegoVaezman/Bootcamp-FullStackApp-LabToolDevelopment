@@ -15,12 +15,11 @@ router.get("/", protectedRoute, (req, res) => {
     User.find({}, function (err, users) {
         if (err) {
             res.status(400).send({ msg: err.message})
-            console.log(err)
         }
         if (users.length == 0) {
-            return res.send({msg: "There are no users"})
+            return res.status(200).send({msg: "There are no users"})
         }
-        res.send(users)
+        res.status(200).send(users)
     })
 })
 
@@ -46,7 +45,7 @@ router.post("/newuser", (req, res) => {
         User.findOne({email:email}, function (err, user){
             if (err) throw err;
             if (user) {
-                return res.send({msg: `User email already registered`})
+                return res.status(400).send({msg: `User email already registered`})
             }
         
             bcrypt.hash(password, 10, function(err, hash) {
@@ -60,10 +59,9 @@ router.post("/newuser", (req, res) => {
                     rol: rol
                 })
                 user.save()
-                .then(doc => res.send(doc)) 
+                .then(doc => res.status(201).send(doc)) 
                 .catch(error => {
                     res.status(400).send({msg: error.message})
-                    console.log(error)
                 })
             })
         })
@@ -80,12 +78,11 @@ router.get("/comments", protectedRoute, (req, res) => {
     Comment.find({owner : req.decoded.id}, function (err, comments) {
         if (err) {
             res.status(400).send({ msg: err.message})
-            console.log(err)
         }
         if (comments.length == 0) {
-            return res.send({ msg: "There are not comments from this user"})
+            return res.status(200).send({ msg: "There are not comments from this user"})
         }
-        res.send(comments)
+        res.status(200).send(comments)
     })
 })
 
@@ -98,10 +95,8 @@ router.delete("/deleteuser", protectedRoute, (req, res) => {
     User.deleteOne({ _id : req.decoded.id}, function (err, result){
         if (err) {
             res.status(400).send({ msg: err.message})
-            console.log(err)
         }
-        res.send({msg:"User deleted"});
-        console.log("Deleted user on User collection")
+        res.status(200).send({msg:"User deleted"});
     })
 })
 
@@ -124,8 +119,7 @@ router.put("/modify", protectedRoute, (req, res) => {
         
         User.updateOne({ _id : req.decoded.id}, {$set: {fullname : fullname, position : position} }, function(err, result) {
             if (err) throw err;
-            res.send({msg: "User modified"})
-            console.log(`User ${req.decoded.id} modified on User collection`)
+            res.status(200).send({msg: "User modified"})
         })
     } catch (error) {
         res.status(401).send({ msg: error.message})

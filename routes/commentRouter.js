@@ -13,12 +13,11 @@ router.get("/", protectedRoute, (req, res) => {
     Comment.find({}, function (err, comments){
         if (err) {
             res.status(400).send({ msg: err.message})
-            console.log(err)
         }
         if (comments.length == 0) {
-            return res.send({msg: "There are no comments"})
+            return res.status(200).send({msg: "There are no comments"})
         }
-        res.send(comments)
+        res.status(200).send(comments)
     })
 })
 
@@ -33,15 +32,14 @@ router.get("/:id", protectedRoute, (req, res) => {
         Order.findById(req.params.id, function (err, order){
             if(err) throw err;
             if (!order) {
-                console.log(`This order_id dose not exist.`)
                 return res.status(400).send({ msg: "This order_id dose not exist."})
             }
             Comment.find({order : req.params.id}, function (err, comment){
                 if (err) throw err;
                 if (comment.length == 0) {
-                    return res.send({ msg: "There is not comment on this order"})
+                    return res.status(200).send({ msg: "There is not comment on this order"})
                 }
-                res.send(comment)
+                res.status(200).send(comment)
             })
         })
     } catch (error) {
@@ -69,7 +67,6 @@ router.post("/newcomment/:id", protectedRoute, (req, res) => {
         Order.findById(req.params.id, function (err, orderfound){
             if (err) throw err;
             if (!orderfound) {
-                console.log(`This order_id dose not exist.`)
                 return res.status(400).send({ msg: "This order_id dose not exist."})
             }
 
@@ -80,10 +77,9 @@ router.post("/newcomment/:id", protectedRoute, (req, res) => {
                 order : order
             })
             comment.save()
-            .then(doc => res.send(doc)) 
+            .then(doc => res.status(201).send(doc)) 
             .catch(error => {
                 res.status(400).send({msg: error.message})
-                console.log(error)
             })
         })
     } catch (error) {
@@ -100,19 +96,16 @@ router.delete("/deletecomment/:id", protectedRoute,(req, res) => {
         Comment.findById(req.params.id, function (err, comment) {
             if(err) throw err;
             if (!comment) {
-                console.log(`This comment_id dose not exist.`)
                 return res.status(400).send({ msg: "This comment_id dose not exist."})
             }
             if(comment.owner != req.decoded.id) {
-                console.log(`You do not have permission for delete this comment`)
                 return res.status(401).send({msg : `You do not have permission for delete this comment`})
             }
             
             //elimina el comentario de la coleccion de comentarios
             Comment.deleteOne({ _id : req.params.id}, function (err, result){
                 if (err) throw err;
-                res.send({msg:"Comment deleted"});
-                console.log("Deleted comment on Comments collection")
+                res.status(200).send({msg:"Comment deleted"});
             })
         })  
     } catch (error) {

@@ -13,12 +13,11 @@ router.get("/", protectedRoute, (req, res) => {
     Stock.find({}, function (err, stocks) {
         if (err) {
             res.status(400).send({ msg: err.message})
-            console.log(err)
         }
         if (stocks.length == 0) {
-            return res.send({msg: "There are no items"})
+            return res.status(200).send({msg: "There are no items"})
         }
-        res.send(stocks)
+        res.status(200).send(stocks)
     })
 })
 
@@ -73,10 +72,9 @@ router.post("/newitem/:id", protectedRoute, (req, res) => {
                         })
 
                         newitem.save()
-                        .then(doc => res.send(doc)) 
+                        .then(doc => res.status(201).send(doc)) 
                         .catch(error => {
                             res.status(400).send({msg: error.message})
-                            console.log(error)
                         })
                         return
                     }
@@ -86,8 +84,7 @@ router.post("/newitem/:id", protectedRoute, (req, res) => {
 
                     Stock.updateOne({ product : product}, {$set: {amount: totalAmount, status: "In stock", recived: Date.now(), request: request} }, function(err, result) {
                         if (err) throw err;
-                        console.log(`Item modified in Stock collection`)
-                        res.send({ msg: "The Item is already in stock and was updated in Stock collection"})
+                        res.status(200).send({ msg: "The Item is already in stock and was updated in Stock collection"})
                     })
                 })
             )
@@ -105,11 +102,10 @@ router.put("/reduce/:id", protectedRoute, (req, res) => {
         Stock.findById(req.params.id, function (err, item) {
             if(err) throw err;
             if (!item) {
-                console.log(`This itme_id dose not exist.`)
                 return res.status(400).send({ msg: "This item_id dose not exist."})
             }
             if (item.amount == 0) {
-                return res.send({msg: "There is no item amount to reduce"})
+                return res.status(200).send({msg: "There is no item amount to reduce"})
             }
             
             const amount = Number(item.amount) - 1
@@ -130,8 +126,7 @@ router.put("/reduce/:id", protectedRoute, (req, res) => {
                     Order.findOne({ $and: [{user:"6053a5cf6c15b8560c74af9a"}, {status : { $in: ["validated", "waiting"]} }] }, function (err, orderfound) {
                         if (err) throw err;
                         if (orderfound) {
-                            console.log("Item amount modified")
-                            return res.send({ msg:"Amount reduced"})
+                            return res.status(200).send({ msg:"Amount reduced"})
                         }
                         //actualiza el estado del item a "request true"
                         Stock.updateOne({ _id : req.params.id }, { $set: {request: true} }, function(err, result) {
@@ -147,12 +142,10 @@ router.put("/reduce/:id", protectedRoute, (req, res) => {
                             date : Date.now()
                         })
                         order.save()
-                        .then(doc => res.send({msg: "Amount reduced and new order registered", doc : doc}))
+                        .then(doc => res.status(201).send({msg: "Amount reduced and new order registered", doc : doc}))
                         .catch(error => {
                             res.status(400).send({msg: error.message})
-                            console.log(error)
                         })
-                        console.log("Amount reduced and new order registered")
                     })
                 }
             })
@@ -172,7 +165,6 @@ router.put("/:id/modify", protectedRoute, (req, res) => {
         Stock.findById(req.params.id, function (err, item){
             if (err) throw err;
             if (!item) {
-                console.log(`This item_id dose not exist.`)
                 return res.status(400).send({ msg: "This item_id dose not exist."})
             }
         
@@ -210,12 +202,10 @@ router.put("/:id/modify", protectedRoute, (req, res) => {
             
             Stock.updateOne({ _id : req.params.id}, {$set: {amount : amount, storage : storage, limit : limit, control : control, automaticamount : automaticamount} }, function(err, result) {
                 if (err) throw err;
-                res.send({msg: "Item modified"})
-                console.log(`Item ${req.params.id} modified on Stock collection`)
+                res.status(200).send({msg: "Item modified"})
             })
         })
     } catch (error) {
-        console.log("voy al catch")
         res.status(400).send({ msg: error.message})
     }
 })
@@ -229,13 +219,11 @@ router.delete("/deleteitem/:id", protectedRoute, (req, res) => {
 
         Stock.findById(req.params.id, function (err, item) {
             if (!item) {
-                console.log(`This item_id dose not exist.`)
                 return res.status(400).send({ msg: "This item_id dose not exist."})
             }
             Stock.deleteOne({ _id : req.params.id}, function (err, result){
                 if (err) throw err;
-                res.send({msg:"Item deleted"});
-                console.log("Deleted item in Stock collection")
+                res.status(200).send({msg:"Item deleted"});
             })
         })
     } catch (error) {

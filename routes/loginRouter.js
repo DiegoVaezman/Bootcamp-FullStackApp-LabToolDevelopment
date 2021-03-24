@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
                 const token = jwt.sign(userPayload, tokenpass, {
                     expiresIn: 60 * 60 * 24
                 })
-                res.json({token: token, msg: "correct authentication"})
+                res.status(200).send({token: token, msg: "correct authentication"})
             })
         })
 

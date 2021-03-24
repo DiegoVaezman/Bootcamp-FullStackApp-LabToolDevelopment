@@ -12,12 +12,11 @@ router.get("/", protectedRoute, (req, res) => {
     Product.find({}, function (err, products) {
         if (err) {
             res.status(400).send({ msg: err.message})
-            console.log(err)
         }
         if (products.length == 0) {
-            return res.send({msg: "There are no products"})
+            return res.status(200).send({msg: "There are no products"})
         }
-        res.send(products)})
+        res.status(200).send(products)})
 })
 
 
@@ -60,12 +59,10 @@ router.post("/newproduct", protectedRoute, (req, res) => {
                 information : information
             })
             newproduct.save()
-            .then(doc => res.send(doc)) 
+            .then(doc => res.status(201).send(doc)) 
             .catch(error => {
                 res.status(400).send({msg: error.message})
-                console.log(error)
             })
-            console.log("New product added in Product collection")
         })
     } catch (error) {
         res.status(400).send({ msg: error.message})
@@ -82,14 +79,12 @@ router.delete("/deleteproduct/:id", protectedRoute,(req, res) => {
 
         Product.findById(req.params.id, function (err, product) {
             if (!product) {
-                console.log(`This product_id dose not exist.`)
                 return res.status(400).send({ msg: "This product_id dose not exist."})
             }
             //elimina el producto de la coleccion de cproducto
             Product.deleteOne({ _id : req.params.id}, function (err, result){
                 if (err) throw err;
-                res.send({msg:"Product deleted"});
-                console.log("Deleted product in products collection")
+                res.status(200).send({msg:"Product deleted"});
             })
         })
     } catch (error) {
