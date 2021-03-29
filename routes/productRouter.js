@@ -7,7 +7,9 @@ const router = new Router()
 
 
 
-router.get("/", protectedRoute, (req, res) => {
+router.get("/", 
+// protectedRoute, 
+(req, res) => {
 
     Product.find({}, function (err, products) {
         if (err) {
@@ -21,7 +23,9 @@ router.get("/", protectedRoute, (req, res) => {
 
 
 
-router.post("/newproduct", protectedRoute, (req, res) => {
+router.post("/newproduct",
+//  protectedRoute, 
+ (req, res) => {
 
     try {
         const catalog_number = req.body.catalog_number    
@@ -45,7 +49,7 @@ router.post("/newproduct", protectedRoute, (req, res) => {
         Product.find({catalog_number : catalog_number}, function (err, product) {
             if(err) throw err;
             if (product.length > 0) {
-                return res.status(400).send({ msg: "The product is already in Products collection"})
+                return res.status(400).send({ msg:"The product is already in Products collection"})
             }
 
             //Crea el producto y lo guarda en la collección de productos

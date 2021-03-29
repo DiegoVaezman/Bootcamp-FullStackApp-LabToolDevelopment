@@ -2,6 +2,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
+const cors = require("cors")
 
 
 const PORT = process.env.PORT
@@ -14,7 +15,7 @@ mongoose.connect(MONGODB_URL, {useUnifiedTopology: true, useNewUrlParser: true, 
 
     app.use(express.urlencoded())  //realmente es necesario????
     app.use(express.json())
-
+    app.use(cors())
 
     const userRouter = require("./routes/userRouter")
     const commentRouter = require("./routes/commentRouter")
