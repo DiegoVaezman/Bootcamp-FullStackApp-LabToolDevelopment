@@ -22,7 +22,9 @@ router.get("/", (req, res) => {
 
 
 
-router.post("/neworder/:id", protectedRoute, (req, res) => {
+router.post("/neworder/:id"
+// , protectedRoute
+, (req, res) => {
 
     try {
         validateId(req.params.id)

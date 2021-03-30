@@ -76,7 +76,9 @@ router.post("/newproduct",
 
 
 
-router.delete("/deleteproduct/:id", protectedRoute,(req, res) => {
+router.delete("/deleteproduct/:id"
+// , protectedRoute
+,(req, res) => {
 
     try {
         validateId(req.params.id)
@@ -88,13 +90,44 @@ router.delete("/deleteproduct/:id", protectedRoute,(req, res) => {
             //elimina el producto de la coleccion de cproducto
             Product.deleteOne({ _id : req.params.id}, function (err, result){
                 if (err) throw err;
-                res.status(200).send({msg:"Product deleted"});
+                return res.status(200).send({msg:"Product has been deleted"});
             })
         })
     } catch (error) {
-        res.status(400).send({ msg: error.message}) 
+        return res.status(400).send({ msg: error.message}) 
     }
 })
 
+
+router.put("/:id/modify"
+// , protectedRoute
+, (req, res) => {
+
+    try {
+        validateId(req.params.id)
+    
+        Product.findById(req.params.id, function (err, item){
+            if (err) throw err;
+            if (!item) {
+                return res.status(400).send({ msg: "This item_id dose not exist."})
+            }
+        
+            let information = req.body.information
+
+            try {
+            validateString(information)
+            } catch (error) {
+                return res.status(400).send({ msg: error.message})  
+            }
+            
+            Product.updateOne({ _id : req.params.id}, {$set: {information : information} }, function(err, result) {
+                if (err) throw err;
+                return res.status(200).send({msg: "Product modified"})
+            })
+        })
+    } catch (error) {
+        return res.status(400).send({ msg: error.message})
+    }
+})
 
 module.exports = router

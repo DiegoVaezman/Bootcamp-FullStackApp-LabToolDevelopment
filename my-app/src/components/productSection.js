@@ -1,11 +1,14 @@
 import React from 'react';
-import List from './list';
 import axios from 'axios';
 import {useState, useEffect} from 'react'
-import { Link, Route} from "wouter"
-import Probando from "./prueba"
-import Modal from "./Modal"
+import {Redirect} from 'react-router-dom'
+import Modal from "./modal"
+import ModalResponse from './modalResponse';
+import SuccessResponse from "./successResponse"
+import ErrorResponse from "./errorResponse"
+import ProductListItem from './productListItem'
 import apiURL from '../services/apiURL'
+
 
 
 function ProductSection(dataBase){
@@ -13,11 +16,15 @@ function ProductSection(dataBase){
     // VENTANAS MODALES
     const searchModalRef = React.useRef();
     const addModalRef = React.useRef();
+    const responseModalRef = React.useRef();
     const openSearchModal = () => {
         searchModalRef.current.openModal()
     };
     const openAddModal = () => {
         addModalRef.current.openModal()
+    };
+    const openResponseModal = () => {
+        responseModalRef.current.openModal()
     };
     const closeSearchModal = () => {
         searchModalRef.current.closeModal()
@@ -25,21 +32,33 @@ function ProductSection(dataBase){
     const closeAddModal = () => {
         addModalRef.current.closeModal()
     };
+    const closeResponseModal = () => {
+        setResponse({
+            error: false,
+            success: false,
+            msg: ""
+        })
+        responseModalRef.current.closeModal()
+    };
 
     //CONSIGUIENDO LA DATA DE PRODUCTOS DESDE DB
     const [data, setData] = useState([])
 
+    async function getData() {
+        const dataBase = await axios.get(`${apiURL}product/`);
+        setData(dataBase.data)
+    }
     useEffect(() => {
-        async function getData() {
-            const dataBase = await axios.get(`${apiURL}product/`);
-            setData(dataBase.data)
-        }
-        getData();
+        getData()
     },[])
+
+    
+
 
     //FILTRANDO LA DATA
     const [dataFiltered, setDataFiltered] = useState([data])
 
+    
     const [inputValue, setInputValue] = useState({
         byname: "",
         bycatn: "",
@@ -77,6 +96,16 @@ function ProductSection(dataBase){
             setDataFiltered(data.filter(product => product.type === type))
         }
     }
+    
+
+    const [response, setResponse] = useState({
+        success: false,
+        error: false,
+        msg: ""
+    })
+
+
+
 
     //AÑADIENDO NUEVO PRODUCTO
     const [addInputValue, setAddInputValue] = useState({
@@ -89,32 +118,52 @@ function ProductSection(dataBase){
         information : ""
     })
     const handleAddInputChange = (event) => {
+        const value = !isNaN(event.target.value) ? parseFloat(event.target.value) : event.target.value
         setAddInputValue({
             ...addInputValue,
-            [event.target.name] : event.target.value
+            [event.target.name] : value
         })
     }
     const addNewProduct = () => {
         //no consigo meter directamente los valores desde addInputValue
-        const JSONPost = JSON.stringify(addInputValue)
-        console.log(JSONPost)
+        // const JSONPost = JSON.stringify(addInputValue)
+        // console.log(JSONPost)
         
-        axios.post(`${apiURL}product/newproduct`, {
-            catalog_number: Number(addInputValue.catalog_number),
-            name: addInputValue.name,
-            type : addInputValue.type,
-            trading_house : addInputValue.trading_house,
-            reference_number: addInputValue.reference_number,
-            price : Number(addInputValue.price),
-            information : addInputValue.information
-        })
+        axios.post(`${apiURL}product/newproduct`, 
+        // {
+        //     catalog_number: Number(addInputValue.catalog_number),
+        //     name: addInputValue.name,
+        //     type : addInputValue.type,
+        //     trading_house : addInputValue.trading_house,
+        //     reference_number: addInputValue.reference_number,
+        //     price : Number(addInputValue.price),
+        //     information : addInputValue.information
+        // }
+        {...addInputValue}
+        )
         .then(res => {
+            console.log("producto añadido!")
             console.log(res.data)
+            setResponse({...response,
+                success: true,
+                msg: `${res.data.name} has been added to the product list!`
+            })
+            openResponseModal()
+            getData()
         })
         .catch(error => {
-            console.log(error.response.data)
+            console.log(error)
+            console.log("hay un error")
+            setResponse({...response,
+                error: true,
+                msg: error.response.data
+            })
+            openResponseModal()
         });
     }
+
+    
+    
     return (
         <div>
             <div className="filter">
@@ -136,8 +185,12 @@ function ProductSection(dataBase){
                 <button onClick={openSearchModal}>Advanced Search</button>
             </div>
 
-            <List data={dataFiltered} section="products"/>
-
+            <div className="list">
+                {dataFiltered.map((item, index) => {
+                    return <ProductListItem product={item} localState={dataFiltered} key={index} />
+                })}
+            </div>
+            
             <a onClick={openAddModal} className="add-link">Add new product</a>
 
             <Modal ref={searchModalRef}>
@@ -165,6 +218,7 @@ function ProductSection(dataBase){
             </Modal>
             <Modal ref={addModalRef}>
                 <div>
+                    {/* {response.response ? <div>{response.msg.msg}</div> :  */}
                     <h1>Add new product</h1>
                     <button onClick={closeAddModal}className="close">Close</button>
                     <form className="form">
@@ -213,6 +267,24 @@ function ProductSection(dataBase){
                     <button onClick={addNewProduct}>Add product to the list</button>
                 </div>
             </Modal>
+            {response.success === true && 
+                <ModalResponse ref={responseModalRef} response="true">
+                    <div>
+                        <SuccessResponse />
+                        <p>{response.msg}</p>
+                        <button onClick={closeResponseModal}className="close">Close</button>
+                    </div>
+                </ModalResponse>
+            }
+            {response.error === true && 
+                <ModalResponse ref={responseModalRef}>
+                    <div>
+                        <ErrorResponse />
+                        <p>{response.msg.msg}</p>
+                        <button onClick={closeResponseModal}className="close">Close</button>
+                    </div>
+                </ModalResponse>
+            }
         </div>
     )
 }

@@ -1,10 +1,9 @@
-import { PromiseProvider } from 'mongoose';
 import React, { forwardRef, useImperativeHandle } from 'react';
 import {useState} from 'react'
 import ReactDOM from "react-dom"
 
 
-const Modal = forwardRef((props, ref) => {
+const ModalConfirm = forwardRef((props, ref) => {
 
 
     const [display, setDisplay] = useState(false)
@@ -23,7 +22,6 @@ const Modal = forwardRef((props, ref) => {
         setDisplay(false)
     };
 
-
     if (display) {
         return (
             ReactDOM.createPortal(
@@ -40,4 +38,4 @@ const Modal = forwardRef((props, ref) => {
 }
 )
 
-export default Modal
+export default ModalConfirm
