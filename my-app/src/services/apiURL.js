@@ -1,3 +1,5 @@
-const apiURL ="http://localhost:8000/"
+ const apiURL = "http://localhost:8000/"
 
-export default apiURL
+// export const ACCESS_TOKEN_NAME = "jwt_token"
+
+export default  apiURL

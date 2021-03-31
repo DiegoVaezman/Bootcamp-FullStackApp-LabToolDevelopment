@@ -22,9 +22,7 @@ router.get("/", (req, res) => {
 
 
 
-router.post("/neworder/:id"
-// , protectedRoute
-, (req, res) => {
+router.post("/neworder/:id", protectedRoute, (req, res) => {
 
     try {
         validateId(req.params.id)
@@ -34,7 +32,7 @@ router.post("/neworder/:id"
             if (!products) {
                 return res.status(400).send({ msg: "This product_Id dose not exist."})
             }
-
+            console.log(req.decoded)
             const product = req.params.id
             const amount = req.body.amount      //se requiere por formulario
             const user = req.decoded.id    

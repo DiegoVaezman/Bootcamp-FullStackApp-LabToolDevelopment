@@ -125,10 +125,7 @@ function ProductSection(dataBase){
         })
     }
     const addNewProduct = () => {
-        //no consigo meter directamente los valores desde addInputValue
-        // const JSONPost = JSON.stringify(addInputValue)
-        // console.log(JSONPost)
-        
+     
         axios.post(`${apiURL}product/newproduct`, 
         // {
         //     catalog_number: Number(addInputValue.catalog_number),
@@ -162,7 +159,6 @@ function ProductSection(dataBase){
         });
     }
 
-    
     
     return (
         <div>

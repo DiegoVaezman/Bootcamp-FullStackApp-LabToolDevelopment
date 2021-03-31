@@ -1,11 +1,14 @@
 import React from 'react';
+import {Link, Redirect} from 'react-router-dom'
 
 function Header() {
     return (
-        <div className="header">
-            <p>LOGO Darwin Lab</p>
-            <p>Marie Curie</p>
-        </div>
+        <Link to="/user" className="header">
+            <div >
+                <p>LOGO Darwin Lab</p>
+                <p>{JSON.parse(localStorage.getItem("labToolUser")).name}</p>
+            </div>
+        </Link>
     )
 }
 

@@ -60,14 +60,18 @@ function ProductSheet(props) {
         error: false,
         msg: ""
     })
-
+    // function closeAll() {
+    //     closeEdditModal()
+    //     closeRequestModal()
+    //     closeResponseModal()
+    //     closeConfirmModal()
+    // }
 
 
     //CREANDO NUEVO PEDIDO
 
     const [amountInputValue, setAmountInputValue] = useState({
-        amount: "",
-        // user: ""
+        amount: ""
     })
     const handleAmountInputChange = (event) => {
         const value = !isNaN(event.target.value) ? parseFloat(event.target.value) : event.target.value
@@ -88,15 +92,15 @@ function ProductSheet(props) {
             console.log(res.data)
             setResponse({...response,
                 success: true,
-                msg: `Product ${res.data.name} ordered `
+                msg: `Product ${product.name} ordered `
             })
             openResponseModal()
         })
         .catch(error => {
-            console.log(error)
+            console.log(error.response)
             setResponse({...response,
                 error: true,
-                msg: error
+                msg: error.response.data.msg
             })
             openResponseModal()
         });
@@ -207,9 +211,7 @@ function ProductSheet(props) {
                         <SuccessResponse />
                         <h1>{response.msg}</h1>
                         {/* <p>{`Information about ${product.name} has been setting`}</p>   //esta ventna se comparte con msg delete success. */}
-                        {/* <Link to="/products" className="close">Close</Link> */}
-                        {/* <button onClick={() => {closeEdditModal} () => {closeResponseModal}}>Close</button>    */}
-                        <button onClick={closeEdditModal}>cerrar edit modal</button>
+                        <Link to="/products" className="close">Close</Link>
                     </div>
                 </ModalResponse>
             }

@@ -3,7 +3,7 @@ const Router = require("express").Router
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const {validatePassword, validateEmail} = require("../helpers/validations")
+const {validatePassword, validateEmail, validateString} = require("../helpers/validations")
 const tokenpass = process.env.TOKENPASS
 
 const router = new Router();
@@ -31,7 +31,7 @@ router.post("/", (req, res) => {
                 const token = jwt.sign(userPayload, tokenpass, {
                     expiresIn: 60 * 60 * 24
                 })
-                res.status(200).send({token: token, msg: "correct authentication"})
+                res.status(200).send({token: token, name: user.fullname, email: user.email, position: user.position, rol: user.rol, id: user._id})
             })
         })
 

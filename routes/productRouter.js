@@ -7,9 +7,7 @@ const router = new Router()
 
 
 
-router.get("/", 
-// protectedRoute, 
-(req, res) => {
+router.get("/", protectedRoute, (req, res) => {
 
     Product.find({}, function (err, products) {
         if (err) {
