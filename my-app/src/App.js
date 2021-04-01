@@ -17,11 +17,19 @@ import Signin from './components/signin';
 import User from './components/user';
 import UserSheet from './components/userSheet';
 import RequestsSection from './components/requestsSection';
+import RequestSheet from './components/requestSheet';
+import apiURL from './services/apiURL'
 
 
-function App() {
 
-    
+function App(props) {
+
+    const token = localStorage.getItem("labToolUser")
+
+    const [user, setUser] = useState({})
+
+
+
     // if (!axios.defaults.headers.common.Authorization) {
     //     return (<Redirect to="/" />)
     // }
@@ -30,10 +38,43 @@ function App() {
     // }
 
     // const islogged = () => {}
+    const [estado, setEstado] = useState({
+        estado: "primero"
+    })
+
+
+    console.log(estado)
+
+
+
+    const handler = (e) => {
+        setEstado({
+            estado: e
+        })
+        console.log(estado)
+    }
+
+
+
+    const handleUserInfo = (user) => {
+        console.log(user)
+    }
+
+    
+    
+    useEffect(() => {
+        axios.get(`${apiURL}user/user`, {headers:{Authorization: `Bearer ${token}`}})
+        .then(response => {
+            setUser(response.data)
+            console.log(response.data)
+        })
+    }, [])
+
 
     return (
         <Router>
         <div className="App">
+            {(!token) && <Redirect to="/" />}
             <Switch>
                 <Route path="/" exact>
                     <Register />
@@ -41,12 +82,11 @@ function App() {
                 <Route path="/signup" exact>
                     <Signup />
                 </Route>
-                <Route path="/signin" exact>
+                <Route path='/signin'>
                     <Signin />
                 </Route>
-                
                 <Route>
-                    <Header />
+                    <Header user={user}/>
                     <Switch>
                         <Route path="/home" component={Home} />
 
@@ -57,16 +97,14 @@ function App() {
                         <Route path="/products/productsheet/:id" component={ProductSheet} />
 
                         <Route path="/requests" exact component={RequestsSection} />
-                        
-                
+                        <Route path="/requests/requestsheet/:id" exact component={RequestSheet} />
+
                     </Switch>
                     <Navbar />
                 </Route>
             </Switch>
         </div>
         </Router>
-        
-
     )
 }
 

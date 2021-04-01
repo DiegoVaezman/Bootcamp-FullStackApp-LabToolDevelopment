@@ -12,8 +12,9 @@ import UserListItem from './userListItem'
 
 
 
-function User() {
+function User(props) {
 
+    console.log(props)
     // VENTANAS MODALES
     const edditUserModalRef = React.useRef();
     const usersModalRef = React.useRef();
@@ -146,12 +147,12 @@ function User() {
         <div>
             <div>
             <img></img>
-            <h1>{JSON.parse(localStorage.getItem("labToolUser")).name}</h1>
+            <h1>{}</h1>
             </div>
             <div>
-                <p>E-mail: {JSON.parse(localStorage.getItem("labToolUser")).email}</p>
-                <p>Position: {JSON.parse(localStorage.getItem("labToolUser")).position}</p>
-                <p>Rol: {JSON.parse(localStorage.getItem("labToolUser")).rol}</p>
+                <p>E-mail: {".email"}</p>
+                <p>Position: {".position"}</p>
+                <p>Rol: {".rol"}</p>
             </div>
             <button onClick={openEdditUserModal}>Modify user information</button>
             <button onClick={logout}>Log out</button>

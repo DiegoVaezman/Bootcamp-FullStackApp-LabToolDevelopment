@@ -86,7 +86,15 @@ router.get("/comments", protectedRoute, (req, res) => {
     })
 })
 
-
+router.get("/user", protectedRoute, (req, res) => {
+    
+    User.findById((req.decoded.id), function (err, user) {
+        if (err) {
+            res.status(400).send({ msg: err.message})
+        }
+        res.status(200).send(user)
+    })
+})
 
 
 router.delete("/deleteuser", protectedRoute, (req, res) => {

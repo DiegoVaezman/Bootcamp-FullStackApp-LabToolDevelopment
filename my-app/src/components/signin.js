@@ -7,10 +7,18 @@ import SuccessResponse from "./successResponse";
 import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
 import setAuthToken from '../services/authToken'
+import PropTypes from 'prop-types'
 
 
-function Signin() {
+function Signin(props) {
 
+    //para tomar la info de usuario del token y mandarla a componente padre
+    const { handleUserInfo } = props
+
+
+
+
+    
     // VENTANAS MODALES
     const responseModalRef = React.useRef();
 
@@ -50,17 +58,18 @@ function Signin() {
         {...signinInputValue}
         )
         .then(res => {
+            console.log(res)
             localStorage.removeItem('labToolUser')
-            setAuthToken(res.data.token)
-            localStorage.setItem('labToolUser', JSON.stringify({token: res.data.token, name: res.data.name, email: res.data.email, position: res.data.position, rol: res.data.rol, id: res.data.id}))
+            localStorage.setItem('labToolUser', res.data)
+            setAuthToken(res.data)
             setResponse({...response,
                 success: true,
-                msg: `Wellcome back ${res.data.name}!`
+                msg: `Wellcome back!`
             })
             openResponseModal()
         })
         .catch(error => {
-            console.log(error.response)
+            console.log(error)
             localStorage.removeItem('labToolUser')
             setAuthToken()
             setResponse({...response,
@@ -108,7 +117,10 @@ function Signin() {
                     </div>
                 </ModalResponse>
             }
+
+            <button onClick={() => props.someMethod("segundo")}>handler</button>
         </div>
+        
     )
 }
 

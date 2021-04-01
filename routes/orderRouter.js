@@ -157,7 +157,7 @@ router.get("/waiting", protectedRoute, (req, res) => {
     Order.find({status : "waiting"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
-            return res.status(200).send({ msg: "There is not order pending to validate"})
+            return res.status(200).send({ msg: "Empty waiting"})
         }
         res.status(200).send(orders)
     })
@@ -169,19 +169,19 @@ router.get("/validated", protectedRoute, (req, res) => {
     Order.find({status : "validated"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
-            return res.status(200).send({ msg: "There is not validated order"})
+            return res.status(200).send({ msg: "Empty validated"})
         }
         res.status(200).send(orders)
     })
 })
 
 
-router.get("/recived", protectedRoute, (req, res) => {
+router.get("/received", protectedRoute, (req, res) => {
 
-    Order.find({status : "recived"}, function (err, orders){
+    Order.find({status : "received"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
-            return res.status(200).send({ msg: "There is not recived order"})
+            return res.status(200).send({ msg: "Empty received"})
         }
         res.status(200).send(orders)
     })
@@ -192,7 +192,7 @@ router.get("/rejected", protectedRoute, (req, res) => {
     Order.find({status : "rejected"}, function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
-            return res.status(200).send({ msg: "There is not rejected order"})
+            return res.status(200).send({ msg: "There is not rejected order"})           //SE PODRÍA ELIMINAR
         }
         res.status(200).send(orders)
     })
