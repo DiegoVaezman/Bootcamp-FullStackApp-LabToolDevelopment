@@ -13,8 +13,7 @@ const protectedRoute = (req, res, next) => {
         if (err) {
           return res.status(401).send({ msg: 'Invalid token' });    
         }
-        req.decoded = decoded; 
-        console.log(req.decoded) 
+        req.decoded = decoded;  
         next();
       });
     } else {

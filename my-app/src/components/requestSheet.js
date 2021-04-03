@@ -15,11 +15,28 @@ import CommentsListItem from './commentsListItem'
 
 
 function RequestSheet(props) {
-    console.log(props)
-    const order = props.location.data.order
-    const estado = props.location.data.order.status
-    const user = props
 
+    const order = props.location.data.order
+    console.log(props)
+
+    const [dataRequest, setDataRequest] = useState([])
+    const [change, setchange] = useState([])
+
+    //CONSIGUIENDO LA DATA DEL PEDIDO
+    const getData = () => {
+    
+        axios.get(`${apiURL}order/${props.match.params.id}`)
+        .then(res => {
+            console.log(res.data)
+            setDataRequest(res.data)
+        })
+        .catch(error => {
+            console.log(error.response)
+        });
+    }
+    useEffect(() => {
+        getData()
+    },[change])
 
 
     // VENTANAS MODALES
@@ -28,6 +45,7 @@ function RequestSheet(props) {
     const responseModalRef = React.useRef();
     const confirmRejectModalRef = React.useRef();
     const confirmDeleteModalRef = React.useRef();
+    const deleteResponseModalRef = React.useRef();
     const openProductModal = () => {
         productModalRef.current.openModal()
     };
@@ -42,6 +60,9 @@ function RequestSheet(props) {
     }
     const openConfirmDeleteModal = () => {
         confirmDeleteModalRef.current.openModal()
+    }
+    const openDeleteResponseModal = () => {
+        deleteResponseModalRef.current.openModal()
     }
 
     const closeProductModal = () => {
@@ -65,6 +86,7 @@ function RequestSheet(props) {
         confirmDeleteModalRef.current.closeModal()
     };
 
+
     const [response, setResponse] = useState({
         success: false,
         error: false,
@@ -73,50 +95,10 @@ function RequestSheet(props) {
 
 
 
-    //VALIDANDO PEDIDO
-    // const [edditUserInputValue, setEdditUserInputValue] = useState({
-    //     fullname: "",
-    //     position: ""
-    // })
-    // const handleEdditUserInputChange = (event) => {
-    //     setEdditUserInputValue({
-    //         ...edditUserInputValue,
-    //         [event.target.name] : event.target.value
-    //     })
-    // }
-    // const edditUser = () => {
-     
-    //     axios.put(`${apiURL}user/modify`, 
-
-    //     {...edditUserInputValue}
-    //     )
-    //     .then(res => {
-    //         const newLocalStorage = JSON.parse(localStorage.getItem("labToolUser"))
-    //         newLocalStorage.name = edditUserInputValue.fullname
-    //         newLocalStorage.position = edditUserInputValue.position
-    //         localStorage.setItem('labToolUser', JSON.stringify(newLocalStorage))
-    //         setResponse({...response,
-    //             success: true,
-    //             msg: `User information modified.`
-    //         })
-    //         openResponseModal()
-    //     })
-    //     .catch(error => {
-    //         console.log(error.response)
-    //         console.log("hay un error")
-    //         setResponse({...response,
-    //             error: true,
-    //             msg: error.response.data.msg
-    //         })
-    //         openResponseModal()
-    //     });
-    // }
-
-
     //DELETE PEDIDO
     const deleteRequest = () => {
-    
-        axios.delete(`${apiURL}/deleteorder/${order._id}`)
+        console.log(dataRequest._id)
+        axios.delete(`${apiURL}order/deleteorder/${dataRequest._id}`)
         .then(res => {
             console.log("Order eliminado")
             console.log(res.data)
@@ -124,7 +106,7 @@ function RequestSheet(props) {
                 success: true,
                 msg: res.data.msg
             })
-            openResponseModal()
+            openDeleteResponseModal()
         })
         .catch(error => {
             console.log(error.response)
@@ -148,8 +130,6 @@ function RequestSheet(props) {
         getCommentsData()
     },[])
 
-    console.log(commentsData)
-
 
 
     //VALIDANDO UN PEDIDO
@@ -164,10 +144,10 @@ function RequestSheet(props) {
                 msg: res.data.msg
             })
             openResponseModal()
-            
+            setchange()
         })
         .catch(error => {
-            console.log(error.response)
+            console.log(error)
             setResponse({...response,
                 error: true,
                 msg: error.response.data.msg
@@ -190,6 +170,7 @@ function RequestSheet(props) {
                 msg: res.data.msg
             })
             openResponseModal()
+            setchange()
         })
         .catch(error => {
             console.log(error.response)
@@ -252,10 +233,10 @@ function RequestSheet(props) {
                 <p>Amount to order: {order.amount}</p>
                 <p>Requested by: {"nombre del usuario enlazado al pedido"}</p>
                 <p>Date: {order.date.substring(0,10)}</p>
-                {(order.status === "waiting") && <p style={{color: "orange"}}>Status: {order.status}</p>}
-                {(order.status === "validated") && <p style={{color: "green"}}>Status: {order.status}</p>}
-                {(order.status === "received") && <p style={{color: "blue"}}>Status: {order.status}</p>}
-                {(order.status === "rejected") && <p style={{color: "red"}}>Status: {order.status}</p>}
+                {(dataRequest.status === "waiting") && <p style={{color: "orange"}}>Status: {dataRequest.status}</p>}
+                {(dataRequest.status === "validated") && <p style={{color: "green"}}>Status: {dataRequest.status}</p>}
+                {(dataRequest.status === "received") && <p style={{color: "blue"}}>Status: {dataRequest.status}</p>}
+                {(dataRequest.status === "rejected") && <p style={{color: "red"}}>Status: {dataRequest.status}</p>}
             </div>
 
             <div>
@@ -316,6 +297,8 @@ function RequestSheet(props) {
             </Modal>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
+                    {closeConfirmDeleteModal()}
+                    {closeConfirmRejectModal()}
                     <div>
                         <SuccessResponse />
                         <h1>{response.msg}</h1>
@@ -332,6 +315,13 @@ function RequestSheet(props) {
                     </div>
                 </ModalResponse>
             }
+            <ModalResponse ref={deleteResponseModalRef}>
+                    <div>
+                        <SuccessResponse />
+                        <p>{response.msg}</p>
+                        <Link to="/requests" className="close">Close</Link>
+                    </div>
+            </ModalResponse>
             <ModalConfirm ref={confirmRejectModalRef}>
                 <h1>Are you sure?</h1>
                 <button onClick={rejectRequest}>Yes</button>

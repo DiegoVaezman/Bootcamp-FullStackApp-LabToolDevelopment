@@ -4,7 +4,6 @@ const setAuthToken = token => {
     if (token) {
         //apply to every request
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-        console.log("hedeado")
     } else {
         //Delete auth header
         delete axios.defaults.headers.common.Authorization;

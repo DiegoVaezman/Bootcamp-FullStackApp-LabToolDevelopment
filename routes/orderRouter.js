@@ -198,6 +198,19 @@ router.get("/rejected", protectedRoute, (req, res) => {
     })
 })
 
-
+router.get("/:id", protectedRoute, (req, res) => {
+    try{
+        validateId(req.params.id)
+        Order.findById(req.params.id, function (err, order) {
+            if (err) throw err;
+            if (!order) {
+                return res.status(400).send({ msg: "This order_id dose not exist."})
+            }
+            res.status(200).send(order)
+        })
+    } catch (error) {
+        res.status(400).send({ msg: error.message})  
+    }
+})
 
 module.exports = router

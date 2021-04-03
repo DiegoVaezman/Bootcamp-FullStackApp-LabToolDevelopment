@@ -12,6 +12,11 @@ import RequestsListItem from './requestsListItem'
 
 function RequestsSection() {
 
+    const handlerChange = () => {
+        getData()
+        }
+    
+
     //CONSIGUIENDO LAS DATAS DE PEDIDOS SEGÚN ESTADO DESDE DB
     const [dataNewRequests, setDataNewRequests] = useState([])
     const [dataValidatedRequests, setdataValidatedRequests] = useState([])
@@ -62,7 +67,7 @@ function RequestsSection() {
             {(selectedList.new === true && dataNewRequests.length > 0) && 
             <div className="list">
                 {dataNewRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} />
+                    return <RequestsListItem order={item} key={index} handlerChange={handlerChange} />
                 })}
             </div>}
 
@@ -72,7 +77,7 @@ function RequestsSection() {
             {(selectedList.validated === true && dataValidatedRequests.length > 0) && 
             <div className="list">
                 {dataValidatedRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} />
+                    return <RequestsListItem order={item} key={index} handlerChange={handlerChange} />
                 })}
             </div>}
             {/* </Route>
@@ -80,7 +85,7 @@ function RequestsSection() {
             {(selectedList.received === true && dataReceivedRequests.length > 0) && 
             <div className="list">
                 {dataReceivedRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} />
+                    return <RequestsListItem order={item} key={index} handlerChange={handlerChange} />
                 })}
             </div>}
             {/* </Route>
@@ -88,7 +93,7 @@ function RequestsSection() {
             {(selectedList.all === true && dataAllRequests.length > 0) && 
             <div className="list">
                 {dataAllRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} />
+                    return <RequestsListItem order={item} key={index} handlerChange={handlerChange} />
                 })}
             </div>}
             {/* </Route>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 
 function UserListItem(props) {
-    console.log(props)
+
     return (
         <Link to={{pathname:`/user/usersheet/${props.user._id}`, data:props}} >
             <div className="productListItem" product={props}>

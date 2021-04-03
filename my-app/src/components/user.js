@@ -14,7 +14,6 @@ import UserListItem from './userListItem'
 
 function User(props) {
 
-    console.log(props)
     // VENTANAS MODALES
     const edditUserModalRef = React.useRef();
     const usersModalRef = React.useRef();
@@ -59,10 +58,7 @@ function User(props) {
 
 
     //MODIFICANDO USUARIO
-    const [edditUserInputValue, setEdditUserInputValue] = useState({
-        fullname: "",
-        position: ""
-    })
+    const [edditUserInputValue, setEdditUserInputValue] = useState({})
     const handleEdditUserInputChange = (event) => {
         setEdditUserInputValue({
             ...edditUserInputValue,
@@ -76,19 +72,16 @@ function User(props) {
         {...edditUserInputValue}
         )
         .then(res => {
-            const newLocalStorage = JSON.parse(localStorage.getItem("labToolUser"))
-            newLocalStorage.name = edditUserInputValue.fullname
-            newLocalStorage.position = edditUserInputValue.position
-            localStorage.setItem('labToolUser', JSON.stringify(newLocalStorage))
             setResponse({...response,
                 success: true,
                 msg: `User information modified.`
             })
             openResponseModal()
+            console.log(res.data)
+            props.handlerUser(res.data)
         })
         .catch(error => {
-            console.log(error.response)
-            console.log("hay un error")
+            console.log(error)
             setResponse({...response,
                 error: true,
                 msg: error.response.data.msg
@@ -129,7 +122,7 @@ function User(props) {
 
 
 
-    //CONSIGUIENDO LA DATA DE PRODUCTOS DESDE DB
+    //CONSIGUIENDO LA DATA DE USUARIOS PARA LISTA DE USUARIOS
     const [data, setData] = useState([])
 
     async function getData() {
@@ -147,12 +140,12 @@ function User(props) {
         <div>
             <div>
             <img></img>
-            <h1>{}</h1>
+            <h1>{props.user.fullname}</h1>
             </div>
             <div>
-                <p>E-mail: {".email"}</p>
-                <p>Position: {".position"}</p>
-                <p>Rol: {".rol"}</p>
+                <p>E-mail: {props.user.email}</p>
+                <p>Position: {props.user.position}</p>
+                <p>Rol: {props.user.rol}</p>
             </div>
             <button onClick={openEdditUserModal}>Modify user information</button>
             <button onClick={logout}>Log out</button>

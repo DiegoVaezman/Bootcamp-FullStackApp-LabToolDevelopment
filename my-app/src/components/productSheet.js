@@ -21,6 +21,7 @@ function ProductSheet(props) {
     const requestModalRef = React.useRef();
     const responseModalRef = React.useRef();
     const confirmModalRef = React.useRef();
+    const deleteResponseModalRef = React.useRef();
     const openEdditModal = () => {
         edditModalRef.current.openModal()
         console.log("editmodal abierto")
@@ -34,6 +35,9 @@ function ProductSheet(props) {
     };
     const openConfirmModal = () => {
         confirmModalRef.current.openModal()
+    }
+    const openDeleteResponseModal = () => {
+        deleteResponseModalRef.current.openModal()
     }
     const closeEdditModal = () => {
         edditModalRef.current.closeModal()
@@ -149,7 +153,7 @@ function ProductSheet(props) {
                 success: true,
                 msg: res.data.msg
             })
-            openResponseModal()
+            openDeleteResponseModal()
         })
         .catch(error => {
             console.log(error.response)
@@ -207,11 +211,15 @@ function ProductSheet(props) {
             </ModalConfirm>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
+                    {closeRequestModal()}
+                    {closeEdditModal()}
+                    {closeConfirmModal()}
                     <div>
                         <SuccessResponse />
                         <h1>{response.msg}</h1>
                         {/* <p>{`Information about ${product.name} has been setting`}</p>   //esta ventna se comparte con msg delete success. */}
-                        <Link to="/products" className="close">Close</Link>
+                        {/* <Link to="/products" className="close">Close</Link> */}
+                        <button onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
@@ -224,6 +232,13 @@ function ProductSheet(props) {
                     </div>
                 </ModalResponse>
             }
+            <ModalResponse ref={deleteResponseModalRef}>
+                    <div>
+                        <SuccessResponse />
+                        <p>{response.msg}</p>
+                        <Link to="/products" className="close">Close</Link>
+                    </div>
+            </ModalResponse>
         </div>
     )
 }

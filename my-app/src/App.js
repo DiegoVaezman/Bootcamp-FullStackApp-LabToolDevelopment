@@ -28,47 +28,27 @@ function App(props) {
 
     const [user, setUser] = useState({})
 
-
-
-    // if (!axios.defaults.headers.common.Authorization) {
-    //     return (<Redirect to="/" />)
-    // }
-    // if (!localStorage.getItem('labToolUser')) {
-    //     return (<Register /> )
-    // }
-
-    // const islogged = () => {}
-    const [estado, setEstado] = useState({
-        estado: "primero"
-    })
-
-
-    console.log(estado)
-
-
-
-    const handler = (e) => {
-        setEstado({
-            estado: e
-        })
-        console.log(estado)
+    const handlerUser = (userN) => {
+        console.log(userN)
+        if (userN.email) {setUser(userN)}
+        else {
+        console.log(userN)
+        if (userN.fullname) {setUser({...user, fullname: userN.fullname})}
+        if (userN.position) {setUser({...user, position: userN.position})}      //NO CONSIGO ACUTALIZAR INFO DE USUARIO ODIFICADO.
+        }
     }
 
-
-
-    const handleUserInfo = (user) => {
-        console.log(user)
-    }
-
+    console.log(user)
     
     
-    useEffect(() => {
-        axios.get(`${apiURL}user/user`, {headers:{Authorization: `Bearer ${token}`}})
-        .then(response => {
-            setUser(response.data)
-            console.log(response.data)
-        })
-    }, [])
+    // useEffect(() => {
+    //     console.log("pasa por use effect")
+    //     axios.get(`${apiURL}user/user`)
+    //     .then(response => {
+    //         setUser(response.data)
+    //         console.log(response.data)
+    //     })
+    // }, [])
 
 
     return (
@@ -82,15 +62,14 @@ function App(props) {
                 <Route path="/signup" exact>
                     <Signup />
                 </Route>
-                <Route path='/signin'>
-                    <Signin />
-                </Route>
+                <Route path="/signin" render={(props) => (<Signin {...props} handlerUser={handlerUser} />)} />
+                  
                 <Route>
                     <Header user={user}/>
                     <Switch>
                         <Route path="/home" component={Home} />
 
-                        <Route path="/user" exact component={User} />
+                        <Route path="/user" exact render={(props) => ( <User {...props} user={user} handlerUser={handlerUser}/>)} />
                         <Route path="/user/usersheet/:id" component={UserSheet} />
 
                         <Route path="/products" exact component={ProductSection} />

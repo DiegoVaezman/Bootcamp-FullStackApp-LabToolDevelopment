@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, Redirect} from 'react-router-dom'
 import axios from 'axios';
-import {useState} from 'react'
+import {useState, useEffect} from 'react';
 import ModalResponse from './modalResponse';
 import SuccessResponse from "./successResponse";
 import ErrorResponse from "./errorResponse"
@@ -12,8 +12,16 @@ import PropTypes from 'prop-types'
 
 function Signin(props) {
 
-    //para tomar la info de usuario del token y mandarla a componente padre
-    const { handleUserInfo } = props
+    // const [user, setUser] = useState({})
+
+    const userLogged = () => {
+        console.log("pasa por userlogged")
+        axios.get(`${apiURL}user/user`)
+        .then(response => {
+            console.log(response.data)
+            props.handlerUser(response.data)
+        })
+    }
 
 
 
@@ -61,12 +69,14 @@ function Signin(props) {
             console.log(res)
             localStorage.removeItem('labToolUser')
             localStorage.setItem('labToolUser', res.data)
+            // handleUserInfo({name: res.data.name, email: res.data.email, position: res.data.position, rol: res.data.rol, id: res.data.id})
             setAuthToken(res.data)
             setResponse({...response,
                 success: true,
                 msg: `Wellcome back!`
             })
             openResponseModal()
+            userLogged()
         })
         .catch(error => {
             console.log(error)

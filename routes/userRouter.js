@@ -12,7 +12,7 @@ const router = new Router()
 
 router.get("/", protectedRoute, (req, res) => {
 
-    User.find({}, function (err, users) {
+    User.find({fullname:{ $ne: "AutomaticUser" }}, function (err, users) {
         if (err) {
             res.status(400).send({ msg: err.message})
         }
@@ -127,7 +127,7 @@ router.put("/modify", protectedRoute, (req, res) => {
         
         User.updateOne({ _id : req.decoded.id}, {$set: {fullname : fullname, position : position} }, function(err, result) {
             if (err) throw err;
-            res.status(200).send({msg: "User modified"})
+            res.status(200).send({fullname : fullname, position : position})
         })
     } catch (error) {
         res.status(401).send({ msg: error.message})
