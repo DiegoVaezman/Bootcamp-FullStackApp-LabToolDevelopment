@@ -24,8 +24,8 @@ function RequestsSection() {
     const [dataAllRequests, setdataAllRequests] = useState([])
 
     async function getData() {
+        console.log("pasa por conseguir dara de rquests")
         //waiting
-    
         const dataNew = await axios.get(`${apiURL}order/waiting`);
         setDataNewRequests(dataNew.data)
        

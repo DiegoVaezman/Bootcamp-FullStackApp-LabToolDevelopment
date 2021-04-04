@@ -104,7 +104,7 @@ function SignUp() {
             </form>
             <div>
                 <button onClick={register}>CREATE ACCOUNT</button>
-                <p>Already have an account? <Link to="/login">Login here</Link></p>
+                <p>Already have an account? <Link to="/signin">Login here</Link></p>
             </div>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">

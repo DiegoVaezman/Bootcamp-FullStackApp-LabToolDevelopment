@@ -130,6 +130,13 @@ function RequestSheet(props) {
         getCommentsData()
     },[])
 
+    //pasando numero de comments a requestlistsheet para mostrarlo en la lista. No consigo pasarlos.
+    // useEffect(() => {
+    //     console.log(commentsData)
+    //     props.commentsCount(commentsData.length)
+    // },[])
+    
+
 
 
     //VALIDANDO UN PEDIDO
@@ -144,7 +151,7 @@ function RequestSheet(props) {
                 msg: res.data.msg
             })
             openResponseModal()
-            setchange()
+            setchange([])
         })
         .catch(error => {
             console.log(error)
@@ -170,7 +177,7 @@ function RequestSheet(props) {
                 msg: res.data.msg
             })
             openResponseModal()
-            setchange()
+            setchange([])
         })
         .catch(error => {
             console.log(error.response)
@@ -221,6 +228,29 @@ function RequestSheet(props) {
     }
 
 
+    const addToStock = () => {
+        console.log(order._id)
+        axios.post(`${apiURL}stock/newitem/${order._id}`)
+        .then(res => {
+            console.log("añadido al stock")
+            console.log(res.data.msg)
+            setResponse({...response,
+                success: true,
+                msg: res.data.msg
+            })
+            openResponseModal()
+            setchange([])
+        })
+        .catch(error => {
+            console.log(error)
+            setResponse({...response,
+                error: true,
+                msg: error.response.data.msg
+            })
+            openResponseModal()
+        });
+    }
+    console.log(response)
     return (
         <div>
             <Link to="/requests">Back</Link>
@@ -252,22 +282,29 @@ function RequestSheet(props) {
                 <img className="imagen de comentario"></img>
                 <button onClick={openAddCommentModal}>Add new comment</button>
             </div>
-            
-           
-            {(order.status != "received") && 
+        
+            {(dataRequest.status !== "received") && 
             <div>
-                {order.status != "validated" && 
-                    <button onClick={validateRequest}>VALIDATE</button>
+                <div>
+                    {dataRequest.status != "validated" &&
+                        <button onClick={validateRequest}>VALIDATE</button>
+                    }
+                    {dataRequest.status != "rejected" &&
+                        <button onClick={openConfirmRejectModal}>REJECT</button>
+                    }
+                </div>
+                {dataRequest.status === "validated" &&
+                    <div>
+                        <p>Product arrived?</p>
+                        <button onClick={addToStock}>Add to stock</button>
+                    </div>
                 }
-                <button onClick={openConfirmRejectModal}>REJECT</button>
             </div>
             }
-
 
             <div>
                 <button onClick={openConfirmDeleteModal}>Delete order request</button>
             </div>
-
             <Modal ref={productModalRef}>
                 <button onClick={closeProductModal}className="close">Close</button>
                 <div>

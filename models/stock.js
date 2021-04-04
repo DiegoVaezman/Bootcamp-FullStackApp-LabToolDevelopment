@@ -36,7 +36,7 @@ const stock = new Schema({
     request: {
         type: Boolean
     },
-    recived: {
+    received: {
         type: Date,
         required: true
     }

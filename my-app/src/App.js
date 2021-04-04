@@ -18,6 +18,8 @@ import User from './components/user';
 import UserSheet from './components/userSheet';
 import RequestsSection from './components/requestsSection';
 import RequestSheet from './components/requestSheet';
+import StockSection from './components/stockSection';
+import ItemSheet from './components/itemSheet';
 import apiURL from './services/apiURL'
 
 
@@ -38,17 +40,11 @@ function App(props) {
         }
     }
 
+    
     console.log(user)
     
     
-    // useEffect(() => {
-    //     console.log("pasa por use effect")
-    //     axios.get(`${apiURL}user/user`)
-    //     .then(response => {
-    //         setUser(response.data)
-    //         console.log(response.data)
-    //     })
-    // }, [])
+   
 
 
     return (
@@ -77,6 +73,9 @@ function App(props) {
 
                         <Route path="/requests" exact component={RequestsSection} />
                         <Route path="/requests/requestsheet/:id" exact component={RequestSheet} />
+
+                        <Route path="/stock" exact component={StockSection} />
+                        <Route path="/stock/itemsheet/:id" exact component={ItemSheet} />
 
                     </Switch>
                     <Navbar />

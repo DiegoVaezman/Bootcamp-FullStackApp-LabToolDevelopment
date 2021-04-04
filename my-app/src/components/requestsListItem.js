@@ -4,12 +4,16 @@ import { Link } from 'react-router-dom'
 
 function RequestsListItem(props) {
 
+    // const commentsCount = (count) => {
+    //     console.log(count)
+    //     return count
+    // }
     return (
         <Link to={{pathname:`/requests/requestsheet/${props.order._id}`, data:props}} >
             <div className="productListItem" >
                 
                     <div>
-                    <div>{"name"}</div>
+                    <div>{props.order.name}</div>
                     <div>
                     <img className="img comentario"></img>
                     <p>{}</p>

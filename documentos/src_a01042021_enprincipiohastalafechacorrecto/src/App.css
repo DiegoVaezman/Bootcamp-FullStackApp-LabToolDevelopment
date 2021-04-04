@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.App {
+    padding: 0 10px 0 5px;
+    height: 100vh;
+    background-color: rgb(255, 231, 203);
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(40, 1fr);
+    /* padding: 0 5px 0 5px;
+    display: flex;
+    flex-direction: column; */
+    
+}
+/* --LOGO-- */
+
+.img{
+    grid-column: 4 / 8;
+    grid-row: 9 / 13;
+}
+.img img{
+    width: 100%;
+}
+
+/* --SIGNUP SINGIN BUTTONS-- */
+
+.sign_button{
+    grid-column: 2 / 10;
+    border-radius: 20px;
+    border: 1px solid white;
+    box-shadow: -3px 2px 5px rgb(85, 85, 85);
+    background-color: rgb(255, 161, 55);
+    background: linear-gradient(to right, rgb(255, 161, 55), rgb(252, 206, 145));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signup{
+    grid-row: 31 / 33;
+}
+.signin{
+    grid-row: 34 / 36;
+}
+
+
+.header{
+    grid-column: 1 / 11;
+    grid-row: 1 / 10;
+}
+.filter{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    grid-column: 1 / 10;
+    grid-row: 7 / 8;
+}
+.add-link{
+    grid-column: 1 / 7;
+    grid-row: 32 / 34;
+}
+.nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    grid-column: 1 / 11;
+    grid-row: 35 / 40;
+}
+.list{
+    border: 1px solid black;
+    padding: 3px;
+    grid-column: 1 / 11;
+    grid-row: 9 / 32;
+}
+
+.productListItem{
+    border: 1px solid black;
+    width: 100%;
+}
+.productInfo{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+/*--Modal--*/
+.modal-wrapper {
+    margin: 5px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background-color: rgba(128, 128, 128, 0.829);
+}
+.modal-box {
+    position: relative;
+    top: 15%;
+    height: 70%;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.25);
+    z-index:101
+}
+
+
+/*--forms--*/
+
+.form{
+    display: flex;
+    flex-direction: column;
+}
+.form div{
+    display: flex;
+    flex-direction: column;
+}

@@ -38,13 +38,13 @@ router.post("/newitem/:id", protectedRoute, (req, res) => {
             const storage = req.body.storage   //campo de formulario
             const status = "In stock"        
             let request = false   
-            const recived = Date.now()        
+            const received = Date.now()        
 
         
-            //Actualiza el status del order a recived
-            Order.updateOne({_id : req.params.id}, {$set: {status : "recived"} }, function(err, result) {
+            //Actualiza el status del order a received
+            Order.updateOne({_id : req.params.id}, {$set: {status : "received"} }, function(err, result) {
                 if (err) throw err;
-                console.log(`Order status modified to "recived"`)
+                console.log(`Order status modified to "received"`)
             })
 
 
@@ -68,11 +68,11 @@ router.post("/newitem/:id", protectedRoute, (req, res) => {
                             storage : storage,
                             status : status,
                             request : request,
-                            recived : recived
+                            received : received
                         })
 
                         newitem.save()
-                        .then(doc => res.status(201).send(doc)) 
+                        .then(doc => res.status(201).send("Added to stock")) 
                         .catch(error => {
                             res.status(400).send({msg: error.message})
                         })
@@ -82,9 +82,9 @@ router.post("/newitem/:id", protectedRoute, (req, res) => {
                     //si ya existe en stock, se actualiza
                     const totalAmount = Number(item.amount) + Number(amount)
 
-                    Stock.updateOne({ product : product}, {$set: {amount: totalAmount, status: "In stock", recived: Date.now(), request: request} }, function(err, result) {
+                    Stock.updateOne({ product : product}, {$set: {amount: totalAmount, status: "In stock", received: Date.now(), request: request} }, function(err, result) {
                         if (err) throw err;
-                        res.status(200).send({ msg: "The Item is already in stock and was updated in Stock collection"})
+                        res.status(200).send({ msg: "The Item was updated in Stock"})
                     })
                 })
             )
@@ -142,7 +142,7 @@ router.put("/reduce/:id", protectedRoute, (req, res) => {
                             date : Date.now()
                         })
                         order.save()
-                        .then(doc => res.status(201).send({msg: "Amount reduced and new order registered", doc : doc}))
+                        .then(doc => res.status(201).send({msg: "Amount reduced and new order registered"}))
                         .catch(error => {
                             res.status(400).send({msg: error.message})
                         })
@@ -191,22 +191,22 @@ router.put("/:id/modify", protectedRoute, (req, res) => {
             }
 
             try {
-            validateNumber(amount)
+            // validateNumber(amount)
             validateString(storage)
-            validateNumber(limit)
-            validateNumber(automaticamount)    
-            validateBoolean(control)
+            // validateNumber(limit)
+            // validateNumber(automaticamount)    
+            // validateBoolean(control)
             } catch (error) {
-                res.status(400).send({ msg: error.message})  
+                return res.status(400).send({ msg: error.message})  
             }
             
             Stock.updateOne({ _id : req.params.id}, {$set: {amount : amount, storage : storage, limit : limit, control : control, automaticamount : automaticamount} }, function(err, result) {
                 if (err) throw err;
-                res.status(200).send({msg: "Item modified"})
+                return res.status(200).send({msg: "Item modified"})
             })
         })
     } catch (error) {
-        res.status(400).send({ msg: error.message})
+        return res.status(400).send({ msg: error.message})
     }
 })
 
@@ -231,5 +231,19 @@ router.delete("/deleteitem/:id", protectedRoute, (req, res) => {
     }
 })
 
+router.get("/:id", protectedRoute, (req, res) => {
+    try{
+        validateId(req.params.id)
+        Stock.findById(req.params.id, function (err, item) {
+            if (err) throw err;
+            if (!item) {
+                return res.status(400).send({ msg: "This item_id dose not exist."})
+            }
+            res.status(200).send(item)
+        })
+    } catch (error) {
+        res.status(400).send({ msg: error.message})  
+    }
+})
 
 module.exports = router
