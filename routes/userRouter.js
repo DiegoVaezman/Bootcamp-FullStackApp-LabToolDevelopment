@@ -135,4 +135,17 @@ router.put("/modify", protectedRoute, (req, res) => {
 })
 
 
+router.get("/:id", protectedRoute, (req, res) => {
+    try{
+        User.findById(req.params.id, function (err, user) {
+            if (err) throw err;
+            if (!user) {
+                return res.status(400).send({ msg: "This user_id dose not exist."})
+            }
+            res.status(200).send(user)
+        })
+    } catch (error) {
+        res.status(400).send({ msg: error.message})  
+    }
+})
 module.exports = router

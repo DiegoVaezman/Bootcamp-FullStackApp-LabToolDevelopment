@@ -1,7 +1,7 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import {BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route, Redirect, Link} from 'react-router-dom'
 import './App.css';
 // import SignupPage from './pages/signup'
 // import SigninPage from './pages/signin'
@@ -31,17 +31,12 @@ function App(props) {
     const [user, setUser] = useState({})
 
     const handlerUser = (userN) => {
-        console.log(userN)
-        if (userN.email) {setUser(userN)}
-        else {
-        console.log(userN)
-        if (userN.fullname) {setUser({...user, fullname: userN.fullname})}
-        if (userN.position) {setUser({...user, position: userN.position})}      //NO CONSIGO ACUTALIZAR INFO DE USUARIO ODIFICADO.
-        }
+        userN.email ? setUser(userN) : setUser({...user, fullname: userN.fullname, position: userN.position})
     }
 
     
     console.log(user)
+
     
     
    
@@ -61,7 +56,12 @@ function App(props) {
                 <Route path="/signin" render={(props) => (<Signin {...props} handlerUser={handlerUser} />)} />
                   
                 <Route>
-                    <Header user={user}/>
+                    <Link to="/user" className="header">
+                        <div >
+                            <p>LOGO Darwin Lab</p>
+                            <p>{user.fullname}</p>
+                        </div>
+                    </Link>
                     <Switch>
                         <Route path="/home" component={Home} />
 

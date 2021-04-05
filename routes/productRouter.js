@@ -21,9 +21,7 @@ router.get("/", protectedRoute, (req, res) => {
 
 
 
-router.post("/newproduct",
-//  protectedRoute, 
- (req, res) => {
+router.post("/newproduct", protectedRoute, (req, res) => {
 
     try {
         const catalog_number = req.body.catalog_number    
@@ -74,9 +72,7 @@ router.post("/newproduct",
 
 
 
-router.delete("/deleteproduct/:id"
-// , protectedRoute
-,(req, res) => {
+router.delete("/deleteproduct/:id", protectedRoute,(req, res) => {
 
     try {
         validateId(req.params.id)
@@ -97,9 +93,7 @@ router.delete("/deleteproduct/:id"
 })
 
 
-router.put("/:id/modify"
-// , protectedRoute
-, (req, res) => {
+router.put("/:id/modify", protectedRoute, (req, res) => {
 
     try {
         validateId(req.params.id)
@@ -127,5 +121,23 @@ router.put("/:id/modify"
         return res.status(400).send({ msg: error.message})
     }
 })
+
+
+router.get("/:id", protectedRoute, (req, res) => {
+    try{
+        validateId(req.params.id)
+        Product.findById(req.params.id, function (err, item) {
+            if (err) throw err;
+            if (!item) {
+                return res.status(400).send({ msg: "This item_id dose not exist."})
+            }
+            res.status(200).send(item)
+        })
+    } catch (error) {
+        res.status(400).send({ msg: error.message})  
+    }
+})
+
+
 
 module.exports = router

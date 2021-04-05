@@ -37,7 +37,7 @@ router.get("/:id", protectedRoute, (req, res) => {
             Comment.find({order : req.params.id}, function (err, comment){
                 if (err) throw err;
                 if (comment.length == 0) {
-                    return res.status(200).send({ msg: "There is not comment on this order"})
+                    return res.status(200).send({ msg: "No comments"})
                 }
                 res.status(200).send(comment)
             })

@@ -130,11 +130,6 @@ function RequestSheet(props) {
         getCommentsData()
     },[])
 
-    //pasando numero de comments a requestlistsheet para mostrarlo en la lista. No consigo pasarlos.
-    // useEffect(() => {
-    //     console.log(commentsData)
-    //     props.commentsCount(commentsData.length)
-    // },[])
     
 
 
@@ -250,18 +245,36 @@ function RequestSheet(props) {
             openResponseModal()
         });
     }
-    console.log(response)
+
+    //CONSIGUIENDO EL USUARIO QUE HIZO EL PEDIDO
+    const [userName, setUserName] = useState({
+        data: {fullname:""}
+    })
+    async function getUserName() {
+        console.log(props.location.data.order.user)
+        const dataBase = await axios.get(`${apiURL}user/${props.location.data.order.user}`);
+        setUserName(dataBase)
+    }
+    useEffect(() => {
+        getUserName()
+    },[])
+
+    
+    
+
+
+    console.log(props)
     return (
         <div>
             <Link to="/requests">Back</Link>
             <div>
             <img></img>
-            <h1>{"Nombre de producto enlazado del pedido"}</h1>
+            <h1>{props.location.productData.name}</h1>
             </div>
             <div>
                 <button onClick={openProductModal}>Show product Sheet</button>
                 <p>Amount to order: {order.amount}</p>
-                <p>Requested by: {"nombre del usuario enlazado al pedido"}</p>
+                <p>Requested by: {userName.data.fullname}</p>
                 <p>Date: {order.date.substring(0,10)}</p>
                 {(dataRequest.status === "waiting") && <p style={{color: "orange"}}>Status: {dataRequest.status}</p>}
                 {(dataRequest.status === "validated") && <p style={{color: "green"}}>Status: {dataRequest.status}</p>}

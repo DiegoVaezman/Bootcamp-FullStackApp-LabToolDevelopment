@@ -170,37 +170,23 @@ router.put("/:id/modify", protectedRoute, (req, res) => {
         
             let amount = req.body.amount
             let storage = req.body.storage
-            let limit = req.body.limit
-            let control = req.body.control
-            let automaticamount = req.body.automaticamount
-
+            
+            console.log(typeof amount)
             if (amount == undefined) {
                 amount = item.amount
             }
             if (storage == undefined) {
                 storage = item.storage
             }
-            if (limit == undefined) {
-                limit = item.limit
-            } 
-            if (automaticamount == undefined) {
-                automaticamount = item.automaticamount
-            } 
-            if (control == undefined) {
-                control = item.control
-            }
 
             try {
-            // validateNumber(amount)
+            validateNumber(amount)
             validateString(storage)
-            // validateNumber(limit)
-            // validateNumber(automaticamount)    
-            // validateBoolean(control)
             } catch (error) {
                 return res.status(400).send({ msg: error.message})  
             }
             
-            Stock.updateOne({ _id : req.params.id}, {$set: {amount : amount, storage : storage, limit : limit, control : control, automaticamount : automaticamount} }, function(err, result) {
+            Stock.updateOne({ _id : req.params.id}, {$set: {amount : amount, storage : storage} }, function(err, result) {
                 if (err) throw err;
                 return res.status(200).send({msg: "Item modified"})
             })
@@ -210,6 +196,46 @@ router.put("/:id/modify", protectedRoute, (req, res) => {
     }
 })
 
+
+router.put("/:id/setlimit", protectedRoute, (req, res) => {
+
+    try {
+        validateId(req.params.id)
+    
+        Stock.findById(req.params.id, function (err, item){
+            if (err) throw err;
+            if (!item) {
+                return res.status(400).send({ msg: "This item_id dose not exist."})
+            }
+            
+            let limit = req.body.limit
+            let control = req.body.control
+            let automaticamount = req.body.automaticamount
+            
+            if (control === false) {
+                limit = 0
+                automaticamount = 0
+            }
+            console.log(limit)
+            console.log(control)
+            console.log(automaticamount)
+            try {
+            validateNumber(limit)
+            validateNumber(automaticamount)    
+            validateBoolean(control)
+            } catch (error) {
+                return res.status(400).send({ msg: error.message})  
+            }
+            
+            Stock.updateOne({ _id : req.params.id}, {$set: {limit : limit, control : control, automaticamount : automaticamount} }, function(err, result) {
+                if (err) throw err;
+                return res.status(200).send({msg: "Stock limit control set"})
+            })
+        })
+    } catch (error) {
+        return res.status(400).send({ msg: error.message})
+    }
+})
 
 
 router.delete("/deleteitem/:id", protectedRoute, (req, res) => {

@@ -40,6 +40,7 @@ function StockSection(dataBase){
     async function getData() {
         const dataBase = await axios.get(`${apiURL}stock/`);
         setData(dataBase.data)
+        setDataFiltered(data)
     }
     useEffect(() => {
         getData()
@@ -51,7 +52,7 @@ function StockSection(dataBase){
 
 
     //FILTRANDO LA DATA
-    const [dataFiltered, setDataFiltered] = useState([data])
+    const [dataFiltered, setDataFiltered] = useState([])
 
     
     const [inputValue, setInputValue] = useState({

@@ -65,8 +65,8 @@ function User(props) {
             [event.target.name] : event.target.value
         })
     }
-    const edditUser = () => {
-     
+    const edditUser = (event) => {
+        
         axios.put(`${apiURL}user/modify`, 
 
         {...edditUserInputValue}
