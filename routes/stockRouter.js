@@ -123,7 +123,7 @@ router.put("/reduce/:id", protectedRoute, (req, res) => {
                 if (item.control === true && amount <= item.limit) {
 
                     //comprueba que no hay pedido automático para este producto
-                    Order.findOne({ $and: [{user:"6053a5cf6c15b8560c74af9a"}, {status : { $in: ["validated", "waiting"]} }] }, function (err, orderfound) {
+                    Order.findOne({ $and: [{user:"6053a5cf6c15b8560c74af9a"}, {status : { $in: ["validated", "waiting"]} }, {product:item.product}] }, function (err, orderfound) {
                         if (err) throw err;
                         if (orderfound) {
                             return res.status(200).send({ msg:"Amount reduced"})
@@ -142,7 +142,17 @@ router.put("/reduce/:id", protectedRoute, (req, res) => {
                             date : Date.now()
                         })
                         order.save()
-                        .then(doc => res.status(201).send({msg: "Amount reduced and new order registered"}))
+                        .then((doc) => {
+                            //crea un comentario asociado al pedido automático
+                            const comment = new Comment({
+                                text : "Order authomaticaly requested",
+                                owner : "6053a5cf6c15b8560c74af9a",
+                                order : doc._id,
+                                date : Date.now()
+                            })
+                            comment.save()
+                            res.status(201).send({msg: "Amount reduced and new order registered"})
+                        })
                         .catch(error => {
                             res.status(400).send({msg: error.message})
                         })
@@ -175,13 +185,17 @@ router.put("/:id/modify", protectedRoute, (req, res) => {
             if (amount == undefined) {
                 amount = item.amount
             }
-            if (storage == undefined) {
+            console.log(amount)
+            if (item.storage != undefined && storage == undefined) {
                 storage = item.storage
             }
+            console.log(item.storage)
 
             try {
             validateNumber(amount)
-            validateString(storage)
+            if (item.storage != undefined){
+                validateString(storage)
+            }
             } catch (error) {
                 return res.status(400).send({ msg: error.message})  
             }

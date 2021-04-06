@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 function ProductListItem(props) {
 
     return (
-        <Link to={{pathname:`/products/productsheet/${props.product._id}`, data:props}} onClick={localStorage.setItem('dataState', JSON.stringify(props.localState))}>
+        <Link to={{pathname:`/products/productsheet/${props.product._id}`, data:props}} >
             <div className="productListItem" product={props}>
                 
                     <div>{props.product.name}</div>

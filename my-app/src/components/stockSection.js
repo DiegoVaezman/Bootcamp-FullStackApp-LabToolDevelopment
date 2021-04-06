@@ -40,7 +40,7 @@ function StockSection(dataBase){
     async function getData() {
         const dataBase = await axios.get(`${apiURL}stock/`);
         setData(dataBase.data)
-        setDataFiltered(data)
+        setDataFiltered(dataBase.data)
     }
     useEffect(() => {
         getData()
@@ -86,9 +86,12 @@ function StockSection(dataBase){
     }
     const searchByType = (event) => {
         const type = event.target.value;
+        console.log(type)
         if (type === "All") {
+            console.log(data)
             setDataFiltered(data)
         } else {
+            console.log(data.filter(item => item.type === type))
             setDataFiltered(data.filter(item => item.type === type))
         }
     }

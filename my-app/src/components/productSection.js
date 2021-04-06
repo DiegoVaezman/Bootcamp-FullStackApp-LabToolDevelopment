@@ -47,6 +47,7 @@ function ProductSection(dataBase){
     async function getData() {
         const dataBase = await axios.get(`${apiURL}product/`);
         setData(dataBase.data)
+        setDataFiltered(dataBase.data)
     }
     useEffect(() => {
         getData()
@@ -265,6 +266,7 @@ function ProductSection(dataBase){
             </Modal>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
+                    {closeAddModal()}
                     <div>
                         <SuccessResponse />
                         <p>{response.msg}</p>

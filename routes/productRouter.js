@@ -96,15 +96,16 @@ router.delete("/deleteproduct/:id", protectedRoute,(req, res) => {
 router.put("/:id/modify", protectedRoute, (req, res) => {
 
     try {
+        let information = req.body.information
+
         validateId(req.params.id)
+        validateString(information)
     
         Product.findById(req.params.id, function (err, item){
             if (err) throw err;
             if (!item) {
                 return res.status(400).send({ msg: "This item_id dose not exist."})
             }
-        
-            let information = req.body.information
 
             try {
             validateString(information)

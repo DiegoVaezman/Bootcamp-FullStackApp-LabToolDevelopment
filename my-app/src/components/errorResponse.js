@@ -2,9 +2,10 @@ import React from 'react';
 
 function ErrorComponent(props) {
     return (
-        <div>
-            <p>UPS!</p>
-            <p>logo</p>
+        <div className="commonError">
+            
+            <img src='../../img/sclamation.png' alt="Sclamation_img"></img>
+            <p>Something was wrong</p>
             <div>{props.child}</div>
         </div>
     )

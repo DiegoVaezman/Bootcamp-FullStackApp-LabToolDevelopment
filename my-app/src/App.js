@@ -2,6 +2,7 @@ import React from 'react';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 import {BrowserRouter as Router, Switch, Route, Redirect, Link} from 'react-router-dom'
+import PrivateRoute from './services/privateRoute'
 import './App.css';
 // import SignupPage from './pages/signup'
 // import SigninPage from './pages/signin'
@@ -34,17 +35,10 @@ function App(props) {
         userN.email ? setUser(userN) : setUser({...user, fullname: userN.fullname, position: userN.position})
     }
 
-    
-    console.log(user)
-
-    
-    
-   
-
 
     return (
         <Router>
-        <div className="App">
+        <div className="App grid">
             {(!token) && <Redirect to="/" />}
             <Switch>
                 <Route path="/" exact>
@@ -55,7 +49,7 @@ function App(props) {
                 </Route>
                 <Route path="/signin" render={(props) => (<Signin {...props} handlerUser={handlerUser} />)} />
                   
-                <Route>
+                <PrivateRoute>
                     <Link to="/user" className="header">
                         <div >
                             <p>LOGO Darwin Lab</p>
@@ -79,7 +73,7 @@ function App(props) {
 
                     </Switch>
                     <Navbar />
-                </Route>
+                </PrivateRoute>
             </Switch>
         </div>
         </Router>

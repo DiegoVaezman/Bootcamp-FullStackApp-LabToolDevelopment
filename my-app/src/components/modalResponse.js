@@ -26,9 +26,9 @@ const ModalResponse = forwardRef((props, ref) => {
         return (
             ReactDOM.createPortal(
                 <div className={"modal-wrapper"}>
-                    <div className={"modal-box"}>
+                    
                         {props.children}
-                    </div>
+                    
                 </div>, document.getElementById("modal-root")
             )
         )

@@ -9,7 +9,7 @@ import SuccessResponse from "./successResponse";
 import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
 import UserListItem from './userListItem'
-
+import setAuthToken from '../services/authToken'
 
 
 function User(props) {
@@ -117,7 +117,8 @@ function User(props) {
     //LOG OUT
     const logout = () => {
         localStorage.removeItem("labToolUser");
-        return <Redirect to='/' />   //NO REDIRECCIONAAA
+        setAuthToken()
+        props.history.push('/signin')
     }
 
 

@@ -12,9 +12,7 @@ import RequestsListItem from './requestsListItem'
 
 function RequestsSection() {
 
-    const handlerChange = () => {
-        getData()
-        }
+    
     
 
     //CONSIGUIENDO LAS DATAS DE PEDIDOS SEGÚN ESTADO DESDE DB
@@ -51,8 +49,8 @@ function RequestsSection() {
     const [selectedList, setSelectedList] = useState({
         new: true
     })
-
-
+    console.log(typeof dataNewRequests)
+console.log(dataNewRequests.reverse())
     return (
         <div>
             <div>
@@ -61,43 +59,35 @@ function RequestsSection() {
                 <button onClick={() => setSelectedList({received : true})}>Received</button>
                 <button onClick={() => setSelectedList({all : true})}>All</button>
             </div>
-            {/* <Switch >
-            <Route path="requests/newrequests"> */}
-            
+
             {(selectedList.new === true && dataNewRequests.length > 0) && 
             <div className="list">
-                {dataNewRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} handlerChange={handlerChange} />
+                {dataNewRequests.reverse().map((item, index) => {
+                    return <RequestsListItem order={item} key={index} />
                 })}
             </div>}
 
-            
-            {/* </Route>
-            <Route path="requests/validatedrequests"> */}
             {(selectedList.validated === true && dataValidatedRequests.length > 0) && 
             <div className="list">
                 {dataValidatedRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} handlerChange={handlerChange} />
+                    return <RequestsListItem order={item} key={index} />
                 })}
             </div>}
-            {/* </Route>
-            <Route path="requests/receivedrequests"> */}
+
             {(selectedList.received === true && dataReceivedRequests.length > 0) && 
             <div className="list">
                 {dataReceivedRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} handlerChange={handlerChange} />
+                    return <RequestsListItem order={item} key={index} />
                 })}
             </div>}
-            {/* </Route>
-            <Route path="requests/allrequests"> */}
+
             {(selectedList.all === true && dataAllRequests.length > 0) && 
             <div className="list">
                 {dataAllRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} handlerChange={handlerChange} />
+                    return <RequestsListItem order={item} key={index} />
                 })}
             </div>}
-            {/* </Route>
-            </Switch> */}
+  
             <div>
                 <img></img>
                 <Link to="/products">Add new request</Link>

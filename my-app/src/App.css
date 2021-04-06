@@ -3,50 +3,115 @@
     padding: 0;
     box-sizing: border-box;
 }
-
-
-
-.App {
-    padding: 0 10px 0 5px;
-    height: 100vh;
-    background-color: rgb(255, 231, 203);
+.Link{
+    color:orangered;
+    text-decoration: none;
+}
+.grid{
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(40, 1fr);
+}
+.appGridParent{
+    padding: 0 5px 0 5px;
+    grid-column: 1 / 11;
+    grid-row: 1 / 41;
+    background-color: rgba(255, 255, 255, 0.288);
+}
+
+.App {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(40, 1fr);
+    height: 100vh;
+    background-image: url("./img/background_orange.jpg");
+    background-size: cover;
     /* padding: 0 5px 0 5px;
     display: flex;
     flex-direction: column; */
     
 }
-/* --LOGO-- */
 
-.img{
+/*--REGISTER--*/
+.register{
+    grid-column: 1 / 11;
+    grid-row: 1 / 41;
+}
+/* --logo register-- */
+.registerLogo{
     grid-column: 4 / 8;
-    grid-row: 9 / 13;
+    grid-row: 9 / 18;
+    background-color: rgba(255, 255, 255, 0.247);
+    border-radius: 20px;
+    box-shadow: -3px 2px 5px rgba(168, 168, 168, 0.363);
 }
-.img img{
+.registerLogo img{
     width: 100%;
+    height: 100%;
 }
 
-/* --SIGNUP SINGIN BUTTONS-- */
+/* --signup signin buttons-- */
 
-.sign_button{
-    grid-column: 2 / 10;
+.button1{
     border-radius: 20px;
     border: 1px solid white;
     box-shadow: -3px 2px 5px rgb(85, 85, 85);
-    background-color: rgb(255, 161, 55);
     background: linear-gradient(to right, rgb(255, 161, 55), rgb(252, 206, 145));
     display: flex;
     justify-content: center;
     align-items: center;
+    text-decoration: none;
+    color: black
 }
-.signup{
+.signupButton{
     grid-row: 31 / 33;
+    grid-column: 2 / 10;
 }
-.signin{
+.signinButton{
     grid-row: 34 / 36;
+    grid-column: 2 / 10;
 }
+
+/*--SIGNUP--*/
+.logoSignup{
+    grid-column: 4 / 8;
+    grid-row: 1 / 10;
+}
+.signup img{
+    width: 100%;
+    height: 100%;
+}
+/*--formulario*/
+.form{
+    grid-column: 2 / 10;
+    grid-row: 9 / 26;
+    display: flex;
+    justify-content: space-between;
+}
+.form input, .form select{
+    height: 35px;
+    background-color: rgba(255, 255, 255, 0.363);
+    border: 0;
+    border-bottom: 1px solid orangered;
+    box-shadow: -3px 2px 5px rgb(161, 161, 161);
+}
+
+/*--interacciones*/
+.playground{
+    display: grid;
+    
+    grid-template-rows: repeat(8, 1fr);
+    grid-column: 2 / 10;
+    grid-row: 28 / 36;
+
+}
+.playground button{
+    grid-row: 2 / 5;
+}
+.playground p{
+    grid-row: 7 / 8;
+}
+
 
 
 .header{
@@ -97,8 +162,9 @@
     bottom: 0;
     left: 0;
     right: 0;
+    background-color: rgba(206, 206, 206, 0.514);
 }
-.modal-backdrop {
+.modal-backdrop {   /*igual se puede eliminar.*/
     position: fixed;
     top: 0;
     bottom: 0;
@@ -108,15 +174,51 @@
     background-color: rgba(128, 128, 128, 0.829);
 }
 .modal-box {
-    position: relative;
-    top: 15%;
-    height: 70%;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0,0,0,0.25);
-    z-index:101
+   
 }
-
-
+.modalSuccess{
+    position: relative;
+    top: 30%;
+    height: 30%;
+    background-color: rgba(250, 207, 128, 0.925);
+    box-shadow: -10px 10px 10px rgba(0,0,0,0.25);
+    border-radius: 20px;
+    border: 3px solid rgb(250, 246, 239);
+    border-style: outset;
+    z-index:101;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+.modalError{
+    position: relative;
+    top: 30%;
+    height: 30%;
+    background-color: rgba(250, 207, 128, 0.925);
+    box-shadow: -10px 10px 10px rgba(0,0,0,0.25);
+    border-radius: 20px;
+    border: 3px solid rgb(250, 246, 239);
+    border-style: outset;
+    z-index:101;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+.commonError, .commonSuccess{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.commonError img{
+    width: 15%;
+}
+.sizeModalButton{
+    width: 30%;
+    height: 20%;
+    font-size: 15px;
+}
 /*--forms--*/
 
 .form{

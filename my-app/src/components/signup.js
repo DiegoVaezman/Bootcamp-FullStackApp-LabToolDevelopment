@@ -74,9 +74,10 @@ function SignUp() {
 
 
     return (
-        <div>
-            <img></img>
-            <form>
+        <div className="signup appGridParent grid">
+            
+            <div className="logoSignup"><img src="../../img/LabTool_logo.png" alt="LabTool_logo"/></div>
+            <form className="form">
                 <div>
                     <label htmlFor="fullname">Fullname</label>
                     <input type="text" name="fullname" placeholder="Fullname" onChange={handleSignupInputChange}/>
@@ -102,26 +103,26 @@ function SignUp() {
                     </select>
                 </div>
             </form>
-            <div>
-                <button onClick={register}>CREATE ACCOUNT</button>
-                <p>Already have an account? <Link to="/signin">Login here</Link></p>
+            <div className="playground">
+                <button className="button1" onClick={register}>CREATE ACCOUNT</button>
+                <p align="center">Already have an account? <Link className="Link" to="/signin">Login here</Link></p>
             </div>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
-                    <div>
+                    <div className="modalSuccess">
                         <SuccessResponse />
-                        <h1>{response.msg}</h1>
+                        <h4>{response.msg}</h4>
                         {/* <p>{`Information about ${product.name} has been setting`}</p>   //esta ventna se comparte con msg delete success. */}
-                        <Link to="/home" className="close">Close</Link>
+                        <button className="button1 sizeModalButton"><Link to="/home" >Close</Link></button>
                     </div>
                 </ModalResponse>
             }
             {response.error === true && 
                 <ModalResponse ref={responseModalRef}>
-                    <div>
+                    <div className="modalError">
                         <ErrorResponse />
-                        <p>{response.msg}</p>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <h4>{response.msg}</h4>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }

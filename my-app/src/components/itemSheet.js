@@ -117,20 +117,20 @@ function ItemSheet(props) {
     const reduceItem = () => {
         
         console.log("se reduce")
-        axios.put(`${apiURL}stock/reduce/${dataItem._id}`, {})
+        axios.put(`${apiURL}stock/reduce/${dataItem._id}`)
         .then(
-        //     res => {
-        //     console.log("Item reduced")
-        //     console.log(res.data)
-        //     setResponse({...response,
-        //         success: true,
-        //         msg: res.data.msg
-        //     })
-        //     openResponseModal()
-        //     setchange()
-        // }
+            res => {
+            console.log("Item reduced")
+            console.log(res.data)
+            setResponse({...response,
+                success: true,
+                msg: res.data.msg
+            })
+            openResponseModal()
+            setChange([])
+        }
     
-        setChange([])
+        // setChange([])
         )
         
         .catch(error => {
@@ -319,6 +319,7 @@ const handleToggleChange = (value) => {
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
                     {closeConfirmDeleteModal()}
+                    {/* no puedo poner closeModifyItemModal(), error de rerenders */}
                     <div>
                         <SuccessResponse />
                         <h1>{response.msg}</h1>
