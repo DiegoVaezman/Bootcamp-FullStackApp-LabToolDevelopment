@@ -51,10 +51,8 @@ function App(props) {
                   
                 <PrivateRoute>
                     <Link to="/user" className="header">
-                        <div >
-                            <p>LOGO Darwin Lab</p>
-                            <p>{user.fullname}</p>
-                        </div>
+                        <div><img src="../../img/LabTool_logo_white.png" alt="LabTool_logo"/></div>
+                        <h1>{user.fullname}</h1>
                     </Link>
                     <Switch>
                         <Route path="/home" component={Home} />

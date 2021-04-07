@@ -3,9 +3,7 @@ import React from 'react';
 function SuccessComponent(props) {
     return (
         <div className="commonSuccess">
-            <p>GOOD!</p>
-            <p>logo</p>
-            <div>{props.child}</div>
+            <img src='../../img/ok_img.png' alt="ok_img"/>
         </div>
     )
 }

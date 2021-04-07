@@ -93,42 +93,40 @@ function Signin(props) {
 
 
     return (
-        <div>
-            <img></img>
-            <form>
-                <div>
+        <div className="signup appGridParent grid">
+            <div className="logoSignin"><img src="../../img/LabTool_logo.png" alt="LabTool_logo"/></div>
+            <form className="form signinForm">
+                <div className="flex-column">
                     <label htmlFor="email">Email</label>
                     <input type="text" name="email" placeholder="E-mail" onChange={handleSigninInputChange}/>
                 </div>
-                <div>
+                <div className="flex-column">
                     <label htmlFor="password">Password</label>
                     <input type="text" name="password" placeholder="Password" onChange={handleSigninInputChange}/>
                 </div>
             </form>
-            <div>
-                <button onClick={login}>LOGIN</button>
-                <p>New user? <Link to="/signup">Signup here</Link></p>
+            <div className="playground playgroundSignin">
+                <button className="button1" onClick={login}>LOG IN</button>
+                <p align="center">New user? <Link to="/signup" className="Link">Signup here</Link></p>
             </div>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
-                    <div>
+                    <div className="modalResponse">
                         <SuccessResponse />
-                        <h1>{response.msg}</h1>
-                        <Link to="/home" className="close">Close</Link>
+                        <h4>{response.msg}</h4>
+                        <button className="button1 sizeModalButton"><Link to="/home">Close</Link></button>
                     </div>
                 </ModalResponse>
             }
             {response.error === true && 
                 <ModalResponse ref={responseModalRef}>
-                    <div>
+                    <div className="modalResponse">
                         <ErrorResponse />
-                        <p>{response.msg}</p>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <h4>{response.msg}</h4>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
-
-            <button onClick={() => props.someMethod("segundo")}>handler</button>
         </div>
         
     )

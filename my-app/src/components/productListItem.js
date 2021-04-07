@@ -5,17 +5,15 @@ import { Link } from 'react-router-dom'
 function ProductListItem(props) {
 
     return (
-        <Link to={{pathname:`/products/productsheet/${props.product._id}`, data:props}} >
+        <Link className="txtNoDeco" to={{pathname:`/products/productsheet/${props.product._id}`, data:props}} >
             <div className="productListItem" product={props}>
-                
-                    <div>{props.product.name}</div>
+                    <div className="productName"><p>{props.product.name}</p></div>
                     <div className="productInfo">
-                        <p>Cat.N:{props.product.catalog_number}</p>
-                        <p>House:{props.product.trading_house}</p>
-                        <p>Ref:{props.product.reference_number}</p>
-                        <p>Price:{props.product.price}€</p>
+                        <p><b>Cat.N: </b>{props.product.catalog_number}</p>
+                        <p><b>House: </b>{props.product.trading_house}</p>
+                        <p><b>Ref: </b>{props.product.reference_number}</p>
+                        <p><b>Price: </b>{props.product.price}€</p>
                     </div>
-            
             </div>
          </Link>
     )

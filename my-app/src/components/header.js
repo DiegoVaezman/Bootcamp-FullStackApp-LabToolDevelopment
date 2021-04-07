@@ -5,7 +5,7 @@ function Header(props) {
     console.log(props)
     return (
         <Link to="/user" className="header">
-            <div >
+            <div>
                 <p>LOGO Darwin Lab</p>
                 <p>{props.user.fullname}</p>
             </div>

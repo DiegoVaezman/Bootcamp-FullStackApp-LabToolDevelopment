@@ -132,7 +132,7 @@ function ProductSheet(props) {
     }
     
     //EDITANDO PRODUCTO
-    const [edditInputValue, setEdditInputValue] = useState({})
+    const [edditInputValue, setEdditInputValue] = useState([])
 
     const handletEdditInputChange = (event) => {
         setEdditInputValue({
@@ -186,44 +186,56 @@ function ProductSheet(props) {
         });
     }
     return(
-        <div> 
-            <Link to="/products">Back</Link>
-            <button onClick={openEdditModal}>Eddit this product</button>
-            <div>
-                <img />
-                <h1>{dataProduct.name}</h1>
+        <div className="gridSection"> 
+            <div className="back">
+                <Link className="Link" to="/products">Back</Link>
             </div>
-            <div>
-                <p>Catalog number: {dataProduct.catalog_number}</p>
-                <p>Type: {dataProduct.type}</p>
-                <p>Trading house: {dataProduct.trading_house}</p>
-                <p>Reference number: {dataProduct.reference_number}</p>
-                <p>Price: {dataProduct.price}€</p>
-                {dataProduct.information != "" && <p>Information: {dataProduct.information}</p>}
+            <div className="sheetBody">
+                <div className="nameSheet">
+                    <img />
+                    <h1>{dataProduct.name}</h1>
+                </div>
+                <div className="sheetInfo">
+                    <p><b>Catalog number: </b>{dataProduct.catalog_number}</p>
+                    <p><b>Type: </b>{dataProduct.type}</p>
+                    <p><b>Trading house: </b>{dataProduct.trading_house}</p>
+                    <p><b>Reference number: </b>{dataProduct.reference_number}</p>
+                    <p><b>Price: </b>{dataProduct.price}€</p>
+                    {dataProduct.information != "" && <p><b>Information: </b>{dataProduct.information}</p>}
+                    <button className="button1 edditButton" onClick={openEdditModal}>Eddit this product</button>
+                </div>
             </div>
-            <button onClick={openRequestModal}>Make a request</button>
+            <div className="playground playgroundSheet">
+                <button className="button1 requestButton" onClick={openRequestModal}><h2>Make a request</h2></button>
+            </div>
             <Modal ref={requestModalRef}>
-            <button onClick={closeRequestModal}className="close">Close</button>
-                <p>¿How many unities would you like to request?</p>
-                <form>
-                    <div>
-                        <label htmlFor="amount">Amount</label>
+                <div className="modalHead">
+                    <h1>Make a Request</h1>
+                    <button className="closeButton" onClick={closeRequestModal}>X</button>
+                </div>
+                <form className="form modalFormRequest">
+                    <p align="center"><b>¿How many unities would you like to request?</b></p>
+                    <div className="flex-column">
+                        <label align="center" htmlFor="amount">Amount</label>
                         <input type="text" name="amount" placeholder="Amount to request" onChange={handleAmountInputChange}/>
                     </div>
                 </form>
-            <button onClick={makeRequest}>OK!</button>
+                <button className="button1 requestButton" onClick={makeRequest}>OK!</button>
             </Modal>
             <Modal ref={edditModalRef}>
-            <button onClick={closeEdditModal}className="close">Close</button>
-                <p>Add some relevant information to product sheet</p>
-                <form>
-                    <div>
+                <div className="modalHead">
+                    <h1>Modify product</h1>
+                    <button className="closeButton" onClick={closeEdditModal}>X</button>
+                </div>
+                <form className="form modalFormRequest">
+                    <div className="flex-column">
                         <label htmlFor="information">Information</label>
                         <input type="text" name="information" placeholder="Write here" onChange={handletEdditInputChange}/>
                     </div>
                 </form>
-            <button onClick={openConfirmModal}>Delete</button>
-            <button onClick={edditProduct}>Save</button>
+                <button className="button1 requestButton" onClick={edditProduct}>Save</button>
+                <button className="deleteButton"onClick={openConfirmModal}>Delete</button>
+            
             </Modal>
             <ModalConfirm ref={confirmModalRef}>
                 <h1>Are you sure?</h1>
@@ -235,21 +247,19 @@ function ProductSheet(props) {
                     {closeRequestModal()}
                     {closeEdditModal()}
                     {closeConfirmModal()}
-                    <div>
+                    <div className="modalResponse">
                         <SuccessResponse />
-                        <h1>{response.msg}</h1>
-                        {/* <p>{`Information about ${product.name} has been setting`}</p>   //esta ventna se comparte con msg delete success. */}
-                        {/* <Link to="/products" className="close">Close</Link> */}
-                        <button onClick={closeResponseModal}>Close</button>
+                        <p><b>{response.msg}</b></p>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
             {response.error === true && 
                 <ModalResponse ref={responseModalRef}>
-                    <div>
+                    <div className="modalResponse">
                         <ErrorResponse />
-                        <p>{response.msg}</p>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <p><b>{response.msg}</b></p>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
@@ -257,7 +267,7 @@ function ProductSheet(props) {
                     <div>
                         <SuccessResponse />
                         <p>{response.msg}</p>
-                        <Link to="/products" className="close">Close</Link>
+                        <Link to="/products" >Close</Link>
                     </div>
             </ModalResponse>
         </div>

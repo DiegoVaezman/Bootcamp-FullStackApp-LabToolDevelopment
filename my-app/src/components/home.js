@@ -3,11 +3,23 @@ import {Link} from 'react-router-dom'
 
 function Home() {
     return (
-        <div>
-            <Link to="/products">PRODUCTS</Link>
-            <Link to="/requests">REQUESTS</Link>
-            <Link to="/stock">STOCK</Link>
-            <Link to="/user">USERS</Link>
+        <div className="section ">
+            <Link className="homeLink" to="/products">
+                <img src="../../img/searchProduct_img.png" alt="searchProduct_img" />
+                <div className="homeLink-name">PRODUCTS</div>
+            </Link>
+            <Link className="homeLink"  to="/requests">
+                <img src="../../img/request_img.png" alt="request_img"/>
+                <div className="homeLink-name">REQUESTS</div>
+            </Link>
+            <Link className="homeLink" to="/stock">
+                <img src="../../img/storage_img.png" alt="storage_img"/>
+                <div className="homeLink-name" >STOCK</div>
+            </Link>
+            <Link className="homeLink" to="/user">
+                <img src="../../img/user_img.png" alt="user_img"/>
+                <div className="homeLink-name" >USERS</div>
+            </Link>
         </div>
     )
 }

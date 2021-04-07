@@ -3,8 +3,33 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+/*COMMON CLASES*/
+.section{
+    padding: 0 5px 0 5px;
+    grid-column: 1 / 11;
+    grid-row: 5 / 37;
+    background-color: rgb(238, 234, 227);
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+.gridSection{
+    padding: 0 5px 0 5px;
+    grid-column: 1 / 11;
+    grid-row: 5 / 37;
+    background-color: rgb(238, 234, 227);
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(40, 1fr);
+}
+
 .Link{
     color:orangered;
+    text-decoration: none;
+}
+.txtNoDeco{
     text-decoration: none;
 }
 .grid{
@@ -29,7 +54,37 @@
     /* padding: 0 5px 0 5px;
     display: flex;
     flex-direction: column; */
-    
+}
+
+/* --COMMON BUTTONS-- */
+.button1{
+    border-radius: 20px;
+    border: 1px solid white;
+    box-shadow: -3px 2px 5px rgb(85, 85, 85);
+    background: linear-gradient(to right, rgb(255, 161, 55), rgb(252, 206, 145));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black
+}
+.closeButton{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid white;
+    box-shadow: -3px 2px 5px rgb(85, 85, 85);
+    background-color: tomato;
+    color: white;
+}
+.deleteButton{
+    width: 60px;
+    height: 30px;
+    border-radius: 20px;
+    color: red;
+    background: linear-gradient(to right, rgb(255, 155, 124), rgb(255, 240, 234));
+    box-shadow: -3px 2px 5px rgb(85, 85, 85);
+    justify-self: flex-end;
 }
 
 /*--REGISTER--*/
@@ -37,7 +92,6 @@
     grid-column: 1 / 11;
     grid-row: 1 / 41;
 }
-/* --logo register-- */
 .registerLogo{
     grid-column: 4 / 8;
     grid-row: 9 / 18;
@@ -50,59 +104,231 @@
     height: 100%;
 }
 
-/* --signup signin buttons-- */
-
-.button1{
-    border-radius: 20px;
-    border: 1px solid white;
-    box-shadow: -3px 2px 5px rgb(85, 85, 85);
-    background: linear-gradient(to right, rgb(255, 161, 55), rgb(252, 206, 145));
+/*--SIGNUP--*/
+.logoSignup{
+    grid-column: 4 / 8;
+    grid-row: 2 / 11;
+}
+.signup img{
+    width: 100%;
+    height: 100%;
+}
+.signupForm{
+    grid-column: 2 / 10;
+    grid-row: 12 / 30;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    color: black
+    flex-direction: column;
+    justify-content: space-between;
+}
+.playgroundSignup{
+    grid-column: 2 / 10;
+    grid-row: 31 / 39;
 }
 .signupButton{
     grid-row: 31 / 33;
     grid-column: 2 / 10;
+}
+
+/*--SIGNIN*/
+.logoSignin{
+    grid-column: 4 / 8;
+    grid-row: 4 / 13;
+}
+.signinForm{
+    grid-column: 2 / 10;
+    grid-row: 17 / 25;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.playgroundSignin{
+    grid-column: 2 / 10;
+    grid-row: 28 / 36;
 }
 .signinButton{
     grid-row: 34 / 36;
     grid-column: 2 / 10;
 }
 
-/*--SIGNUP--*/
-.logoSignup{
-    grid-column: 4 / 8;
-    grid-row: 1 / 10;
+/*--HEADER--*/
+.header{
+    grid-column: 1 / 11;
+    grid-row: 1 / 5;
+    display:flex;
+    flex-direction: row;
+    justify-content: start;
+    background-color: rgb(46, 46, 46);
+    align-items: center;
+    text-decoration: none;
+    border: 2px solid black;
 }
-.signup img{
+.header div{
+    width: 20%;
+}
+.header img{
     width: 100%;
-    height: 100%;
 }
-/*--formulario*/
-.form{
-    grid-column: 2 / 10;
-    grid-row: 9 / 26;
+.header h1{
+    padding-left: 10px;
+    color: white;
+}
+
+/*--NAVBAR*/
+.navbar{
     display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    grid-column: 1 / 11;
+    grid-row: 37 / 41;
+    background-color: rgb(46, 46, 46);
+}
+.navbarLink{
+    width: 15%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.navbarLink img{
+    width: 100%;
+}
+
+/*--HOME--*/
+.homeLink{
+    text-decoration: none;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    border: 1px solid rgb(255, 193, 171);
+}
+.homeLink img{
+    width: 20%;
+}
+.homeLink-name{
+    width: 50%;
+    text-align: center;
+    font-size: 25px;
+    color: black;
+}
+
+/*--PRODUCTS*/
+.list{
+    border: 3px solid rgb(255, 193, 171);
+    border-style: inset;
+    padding: 3px;
+    grid-column: 1 / 11;
+    grid-row: 6 / 36;
+    overflow: scroll;
+    overflow-x: hidden;  /*No lo pillab*/
+    background-color: rgb(255, 250, 244);
+}
+.filter{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    grid-column: 1 / 11;
+    grid-row: 4 / 6;
+}
+.filter button{
+    width: 40%;
+}
+.addProductBtn{
+    grid-column: 1 / 5;
+    grid-row: 37 / 39;
+}
+.productListItem{
+    border-bottom: 1px solid rgb(211, 178, 116);
+    height: 15%;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.productName{
+    color: rgb(105, 42, 0);
+    font-size: 20px;
+}
+.productInfo p{
+    width: 25%;
+    font-size: 15px;
+    color: rgb(105, 42, 0);
+    overflow: scroll;
+    white-space: nowrap;
+}
+.productInfo{
+    display:flex;
+    flex-direction: row;
     justify-content: space-between;
 }
-.form input, .form select{
+
+
+/*--SHEET--*/
+.back{
+    grid-column: 1 / 2;
+    grid-row: 2 / 4;
+}
+.sheetBody{
+    grid-column: 1 / 11;
+    grid-row: 5 / 30;
+    display:flex;
+    flex-direction: column;
+    justify-content: start;
+}
+.nameSheet{
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+    white-space: nowrap;
+}
+.sheetBody div{
+    margin-bottom: 30px;
+}
+.sheetInfo p{
+    padding-bottom: 5px;
+}
+.edditButton{
+    height: 20px;
+    width: 130px;
+}
+.requestButton{
+    height: 70px;
+    margin-bottom: 150px;
+}
+.playgroundSheet{
+    grid-column: 1 / 11;
+    grid-row: 30 / 37;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*COMMON FORMS*/
+.form input, .form select, .filter select{
     height: 35px;
     background-color: rgba(255, 255, 255, 0.363);
     border: 0;
     border-bottom: 1px solid orangered;
     box-shadow: -3px 2px 5px rgb(161, 161, 161);
 }
+/* .form div{
+    display: flex;
+    flex-direction: column;
+} */
 
-/*--interacciones*/
+/*--COMMON PLAYGROUND*/
 .playground{
     display: grid;
-    
     grid-template-rows: repeat(8, 1fr);
-    grid-column: 2 / 10;
-    grid-row: 28 / 36;
 
 }
 .playground button{
@@ -114,44 +340,22 @@
 
 
 
-.header{
-    grid-column: 1 / 11;
-    grid-row: 1 / 10;
-}
-.filter{
-    display:flex;
-    flex-direction: row;
-    justify-content: space-between;
-    grid-column: 1 / 10;
-    grid-row: 7 / 8;
-}
+
 .add-link{
     grid-column: 1 / 7;
     grid-row: 32 / 34;
 }
-.nav{
+
+
+.flex-column{
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    grid-column: 1 / 11;
-    grid-row: 35 / 40;
+    flex-direction: column;
 }
-.list{
-    border: 1px solid black;
-    padding: 3px;
-    grid-column: 1 / 11;
-    grid-row: 9 / 32;
+.flex-row{
+    display: row;
+    flex-direction: row;
 }
 
-.productListItem{
-    border: 1px solid black;
-    width: 100%;
-}
-.productInfo{
-    display:flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
 
 
 /*--Modal--*/
@@ -174,13 +378,80 @@
     background-color: rgba(128, 128, 128, 0.829);
 }
 .modal-box {
-   
+    background-color: rgb(238, 234, 227);
+    position: relative;
+    top: 10%;
+    height: 80%;
+    padding: 20px 10px 10px 10px;
+    box-shadow: -10px 10px 10px rgba(0,0,0,0.25);
+    border-radius: 20px;
+    border: 3px solid rgb(255, 156, 120);
+    border-style: outset;
+    z-index:101;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
 }
-.modalSuccess{
+
+.modalHead{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: start;
+    height: 15%;
+}
+.modalForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.modalFormSearch{
+    height: 60%;
+}
+.modalFormAdd{
+    height: 90%;
+}
+.searchModalInput{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.searchModalInput div{
+    width: 70%;
+}
+.searchModalInput button{
+    width: 20%;
+    height: 30px;
+}
+.searchModalInput div input{
+    width: 100%;
+}
+.addModalButton{
+    width: 90%;
+    height: 40px;
+    justify-self: center;
+    align-self: center;
+}
+.addButtonDiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+}
+.modalFormRequest{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 30%;
+    margin-bottom: 30px;
+}
+
+.modalResponse{
     position: relative;
     top: 30%;
     height: 30%;
-    background-color: rgba(250, 207, 128, 0.925);
+    background-color: rgba(255, 221, 159, 0.884);
     box-shadow: -10px 10px 10px rgba(0,0,0,0.25);
     border-radius: 20px;
     border: 3px solid rgb(250, 246, 239);
@@ -190,22 +461,11 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
+    background-image: url("./img/respone_img.png");
+    background-size:cover;
+    background-position: center;
 }
-.modalError{
-    position: relative;
-    top: 30%;
-    height: 30%;
-    background-color: rgba(250, 207, 128, 0.925);
-    box-shadow: -10px 10px 10px rgba(0,0,0,0.25);
-    border-radius: 20px;
-    border: 3px solid rgb(250, 246, 239);
-    border-style: outset;
-    z-index:101;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
-}
+
 .commonError, .commonSuccess{
     display: flex;
     flex-direction: column;
@@ -214,18 +474,12 @@
 .commonError img{
     width: 15%;
 }
+.commonSuccess img{
+    width: 15%;
+}
 .sizeModalButton{
     width: 30%;
     height: 20%;
     font-size: 15px;
 }
-/*--forms--*/
 
-.form{
-    display: flex;
-    flex-direction: column;
-}
-.form div{
-    display: flex;
-    flex-direction: column;
-}

@@ -162,7 +162,7 @@ function ProductSection(dataBase){
 
     
     return (
-        <div>
+        <div className="gridSection grid">
             <div className="filter">
                 <select id="select" name="bytype" placeholder="ddddd" onClick={searchByType}>
                     <option >Type</option>
@@ -179,7 +179,7 @@ function ProductSection(dataBase){
                     <option value="other">Others</option>
                     <option value="added">Productos agregados</option>
                 </select>
-                <button onClick={openSearchModal}>Advanced Search</button>
+                <button className="button1"onClick={openSearchModal}>Advanced Search</button>
             </div>
 
             <div className="list">
@@ -188,98 +188,89 @@ function ProductSection(dataBase){
                 })}
             </div>
             
-            <a onClick={openAddModal} className="add-link">Add new product</a>
+            <button className="button1 addProductBtn" onClick={openAddModal}>Add new product</button>
 
             <Modal ref={searchModalRef}>
-                <div>
-                    <h1>Advanced search</h1>
-                    <button onClick={closeSearchModal}className="close">Close</button>
-                </div>
-                <form className="form">
-                    <div>
-                        <label htmlFor="byname">Search by product name</label>
-                        <input type="text" name="byname" placeholder="Product name" onChange={handletTypeInputChange}/>
+               
+                    <div className="modalHead">
+                        <h1>Advanced search</h1>
+                        <button className="closeButton"onClick={closeSearchModal}><b>X</b></button>
                     </div>
-                    <button onClick={searchByName}>Search</button>
-                    <div>
-                        <label htmlFor="bycatn">Search by catalog number </label>
-                        <input type="text" name="bycatn" placeholder="Catalog number" onChange={handletTypeInputChange}/>
-                    </div>
-                    <button onClick={searchByCatN}>Search</button>
-                    <div>
-                        <label htmlFor="byrefn">Search by reference number </label>
-                        <input type="text" name="byrefn" placeholder="Reference number" onChange={handletTypeInputChange}/>
-                    </div>
-                    <button onClick={searchByRefN}>Search</button>
-                </form>
+                        <form className="form modalForm modalFormSearch">
+                            <div className="searchModalInput">
+                                <div>
+                                    <label htmlFor="byname">Search by product name</label>
+                                    <input type="text" name="byname" placeholder="Product name" onChange={handletTypeInputChange}/>
+                                </div>
+                                <button className="button1" onClick={searchByName}>Search</button>
+                            </div>
+                            <div className="searchModalInput">
+                                <div>
+                                    <label htmlFor="bycatn">Search by catalog number </label>
+                                    <input type="text" name="bycatn" placeholder="Catalog number" onChange={handletTypeInputChange}/>
+                                </div>
+                                <button className="button1" onClick={searchByCatN}>Search</button>
+                            </div>
+                            <div className="searchModalInput">
+                                <div>
+                                    <label htmlFor="byrefn">Search by reference number </label>
+                                    <input type="text" name="byrefn" placeholder="Reference number" onChange={handletTypeInputChange}/>
+                                </div>
+                                <button className="button1" onClick={searchByRefN}>Search</button>
+                            </div>
+                        </form>
             </Modal>
             <Modal ref={addModalRef}>
-                <div>
-                    {/* {response.response ? <div>{response.msg.msg}</div> :  */}
-                    <h1>Add new product</h1>
-                    <button onClick={closeAddModal}className="close">Close</button>
-                    <form className="form">
-                        <div>
+                <div className="modal">
+                    <div className="modalHead">
+                        <h1>Add new product</h1>
+                        <button className="closeButton" onClick={closeAddModal}>X</button>
+                    </div>
+                    <form className="form modalForm modalFormAdd">
+                        <div className="flex-column">
                             <label htmlFor="catalog_number">*Catalog number</label>
                             <input type="text" name="catalog_number" placeholder="Catalog number" onChange={handleAddInputChange}/>
                         </div>
-                        <div>
+                        <div className="flex-column">
                             <label htmlFor="name">*Product name</label>
                             <input type="text" name="name" placeholder="Product name" onChange={handleAddInputChange}/>
                         </div>
-                        {/* <div>
-                            <label htmlFor="type">Product type</label>
-                            <select name="type" onChange={handleAddInputChange}>
-                                <option defaultValue="">Select a product type</option>
-                                <option value="enzime">Enzimes</option>
-                                <option value="cleaning">Cleaning</option>
-                                <option value="consumable">Consumables</option>
-                                <option value="laboratory">laboratory</option>
-                                <option value="garment">Garments</option>
-                                <option value="stationery">Stationery</option>
-                                <option value="plastic">Plastics</option>
-                                <option value="chemical">Chemicals</option>
-                                <option value="glass">Glass</option>
-                                <option value="other">Others</option>
-                            </select>
-                        </div> */}
-                        <div>
+                        <div className="flex-column">
                             <label htmlFor="trading_house">Trading house</label>
                             <input type="text" name="trading_house" placeholder="Trading house" onChange={handleAddInputChange}/>
                         </div>
-                        <div>
+                        <div className="flex-column">
                             <label htmlFor="reference_number">Reference number</label>
                             <input type="text" name="reference_number" placeholder="Reference number" onChange={handleAddInputChange}/>
                         </div>
-                        <div>
+                        <div className="flex-column">
                             <label htmlFor="price">*Price</label>
                             <input type="text" name="price" placeholder="Price" onChange={handleAddInputChange}/>
                         </div>
-                        <div>
+                        <div className="flex-column">
                             <label htmlFor="information">Product information</label>
                             <input type="text" name="information" placeholder="Information" onChange={handleAddInputChange}/>
                         </div>
                     </form>
-                    <p>The fields marked with * are required</p>
-                    <button onClick={addNewProduct}>Add product to the list</button>
+                    <div className="addButtonDiv" ><button className="button1  addModalButton" onClick={addNewProduct}><h2>Add product to the list</h2></button></div>
                 </div>
             </Modal>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
                     {closeAddModal()}
-                    <div>
+                    <div className="modalResponse">
                         <SuccessResponse />
                         <p>{response.msg}</p>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
             {response.error === true && 
                 <ModalResponse ref={responseModalRef}>
-                    <div>
+                    <div className="modalResponse">
                         <ErrorResponse />
                         <p>{response.msg.msg}</p>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
