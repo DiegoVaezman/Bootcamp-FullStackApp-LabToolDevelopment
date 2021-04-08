@@ -72,7 +72,7 @@ router.post("/newitem/:id", protectedRoute, (req, res) => {
                         })
 
                         newitem.save()
-                        .then(doc => res.status(201).send("Added to stock")) 
+                        .then(doc => res.status(201).send({ msg: "Added to stock"})) 
                         .catch(error => {
                             res.status(400).send({msg: error.message})
                         })

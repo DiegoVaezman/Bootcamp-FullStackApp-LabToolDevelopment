@@ -8,7 +8,6 @@ const ModalConfirm = forwardRef((props, ref) => {
 
     const [display, setDisplay] = useState(false)
 
-
     useImperativeHandle(ref, () => {
         return {
             openModal: () => open(),

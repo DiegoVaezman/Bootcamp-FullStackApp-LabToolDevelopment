@@ -55,7 +55,17 @@
     display: flex;
     flex-direction: column; */
 }
-
+.yesNoButtons{
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+ }
+ .yesNoButtons button{
+     width: 40%;
+     height: 40px;
+     font-size: 20px;
+ }
 /* --COMMON BUTTONS-- */
 .button1{
     border-radius: 20px;
@@ -80,12 +90,33 @@
 .deleteButton{
     width: 60px;
     height: 30px;
+    border: 1px solid orangered;
     border-radius: 20px;
     color: red;
     background: linear-gradient(to right, rgb(255, 155, 124), rgb(255, 240, 234));
     box-shadow: -3px 2px 5px rgb(85, 85, 85);
     justify-self: flex-end;
 }
+.val-rejButton{
+    border-radius: 20px;
+    border: 1px solid white;
+    box-shadow: -3px 2px 5px rgb(85, 85, 85);
+    text-decoration: none;
+    color: black;
+    width: 40%;
+    height: 50px;
+}
+.valButton{
+    background: linear-gradient(to right, rgb(30, 150, 26), white);
+}
+.rejButton{
+    background: linear-gradient(to right, rgb(238, 52, 52), white);
+}
+.addStockButton{
+    background: linear-gradient(to right, rgb(52, 101, 238), white);
+}
+
+
 
 /*--REGISTER--*/
 .register{
@@ -240,7 +271,7 @@
 }
 .productListItem{
     border-bottom: 1px solid rgb(211, 178, 116);
-    height: 15%;
+    height: 70px;
     display:flex;
     flex-direction: column;
     justify-content: space-around;
@@ -250,7 +281,7 @@
     font-size: 20px;
 }
 .productInfo p{
-    width: 25%;
+    width: 100%;
     font-size: 15px;
     color: rgb(105, 42, 0);
     overflow: scroll;
@@ -281,7 +312,7 @@
     overflow: scroll;
     white-space: nowrap;
 }
-.sheetBody div{
+.sheetBodyProduct div{
     margin-bottom: 30px;
 }
 .sheetInfo p{
@@ -294,21 +325,86 @@
 .requestButton{
     height: 70px;
     margin-bottom: 150px;
+    grid-column: 1 / 11;
 }
 .playgroundSheet{
     grid-column: 1 / 11;
     grid-row: 30 / 37;
 }
 
-
-
-
-
-
-
-
-
-
+/*--REQUESTS SECTION*/
+.selectVar input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+  }
+  .selectVar label {
+    display: inline-block;
+    background-color: rgb(255, 246, 228);
+    width: 100%;
+    font-size: 16px;
+    border: 3px solid rgb(255, 193, 171);
+    border-style: outset;
+    border-radius: 0px;
+    text-align: center;
+}
+.selectVar input[type="radio"]:checked + label {
+    background-color:rgb(255, 202, 103);
+    border: 3px solid white;
+    border-style: outset;
+}
+/*request list item*/
+.productListItemHead{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.commentImg{
+    width: 30px;
+}
+/*request sheet*/
+.commentsList{
+    border: 3px solid rgb(255, 193, 171);
+    border-style: inset;
+    padding: 3px;
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;  /*No lo pillab*/
+    background-color: rgb(255, 250, 244);
+}
+.deleteButtonDiv{
+    grid-column: 1 / 11;
+    grid-row: 37 / 39;
+}
+/* .sheetBodyRequest div{
+    padding-bottom: 10px;
+} */
+.commentsListItem{
+    border-bottom: 1px solid rgb(211, 178, 116);
+    height: 50px;
+    display:flex;
+    flex-direction: column;
+    overflow: scroll;
+    white-space: nowrap;
+}
+.sheetRequestName, .requestInfo{
+    padding-bottom: 10px;
+}
+.validateButtons{
+    grid-column: 2 / 10;
+    grid-row: 4 / 6;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.productArrivedButton{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: end;
+    grid-column: 6 / 9;
+    grid-row: 2 / 6;
+}
 
 
 
@@ -329,6 +425,7 @@
 .playground{
     display: grid;
     grid-template-rows: repeat(8, 1fr);
+    grid-template-columns: repeat(10, 1fr);
 
 }
 .playground button{
@@ -352,7 +449,7 @@
     flex-direction: column;
 }
 .flex-row{
-    display: row;
+    display: flex;
     flex-direction: row;
 }
 
@@ -399,6 +496,9 @@
     justify-content: space-between;
     align-items: start;
     height: 15%;
+}
+.modalHead h1{
+    width: 90%;
 }
 .modalForm{
     display: flex;
@@ -470,6 +570,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.commonSuccess h1{
+    text-align: center;
 }
 .commonError img{
     width: 15%;

@@ -75,18 +75,21 @@ function ProductSection(dataBase){
         event.preventDefault();
         const name = inputValue.byname;
         setDataFiltered(data.filter(product => product.name.toLowerCase().includes(name)));
+        document.getElementById("select").value = "Type"
         closeSearchModal()
     }
     const searchByCatN = (event) => {
         event.preventDefault();
         const catN = String(inputValue.bycatn);
         setDataFiltered(data.filter(product => String(product.catalog_number).includes(catN)));
+        document.getElementById("select").value = "Type"
         closeSearchModal()
     }
     const searchByRefN = (event) => {
         event.preventDefault();
         const refN = inputValue.byrefn;
         setDataFiltered(data.filter(product => product.reference_number.toLowerCase().includes(refN)));
+        document.getElementById("select").value = "Type"
         closeSearchModal()
     }
     const searchByType = (event) => {
@@ -112,7 +115,6 @@ function ProductSection(dataBase){
     const [addInputValue, setAddInputValue] = useState({
         catalog_number: "",
         name: "",
-        type : "added",
         trading_house : "",
         reference_number: "",
         price : "",
@@ -164,7 +166,7 @@ function ProductSection(dataBase){
     return (
         <div className="gridSection grid">
             <div className="filter">
-                <select id="select" name="bytype" placeholder="ddddd" onClick={searchByType}>
+                <select id="select" name="bytype" onClick={searchByType}>
                     <option >Type</option>
                     <option defaultValue="All">All</option>
                     <option value="enzime">Enzimes</option>
@@ -260,7 +262,7 @@ function ProductSection(dataBase){
                     {closeAddModal()}
                     <div className="modalResponse">
                         <SuccessResponse />
-                        <p>{response.msg}</p>
+                        <p><b>{response.msg}</b></p>
                         <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
@@ -269,7 +271,7 @@ function ProductSection(dataBase){
                 <ModalResponse ref={responseModalRef}>
                     <div className="modalResponse">
                         <ErrorResponse />
-                        <p>{response.msg.msg}</p>
+                        <p><b>{response.msg.msg}</b></p>
                         <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>

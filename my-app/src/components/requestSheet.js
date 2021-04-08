@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {useState, useEffect} from 'react'
-import { Link , Route, Redirect} from 'react-router-dom'
+import { Link , Route, Redirect, withRouter} from 'react-router-dom'
 import Modal from "./modal"
 import ModalResponse from './modalResponse';
 import ModalConfirm from './modalConfirm';
@@ -44,7 +44,7 @@ function RequestSheet(props) {
     const addCommentModalRef = React.useRef();
     const responseModalRef = React.useRef();
     const confirmRejectModalRef = React.useRef();
-    const confirmDeleteModalRef = React.useRef();
+    const confirmModalRef = React.useRef();
     const deleteResponseModalRef = React.useRef();
     const openProductModal = () => {
         productModalRef.current.openModal()
@@ -58,8 +58,8 @@ function RequestSheet(props) {
     const openConfirmRejectModal = () => {
         confirmRejectModalRef.current.openModal()
     }
-    const openConfirmDeleteModal = () => {
-        confirmDeleteModalRef.current.openModal()
+    const openConfirmModal = () => {
+        confirmModalRef.current.openModal()
     }
     const openDeleteResponseModal = () => {
         deleteResponseModalRef.current.openModal()
@@ -70,11 +70,17 @@ function RequestSheet(props) {
     };
     const closeAddCommentModal = () => {
         addCommentModalRef.current.closeModal()
+        
     };
     const closeResponseModal = () => {
+        response.delete === true && props.history.push("/requests")
+        response.success === true && closeAddCommentModal()
+        closeConfirmModal()
+        closeConfirmRejectModal()
         setResponse({
             error: false,
             success: false,
+            delete: false,
             msg: ""
         })
         responseModalRef.current.closeModal()
@@ -82,14 +88,15 @@ function RequestSheet(props) {
     const closeConfirmRejectModal = () => {
         confirmRejectModalRef.current.closeModal()
     };
-    const closeConfirmDeleteModal = () => {
-        confirmDeleteModalRef.current.closeModal()
+    const closeConfirmModal = () => {
+        confirmModalRef.current.closeModal()
     };
 
 
     const [response, setResponse] = useState({
         success: false,
         error: false,
+        delete: false,
         msg: ""
     })
 
@@ -104,9 +111,11 @@ function RequestSheet(props) {
             console.log(res.data)
             setResponse({...response,
                 success: true,
+                delete: true,
                 msg: res.data.msg
             })
-            openDeleteResponseModal()
+            // openDeleteResponseModal()
+            openResponseModal()
         })
         .catch(error => {
             console.log(error.response)
@@ -222,13 +231,13 @@ function RequestSheet(props) {
         });
     }
 
-
+    //AÑADIENDO AL STOCK
     const addToStock = () => {
         console.log(order._id)
         axios.post(`${apiURL}stock/newitem/${order._id}`)
         .then(res => {
             console.log("añadido al stock")
-            console.log(res.data.msg)
+            console.log(res)
             setResponse({...response,
                 success: true,
                 msg: res.data.msg
@@ -265,125 +274,137 @@ function RequestSheet(props) {
 
     console.log(props)
     return (
-        <div>
-            <Link to="/requests">Back</Link>
-            <div>
-            <img></img>
-            <h1>{props.location.productData.name}</h1>
+        <div className="gridSection">
+            <div className="back">
+                <Link className="Link" to="/requests">Back</Link>
             </div>
-            <div>
-                <button onClick={openProductModal}>Show product Sheet</button>
-                <p>Amount to order: {order.amount}</p>
-                <p>Requested by: {userName.data.fullname}</p>
-                <p>Date: {order.date.substring(0,10)}</p>
-                {(dataRequest.status === "waiting") && <p style={{color: "orange"}}>Status: {dataRequest.status}</p>}
-                {(dataRequest.status === "validated") && <p style={{color: "green"}}>Status: {dataRequest.status}</p>}
-                {(dataRequest.status === "received") && <p style={{color: "blue"}}>Status: {dataRequest.status}</p>}
-                {(dataRequest.status === "rejected") && <p style={{color: "red"}}>Status: {dataRequest.status}</p>}
+            <div className="sheetBody sheetBodyRequest">
+                <div className="sheetRequestName">
+                    <h1>{props.location.productData.name}</h1>
+                    <button className="button1 edditButton" onClick={openProductModal}>Show product Sheet</button>
+                </div>
+                <div className="sheetInfo requestInfo">
+                    
+                    <p><b>Amount to order: </b>{order.amount} unities</p>
+                    <p><b>Requested by: </b>{userName.data.fullname}</p>
+                    <p><b>Date: </b>{order.date.substring(0,10)}</p>
+                    {(dataRequest.status === "waiting") && <p style={{color: "orange"}}><b>Status: </b>{dataRequest.status}</p>}
+                    {(dataRequest.status === "validated") && <p style={{color: "green"}}><b>Status: </b>{dataRequest.status}</p>}
+                    {(dataRequest.status === "received") && <p style={{color: "blue"}}><b>Status: </b>{dataRequest.status}</p>}
+                    {(dataRequest.status === "rejected") && <p style={{color: "red"}}><b>Status: </b>{dataRequest.status}</p>}
+                </div>
+               
+                    <h2>Comments</h2>
+                    {(commentsData.length > 0) &&
+                    <div className="commentsList">
+                        {commentsData.map((item, index) => {
+                            return <CommentsListItem comment={item} key={index} />
+                        })}
+                    </div>}
+               
+                <div>
+                    <button className="button1 edditButton" onClick={openAddCommentModal}>Add new comment</button>
+                </div>
             </div>
 
-            <div>
-                <h2>Comments</h2>
-                {(commentsData.length > 0) &&
-                <div className="list">
-                    {commentsData.map((item, index) => {
-                        return <CommentsListItem comment={item} key={index} />
-                    })}
-                </div>}
-            </div>
-            <div>
-                <img className="imagen de comentario"></img>
-                <button onClick={openAddCommentModal}>Add new comment</button>
-            </div>
-        
-            {(dataRequest.status !== "received") && 
-            <div>
-                <div>
+            {(dataRequest.status !== "received") &&
+            <div className="playground playgroundSheet">
+                <div className="validateButtons">
                     {dataRequest.status != "validated" &&
-                        <button onClick={validateRequest}>VALIDATE</button>
+                        <button className="val-rejButton valButton" onClick={validateRequest}><b>VALIDATE</b></button>
                     }
                     {dataRequest.status != "rejected" &&
-                        <button onClick={openConfirmRejectModal}>REJECT</button>
+                        <button className="val-rejButton rejButton" onClick={openConfirmRejectModal}><b>REJECT</b></button>
+                    }
+                    {dataRequest.status === "validated" &&
+                        <button className="val-rejButton addStockButton" onClick={addToStock}><p>Product arrived?</p><p><b>Add to stock</b></p></button>
                     }
                 </div>
-                {dataRequest.status === "validated" &&
-                    <div>
-                        <p>Product arrived?</p>
-                        <button onClick={addToStock}>Add to stock</button>
-                    </div>
-                }
             </div>
             }
-
-            <div>
-                <button onClick={openConfirmDeleteModal}>Delete order request</button>
+         
+            <div className="deleteButtonDiv">
+                <button className="deleteButton" onClick={openConfirmModal}>Delete</button>
             </div>
             <Modal ref={productModalRef}>
-                <button onClick={closeProductModal}className="close">Close</button>
-                <div>
-                    <img />
-                    <h1>{"nombre del producto enlazado al pedido"}</h1>
-                </div>
-                <div>
-                    <p>Catalog number: {"product.catalog_number"}</p>
-                    <p>Type: {"product.type"}</p>
-                    <p>Trading house: {"product.trading_house"}</p>
-                    <p>Reference number: {"product.reference_number"}</p>
-                    <p>Price: {"product.price"}€</p>
-                    <p>information: </p>
-                    {/* <p>information: "{product.information != "" && <p>Information: {product.information}</p>}"</p> */}
+                <div className="Section">
+                    <div className="modalHead">
+                        <button className="closeButton" onClick={closeProductModal}>X</button>
+                    </div>
+                    <div className="sheetBody sheetBodyProduct">
+                        <div>
+                            <h1>{props.location.productData.name}</h1>
+                        </div>
+                        <div className="sheetInfo">
+                            <p><b>Catalog number: </b>{props.location.productData.catalog_number}</p>
+                            <p><b>Type: </b>{props.location.productData.type}</p>
+                            <p><b>Trading house: </b>{props.location.productData.trading_house}</p>
+                            <p><b>Reference number: </b>{props.location.productData.reference_number}</p>
+                            <p><b>Price: </b>{props.location.productData.price}€</p>
+                            <p><b>Information: </b></p>
+                        </div>
+                    </div>
                 </div>
             </Modal>
             <Modal ref={addCommentModalRef}>
-                <button onClick={closeAddCommentModal}className="close">Close</button>
-                    <p>Add a comment to the order request</p>
-                    <form>
-                        <div>
+                
+                    <div className="modalHead">
+                        <h1>Add a comment to the order request</h1>
+                        <button className="closeButton" onClick={closeAddCommentModal}>X</button>
+                    </div>
+                    <form className="form modalFormRequest">
+                        <div className="flex-column">
                             <label htmlFor="text">Comment</label>
                             <input type="text" name="text" placeholder="Write a comment" onChange={handleCommentInputChange}/>
                         </div>
                     </form>
-                <button onClick={sendComment}>Send</button>
+                <button className="button1 requestButton" onClick={sendComment}><h2>Send</h2></button>
             </Modal>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
-                    {closeConfirmDeleteModal()}
-                    {closeConfirmRejectModal()}
-                    <div>
+                    <div className="modalResponse">
                         <SuccessResponse />
                         <h1>{response.msg}</h1>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
             {response.error === true && 
                 <ModalResponse ref={responseModalRef}>
-                    <div>
+                    <div className="modalResponse">
                         <ErrorResponse />
-                        <p>{response.msg}</p>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <p><b>{response.msg}</b></p>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
-            <ModalResponse ref={deleteResponseModalRef}>
+            {/* <ModalResponse ref={deleteResponseModalRef}>
                     <div>
                         <SuccessResponse />
                         <p>{response.msg}</p>
                         <Link to="/requests" className="close">Close</Link>
                     </div>
+            </ModalResponse> */}
+            <ModalResponse ref={confirmRejectModalRef}>
+                <div className="modalResponse">
+                    <h1>Are you sure?</h1>
+                    <div className="yesNoButtons">
+                        <button className="deleteButton" onClick={rejectRequest}>Yes</button>
+                        <button className="deleteButton" onClick={closeConfirmRejectModal}>No</button>
+                    </div>
+                </div>
             </ModalResponse>
-            <ModalConfirm ref={confirmRejectModalRef}>
-                <h1>Are you sure?</h1>
-                <button onClick={rejectRequest}>Yes</button>
-                <button onClick={closeConfirmRejectModal}>No</button>   {/* ESTO NO SIRVE O DEBERÍA SER DE OTRA FORMA */}
-            </ModalConfirm>
-            <ModalConfirm ref={confirmDeleteModalRef}>
-                <h1>Are you sure?</h1>
-                <button onClick={deleteRequest}>Yes</button>
-                <button onClick={closeConfirmDeleteModal}>No</button>   {/* ESTO NO SIRVE O DEBERÍA SER DE OTRA FORMA */}
-            </ModalConfirm>
+            <ModalResponse ref={confirmModalRef}>
+                <div className="modalResponse">
+                    <h1>Are you sure?</h1>
+                    <div className="yesNoButtons">
+                        <button className="deleteButton" onClick={deleteRequest}>Yes</button>
+                        <button className="deleteButton" onClick={closeConfirmModal}>No</button>
+                    </div> 
+                </div>
+            </ModalResponse>
         </div>
     )
 }
 
-export default RequestSheet
+export default withRouter(RequestSheet)

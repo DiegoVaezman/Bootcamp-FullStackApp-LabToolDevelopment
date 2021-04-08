@@ -10,6 +10,7 @@ import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
 
 import {Redirect} from 'react-router-dom'
+import {withRouter} from "react-router-dom"
 
 
 function ProductSheet(props) {
@@ -21,7 +22,7 @@ function ProductSheet(props) {
     const requestModalRef = React.useRef();
     const responseModalRef = React.useRef();
     const confirmModalRef = React.useRef();
-    const deleteResponseModalRef = React.useRef();
+    // const deleteResponseModalRef = React.useRef();
     const openEdditModal = () => {
         edditModalRef.current.openModal()
         console.log("editmodal abierto")
@@ -36,23 +37,29 @@ function ProductSheet(props) {
     const openConfirmModal = () => {
         confirmModalRef.current.openModal()
     }
-    const openDeleteResponseModal = () => {
-        deleteResponseModalRef.current.openModal()
-    }
+    // const openDeleteResponseModal = () => {
+    //     deleteResponseModalRef.current.openModal()
+    // }
     const closeEdditModal = () => {
         edditModalRef.current.closeModal()
     };
     const closeRequestModal = () => {
         requestModalRef.current.closeModal()
+        console.log("cierra ventana")
+        setAmountInputValue({amount:""})
     };
     const closeResponseModal = () => {
+        response.delete === true && props.history.push("/products")
+        response.success === true && closeRequestModal()
+        response.success === true && closeEdditModal()
+        closeConfirmModal()
         setResponse({
             error: false,
             success: false,
+            delete: false,
             msg: ""
         })
         responseModalRef.current.closeModal()
-        console.log("response modal cerrado")
     };
     const closeConfirmModal = () => {
         confirmModalRef.current.closeModal()
@@ -61,15 +68,10 @@ function ProductSheet(props) {
     const [response, setResponse] = useState({
         success: false,
         error: false,
+        delete: false,
         msg: ""
     })
-    // function closeAll() {
-    //     closeEdditModal()
-    //     closeRequestModal()
-    //     closeResponseModal()
-    //     closeConfirmModal()
-    // }
-
+  
 
     //CONSIGUIENDO INFORMACIÓN DEL PRODUCTO
     const [dataProduct, setDataProduct] = useState([])
@@ -98,6 +100,7 @@ function ProductSheet(props) {
     const [amountInputValue, setAmountInputValue] = useState({
         amount: ""
     })
+    
     const handleAmountInputChange = (event) => {
         const value = !isNaN(event.target.value) ? parseFloat(event.target.value) : event.target.value
         setAmountInputValue({
@@ -107,7 +110,7 @@ function ProductSheet(props) {
     }
 
     const makeRequest = () => {
-        
+        console.log("hace make request")
         axios.post(`${apiURL}order/neworder/${dataProduct._id}`, 
        
         {...amountInputValue}
@@ -119,7 +122,9 @@ function ProductSheet(props) {
                 success: true,
                 msg: `Product ${dataProduct.name} ordered `
             })
+            setAmountInputValue({amount:""})
             openResponseModal()
+            
         })
         .catch(error => {
             console.log(error.response)
@@ -127,12 +132,13 @@ function ProductSheet(props) {
                 error: true,
                 msg: error.response.data.msg
             })
+            console.log(error.response)
             openResponseModal()
         });
     }
     
     //EDITANDO PRODUCTO
-    const [edditInputValue, setEdditInputValue] = useState([])
+    const [edditInputValue, setEdditInputValue] = useState()
 
     const handletEdditInputChange = (event) => {
         setEdditInputValue({
@@ -151,6 +157,7 @@ function ProductSheet(props) {
                 msg: res.data.msg
             })
             openResponseModal()
+            setEdditInputValue()
             setchange([])
         })
         .catch(error => {
@@ -172,9 +179,11 @@ function ProductSheet(props) {
             console.log(res.data)
             setResponse({...response,
                 success: true,
+                delete: true,
                 msg: res.data.msg
             })
-            openDeleteResponseModal()
+            // openDeleteResponseModal()
+            openResponseModal()
         })
         .catch(error => {
             console.log(error.response)
@@ -190,7 +199,7 @@ function ProductSheet(props) {
             <div className="back">
                 <Link className="Link" to="/products">Back</Link>
             </div>
-            <div className="sheetBody">
+            <div className="sheetBody sheetBodyProduct">
                 <div className="nameSheet">
                     <img />
                     <h1>{dataProduct.name}</h1>
@@ -217,10 +226,10 @@ function ProductSheet(props) {
                     <p align="center"><b>¿How many unities would you like to request?</b></p>
                     <div className="flex-column">
                         <label align="center" htmlFor="amount">Amount</label>
-                        <input type="text" name="amount" placeholder="Amount to request" onChange={handleAmountInputChange}/>
+                        <input type="text" name="amount" placeholder="Amount to request" value={amountInputValue.amount} onChange={handleAmountInputChange}/>
                     </div>
                 </form>
-                <button className="button1 requestButton" onClick={makeRequest}>OK!</button>
+                <button className="button1 requestButton" onClick={makeRequest}><h2>OK!</h2></button>
             </Modal>
             <Modal ref={edditModalRef}>
                 <div className="modalHead">
@@ -233,20 +242,21 @@ function ProductSheet(props) {
                         <input type="text" name="information" placeholder="Write here" onChange={handletEdditInputChange}/>
                     </div>
                 </form>
-                <button className="button1 requestButton" onClick={edditProduct}>Save</button>
+                <button className="button1 requestButton" onClick={edditProduct}><h2>Save</h2></button>
                 <button className="deleteButton"onClick={openConfirmModal}>Delete</button>
             
             </Modal>
-            <ModalConfirm ref={confirmModalRef}>
-                <h1>Are you sure?</h1>
-                <button onClick={deleteProduct}>Yes</button>
-                <button onClick={closeConfirmModal}>No</button>
-            </ModalConfirm>
+            <ModalResponse ref={confirmModalRef} >
+                <div className="modalResponse">
+                    <h1>Are you sure?</h1>
+                    <div className="yesNoButtons">
+                        <button className="deleteButton"onClick={deleteProduct}><b>Yes</b></button>
+                        <button className="deleteButton"onClick={closeConfirmModal}><b>No</b></button>
+                    </div>
+                </div>
+            </ModalResponse>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
-                    {closeRequestModal()}
-                    {closeEdditModal()}
-                    {closeConfirmModal()}
                     <div className="modalResponse">
                         <SuccessResponse />
                         <p><b>{response.msg}</b></p>
@@ -263,15 +273,15 @@ function ProductSheet(props) {
                     </div>
                 </ModalResponse>
             }
-            <ModalResponse ref={deleteResponseModalRef}>
-                    <div>
+            {/* <ModalResponse ref={deleteResponseModalRef}>
+                    <div className="modalResponse">
                         <SuccessResponse />
-                        <p>{response.msg}</p>
-                        <Link to="/products" >Close</Link>
+                        <p><b>{response.msg}</b></p>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
-            </ModalResponse>
+            </ModalResponse> */}
         </div>
     )
 }
 
-export default ProductSheet
+export default withRouter(ProductSheet)

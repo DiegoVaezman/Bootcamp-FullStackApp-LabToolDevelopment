@@ -26,20 +26,19 @@ router.post("/newproduct", protectedRoute, (req, res) => {
     try {
         const catalog_number = req.body.catalog_number    
         const name = req.body.name
-        const type = req.body.type
+        const type = "added"
         const trading_house = req.body.trading_house
         const reference_number = req.body.reference_number
         const price = req.body.price
         const information = req.body.information
 
-        if (!name || !type || !price || !catalog_number) {
-            return res.status(400).send({ msg: "Name, type, catalog_number and price are required"})
+        if (!name || !price || !catalog_number) {
+            return res.status(400).send({ msg: "Cat. number, Product name, and Price are required"})
         }
 
         validateNumber(catalog_number)
         validateNumber(price)
         validateString(name)
-        validateString(type)
 
         
         Product.find({catalog_number : catalog_number}, function (err, product) {

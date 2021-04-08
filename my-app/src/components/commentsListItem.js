@@ -24,18 +24,18 @@ function CommentListItem(props) {
 
         console.log(userName.data.fullname)
     return (
-        <div className="productListItem" >
-        <div>
-                <div>
-                        {userName.data.fullname}
+        <div className="commentsListItem" >
+                <div className="productListItemHead">
+                        <div>
+                                <b>@{userName.data.fullname}</b>
+                        </div>
+                        <div>
+                                {props.comment.date.substring(0,10)}
+                        </div>
                 </div>
-                <div>
-                        {props.comment.date.substring(0,10)}
+                <div className="productInfo">
+                        {props.comment.text}
                 </div>
-        </div>
-        <div className="productInfo">
-                {props.comment.text}
-        </div>
         </div>
     )
 }

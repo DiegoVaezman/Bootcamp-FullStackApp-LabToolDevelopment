@@ -49,15 +49,24 @@ function RequestsSection() {
     const [selectedList, setSelectedList] = useState({
         new: true
     })
-    console.log(typeof dataNewRequests)
-console.log(dataNewRequests.reverse())
+
+    console.log(dataNewRequests.reverse())
     return (
-        <div>
-            <div>
-                <button onClick={() => setSelectedList({new : true})}>New</button>
+        <div className="gridSection grid">
+            <div className="selectVar filter">
+                <input type="radio" id="radioNew" name="radioVar" value="new" onClick={() => setSelectedList({new : true})} defaultChecked/>
+                <label for="radioNew"><b>New</b></label>
+                <input type="radio" id="radioValidate" name="radioVar" value="validated" onClick={() => setSelectedList({validated : true})} />
+                <label for="radioValidate"><b>Validate</b></label>
+                <input type="radio" id="radioReceived" name="radioVar" value="received" onClick={() => setSelectedList({received : true})} />
+                <label for="radioReceived"><b>Received</b></label>
+                <input type="radio" id="radioAll" name="radioVar" value="all" onClick={() => setSelectedList({all : true})} />
+                <label for="radioAll"><b>All</b></label>
+
+                {/* <button className="selectVarButton" onClick={() => setSelectedList({new : true})}>New</button>
                 <button onClick={() => setSelectedList({validated : true})}>Validated</button>
                 <button onClick={() => setSelectedList({received : true})}>Received</button>
-                <button onClick={() => setSelectedList({all : true})}>All</button>
+                <button onClick={() => setSelectedList({all : true})}>All</button> */}
             </div>
 
             {(selectedList.new === true && dataNewRequests.length > 0) && 
@@ -88,9 +97,8 @@ console.log(dataNewRequests.reverse())
                 })}
             </div>}
   
-            <div>
-                <img></img>
-                <Link to="/products">Add new request</Link>
+            <div className="addProductBtn">
+                <Link className="Link" to="/products">Add new request</Link>
             </div>
         </div>
     )
