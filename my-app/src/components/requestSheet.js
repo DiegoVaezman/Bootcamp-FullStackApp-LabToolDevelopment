@@ -70,7 +70,7 @@ function RequestSheet(props) {
     };
     const closeAddCommentModal = () => {
         addCommentModalRef.current.closeModal()
-        
+        setCommentInputValue({text:""})
     };
     const closeResponseModal = () => {
         response.delete === true && props.history.push("/requests")

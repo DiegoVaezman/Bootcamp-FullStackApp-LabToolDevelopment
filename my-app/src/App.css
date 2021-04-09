@@ -115,7 +115,16 @@
 .addStockButton{
     background: linear-gradient(to right, rgb(52, 101, 238), white);
 }
-
+.spendButton{
+    border-radius: 20px;
+    border: 1px solid white;
+    box-shadow: -3px 2px 5px rgb(85, 85, 85);
+    background: linear-gradient(to right, rgb(253, 100, 39), rgb(252, 206, 145));
+    color: black;
+    grid-row: 1 / 8;
+    grid-column: 2 / 10;
+    
+}
 
 
 /*--REGISTER--*/
@@ -254,6 +263,16 @@
     overflow: scroll;
     overflow-x: hidden;  /*No lo pillab*/
     background-color: rgb(255, 250, 244);
+}
+.listStock{
+    border: 3px solid rgb(255, 193, 171);
+    border-style: inset;
+    padding: 3px;
+    grid-column: 1 / 11;
+    grid-row: 2 / 39;
+    overflow: scroll;
+    overflow-x: hidden;  /*No lo pillab*/
+    background-color: rgb(136, 124, 106);
 }
 .filter{
     display:flex;
@@ -406,7 +425,107 @@
     grid-row: 2 / 6;
 }
 
+/*--STOCK SECTION*/
+.itemInfo{
+    width: 90%;
+}
+.itemList{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.itemList p{
+    overflow: scroll;
+    white-space: nowrap;
+}
+/*itemsheet*/
+.edditItemButton{
+    height: 40px;
+    width: 220px;
+}
+.edditItemModal{
+    padding: 0 5px 0 5px;
+    background-color: rgb(238, 234, 227);
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
 
+.editItemBody{
+   height: 100%;
+   display:flex;
+   flex-direction: column;
+   justify-content: space-around;
+}
+.editItemBody button{
+    align-self: center;
+}
+.edditItemSec{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 35%;
+    border-bottom: 2px solid rgb(211, 178, 116);
+    padding-bottom: 20px;
+}
+.limitItemSec{
+    margin-top: 20px;
+    display:flex;
+    flex-direction: column;
+    justify-content: start;
+    height: 50%;
+}
+.limitItemSec p, .yes-noLimit{
+    align-self: center;
+}
+.limitForm{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
+/*--radioButtons*/
+.yes-noLimit input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+  }
+  .yes-noLimit label {
+    display: inline-block;
+    background-color: rgb(255, 246, 228);
+    width: 100%;
+    font-size: 16px;
+    border: 3px solid rgb(255, 193, 171);
+    border-style: outset;
+    border-radius: 0px;
+    text-align: center;
+}
+.yes-noLimit input[type="radio"]:checked + label {
+    background-color:rgb(255, 202, 103);
+    border: 3px solid white;
+    border-style: outset;
+}
+.yes-noLimit{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: auto;
+    margin-top: 5px;
+    width: 60%;
+}
+.yes-noLimit label{
+    width: 40%;
+    border-radius: 20px;
+}
+.itemFormButton{
+    height: 30px;
+    width: 130px;
+}
+.deleteItemDiv{
+    margin-top: auto;
+    margin-bottom: 10px;
+}
 
 /*COMMON FORMS*/
 .form input, .form select, .filter select{
@@ -428,7 +547,7 @@
     grid-template-columns: repeat(10, 1fr);
 
 }
-.playground button{
+.signinButton, .signupButton{
     grid-row: 2 / 5;
 }
 .playground p{
@@ -452,8 +571,11 @@
     display: flex;
     flex-direction: row;
 }
-
-
+.flex-column-jsf-cnt{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
 /*--Modal--*/
 .modal-wrapper {

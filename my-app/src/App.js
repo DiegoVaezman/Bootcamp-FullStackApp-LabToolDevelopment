@@ -22,11 +22,43 @@ import RequestSheet from './components/requestSheet';
 import StockSection from './components/stockSection';
 import ItemSheet from './components/itemSheet';
 import apiURL from './services/apiURL'
-
+import setAuthToken from './services/authToken'
 
 
 function App(props) {
+    const [loading, setLoading] = useState(true)
 
+    useEffect(() => {
+        let token = localStorage.getItem("labToolUser");
+        if (token) {
+            console.log("pasa por use effect if token hacer autologin")
+            autoLogin(token);
+        } else {
+            console.log("pasa por use effect if token else")
+            setLoading(false);
+            console.log(loading)
+        }
+    },[]);
+
+    const autoLogin = token => {
+        console.log(token)
+        axios.get(`${apiURL}user/user`, {headers: {authorization: `Bearer ${token}`}})
+        .then(user => {
+            console.log(token)
+            console.log(user)
+            console.log("pasa por autologin then")
+            setAuthToken(token);
+            setLoading(false);
+        })
+        .catch(err => {
+            console.log("pasa por autologin catch")
+            setAuthToken();
+            localStorage.removeItem('labToolUser');
+            setLoading(false);
+        });
+    };
+
+    
     const token = localStorage.getItem("labToolUser")
 
     const [user, setUser] = useState({})
@@ -39,7 +71,6 @@ function App(props) {
     return (
         <Router>
         <div className="App grid">
-            {(!token) && <Redirect to="/" />}
             <Switch>
                 <Route path="/" exact>
                     <Register />

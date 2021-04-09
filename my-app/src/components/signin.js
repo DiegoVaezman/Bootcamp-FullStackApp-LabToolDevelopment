@@ -106,7 +106,7 @@ function Signin(props) {
                 </div>
             </form>
             <div className="playground playgroundSignin">
-                <button className="button1" onClick={login}>LOG IN</button>
+                <button className="button1 signinButton" onClick={login}>LOG IN</button>
                 <p align="center">New user? <Link to="/signup" className="Link">Signup here</Link></p>
             </div>
             {response.success === true && 

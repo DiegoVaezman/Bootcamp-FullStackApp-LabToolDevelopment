@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {useState, useEffect} from 'react'
-import { Link , Route, Redirect} from 'react-router-dom'
+import { Link , Route, Redirect, withRouter} from 'react-router-dom'
 import Modal from "./modal"
 import ModalResponse from './modalResponse';
 import ModalConfirm from './modalConfirm';
@@ -23,7 +23,7 @@ function ItemSheet(props) {
     const productModalRef = React.useRef();
     const modifyItemModalRef = React.useRef();
     const responseModalRef = React.useRef();
-    const confirmDeleteModalRef = React.useRef();
+    const confirmModalRef = React.useRef();
     const deleteResponseModalRef = React.useRef();
     const openProductModal = () => {
         productModalRef.current.openModal()
@@ -34,8 +34,8 @@ function ItemSheet(props) {
     const openResponseModal = () => {
         responseModalRef.current.openModal()
     };
-    const openConfirmDeleteModal = () => {
-        confirmDeleteModalRef.current.openModal()
+    const openConfirmModal = () => {
+        confirmModalRef.current.openModal()
     }
     const openDeleteResponseModal = () => {
         deleteResponseModalRef.current.openModal()
@@ -48,21 +48,26 @@ function ItemSheet(props) {
         modifyItemModalRef.current.closeModal()
     };
     const closeResponseModal = () => {
+        response.delete === true && props.history.push("/stock")
+        response.success === true && closeModifyItemModal()
+        closeConfirmModal()
         setResponse({
             error: false,
             success: false,
+            delete: false,
             msg: ""
         })
         responseModalRef.current.closeModal()
     };
-    const closeConfirmDeleteModal = () => {
-        confirmDeleteModalRef.current.closeModal()
+    const closeConfirmModal = () => {
+        confirmModalRef.current.closeModal()
     };
 
 
     const [response, setResponse] = useState({
         success: false,
         error: false,
+        delete: false,
         msg: ""
     })
 
@@ -100,9 +105,10 @@ function ItemSheet(props) {
             console.log(res.data)
             setResponse({...response,
                 success: true,
+                delete: true,
                 msg: res.data.msg
             })
-            openDeleteResponseModal()
+            openResponseModal()
         })
         .catch(error => {
             console.log(error.response)
@@ -231,125 +237,142 @@ const handleToggleChange = (value) => {
 
 
 
+
+
+    console.log(dataItem.control)
     console.log("togle limit esta en" + toggleLimit)
     console.log(props.location.productData.name)
     return (
-        <div>
-            <Link to="/stock">Back</Link>
-            <div>
-            <img></img>
-            <h1>{props.location.productData.name}</h1>
+        <div className="gridSection">
+            <div className="back">
+                <Link className="Link" to="/stock">Back</Link>
             </div>
-            <div>
-                <button onClick={openProductModal}>Show product Sheet</button>
-                <p>Amount in stock: {dataItem.amount}</p>
-                <p>Storage: {dataItem.storage}</p>
-                <p>Limit control: {dataItem.control === true ? `Yes, ${dataItem.limit} units. Amount to order ${dataItem.automaticamount} units`: "No"}</p>
-                <p>Currently ordered? {dataItem.ordered === true ? "Yes" : "No"}</p>
-                <p>Last arrival: {dataItem.received}</p>
+            <div className="sheetBody sheetBodyRequest">
+                <div className="sheetRequestName">
+                    <h1>{props.location.productData.name}</h1>
+                    <button className="button1 edditButton" onClick={openProductModal}>Show product Sheet</button>
+                </div>
+                <div className="sheetInfo requestInfo">
+                    <p><b>In stock: </b>{dataItem.amount} unities</p>
+                    <p><b>Storage: </b>{dataItem.storage}</p>
+                    <p><b>Limit control: </b>{dataItem.control === true ? `Yes, ${dataItem.limit} units. Amount to order ${dataItem.automaticamount} units`: "No"}</p>
+                    <p><b>Currently ordered? </b>{dataItem.ordered === true ? "Yes" : "No"}</p>
+                    <p><b>Last arrival: </b>{dataItem.received}</p> {/* NO ME DEJA PONER .substring(0,10) */}
+                    <button className="button1 edditItemButton" onClick={openModifyItemModal}><p>Modify item or set a <b>limit control</b></p></button>
+                </div>
             </div>
-            <div>
-                <button onClick={reduceItem}>Spend one unit</button>
-                <button onClick={openModifyItemModal}>Modify item or set a limit control</button>
+            <div className="playground playgroundSheet">
+                <button className="spendButton" onClick={reduceItem}><h2>Spend one unit</h2></button>
             </div>
             <Modal ref={productModalRef}>
-                <button onClick={closeProductModal}className="close">Close</button>
-                <div>
-                    <img />
-                    <h1>{"nombre del producto enlazado al pedido"}</h1>
-                </div>
-                <div>
-                    <p>Catalog number: {"product.catalog_number"}</p>
-                    <p>Type: {"product.type"}</p>
-                    <p>Trading house: {"product.trading_house"}</p>
-                    <p>Reference number: {"product.reference_number"}</p>
-                    <p>Price: {"product.price"}€</p>
-                    <p>information: </p> 
-                    {/* {item.information && <p>Information: {item.information}</p>} */}
+                <div className="Section">
+                    <div className="modalHead">
+                        <button className="closeButton" onClick={closeProductModal}>X</button>
+                    </div>
+                    <div className="sheetBody sheetBodyProduct">
+                        <div>
+                            <img />
+                            <h1>{props.location.productData.name}</h1>
+                        </div>
+                        <div className="sheetInfo">
+                            <p><b>Catalog number: </b>{props.location.productData.catalog_number}</p>
+                            <p><b>Type: </b>{props.location.productData.type}</p>
+                            <p><b>Trading house: </b>{props.location.productData.trading_house}</p>
+                            <p><b>Reference number: </b>{props.location.productData.reference_number}</p>
+                            <p><b>Price: </b>{props.location.productData.price}€</p>
+                            <p><b>Information: </b>{props.location.productData.information}</p>
+                            {/* {item.information && <p>Information: {item.information}</p>} */}
+                        </div>
+                    </div>
                 </div>
             </Modal>
             <Modal ref={modifyItemModalRef}>
-                <div>MODAL PARA MODIFICAR ITEM</div>
-                <button onClick={closeModifyItemModal}>Close</button>
-                <form className="form">
-                    <div>
-                        <div>
-                            <label htmlFor="amount">Amount</label>
-                            <input type="text" name="amount" placeholder="Amount" onChange={handleEdditInputChange}/>
-                        </div>
-                        <div>
-                            <label htmlFor="storage">Storage</label>
-                            <input type="text" name="storage" placeholder="Storage" onChange={handleEdditInputChange}/>
-                        </div>
-                        <button onClick={edditItem}>Save</button>
+                <div className="edditItemModal">
+                    <div className="modalHead">
+                        <h1>Edit and set limit</h1>
+                        <button className="closeButton" onClick={closeModifyItemModal}><p><b>X</b></p></button>
                     </div>
-                </form>
-                <form className="form">
-                    <div>
-                        <div>
-                            <p>Limit control</p>
-                            <div>
-                                <label htmlFor="radioLimitYes">Yes</label>
-                                {dataItem.control === true ? <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => {handleToggleChange(true)}}defaultChecked/> : <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => {handleToggleChange(true)}}/>}
+                    <div className="editItemBody">
+                        <form className="form edditItemSec">
+                            <div className="flex-column">
+                                <label htmlFor="amount">Amount</label>
+                                <input type="text" name="amount" placeholder="Amount" onChange={handleEdditInputChange}/>
                             </div>
-                            <div>
-                                <label htmlFor="radioLimitNo">No</label>
-                                {dataItem.control === false ? <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => {handleToggleChange(false)}} defaultChecked/> : <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => {handleToggleChange(false)}}/>}
+                            <div className="flex-column">
+                                <label htmlFor="storage">Storage</label>
+                                <input type="text" name="storage" placeholder="Storage" onChange={handleEdditInputChange}/>
                             </div>
+                            <button className="button1 itemFormButton" onClick={edditItem}><p><b>Save</b></p></button>
+                        </form>
+                        <form className="form limitItemSec">
+                            <p><b>LIMIT CONTROL</b></p>
+                            <div className="yes-noLimit">
+                           
+                                    <label htmlFor="radioLimitYes">Yes</label>
+                                    {dataItem.control === true ? <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => {handleToggleChange(true)}} defaultChecked/> : <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => {handleToggleChange(true)}}/>}
+                            
+                                    <label htmlFor="radioLimitNo">No</label>
+                                    {dataItem.control === false ? <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => {handleToggleChange(false)}} defaultChecked/> : <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => {handleToggleChange(false)}}/>}
+                             
+
+                            </div>
+                            {toggleLimit === true &&
+                            <div className="limitForm">
+                                <div className="flex-column">
+                                    <label htmlFor="limit">Minimum amount</label>
+                                    <input type="text" name="limit" placeholder="minimum amount" onChange={handleLimitInputChange}/>
+                                </div>
+                                <div className="flex-column">
+                                    <label htmlFor="automaticamount">Quantity to order</label>
+                                    <input type="text" name="automaticamount" placeholder="Quantity" onChange={handleLimitInputChange}/>
+                                </div>
+                                <button className="button1 itemFormButton" onClick={setLimit}><p><b>Set Limit</b></p></button>
+                            </div>
+                            }
+                            
+                        </form>
+                        <div className="deleteItemDiv">
+                            <button className="deleteButton"  onClick={openConfirmModal}><p><b>Delete</b></p></button>
                         </div>
-                        {toggleLimit === true &&
-                        <div>
-                            <div>
-                                <label htmlFor="limit">Minimum amount</label>
-                                <input type="text" name="limit" placeholder="minimum amount" onChange={handleLimitInputChange}/>
-                            </div>
-                            <div>
-                                <label htmlFor="automaticamount">Quantity to order</label>
-                                <input type="text" name="automaticamount" placeholder="Quantity" onChange={handleLimitInputChange}/>
-                            </div>
-                        </div>
-                        }
-                        <button onClick={setLimit}>Set Limit</button>
                     </div>
-                </form>
-                <div>
-                    <button onClick={openConfirmDeleteModal}>Delete item</button>
                 </div>
             </Modal>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
-                    {closeConfirmDeleteModal()}
-                    {/* no puedo poner closeModifyItemModal(), error de rerenders */}
-                    <div>
+                    <div className="modalResponse">
                         <SuccessResponse />
-                        <h1>{response.msg}</h1>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <p><b>{response.msg}</b></p>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}className="close">Close</button>
                     </div>
                 </ModalResponse>
             }
             {response.error === true && 
                 <ModalResponse ref={responseModalRef}>
-                    <div>
+                    <div className="modalResponse">
                         <ErrorResponse />
-                        <p>{response.msg}</p>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <p><b>{response.msg}</b></p>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}className="close">Close</button>
                     </div>
                 </ModalResponse>
             }
-            <ModalConfirm ref={confirmDeleteModalRef}>
-                <h1>Are you sure?</h1>
-                <button onClick={deleteItem}>Yes</button>
-                <button onClick={closeConfirmDeleteModal}>No</button>   {/* ESTO NO SIRVE O DEBERÍA SER DE OTRA FORMA */}
-            </ModalConfirm>
-            <ModalResponse ref={deleteResponseModalRef}>
+            <ModalResponse ref={confirmModalRef}>
+                <div className="modalResponse">
+                    <h1>Are you sure?</h1>
+                    <div className="yesNoButtons">
+                        <button className="deleteButton" onClick={deleteItem}>Yes</button>
+                        <button className="deleteButton" onClick={closeConfirmModal}>No</button>
+                    </div>
+                </div>
+            </ModalResponse>
+            {/* <ModalResponse ref={deleteResponseModalRef}>
                     <div>
                         <SuccessResponse />
                         <p>{response.msg}</p>
                         <Link to="/stock" className="close">Close</Link>
                     </div>
-            </ModalResponse>
+            </ModalResponse> */}
         </div>
     )
 }
 
-export default ItemSheet
+export default withRouter(ItemSheet)

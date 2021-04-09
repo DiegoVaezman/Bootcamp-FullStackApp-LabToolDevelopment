@@ -104,7 +104,7 @@ function SignUp() {
                 </div>
             </form>
             <div className="playground playgroundSignup">
-                <button className="button1" onClick={register}>CREATE ACCOUNT</button>
+                <button className="button1 signupButton" onClick={register}>CREATE ACCOUNT</button>
                 <p align="center">Already have an account? <Link className="Link" to="/signin">Login here</Link></p>
             </div>
             {response.success === true && 

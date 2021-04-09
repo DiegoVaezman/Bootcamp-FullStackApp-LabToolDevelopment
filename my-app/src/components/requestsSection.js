@@ -68,37 +68,31 @@ function RequestsSection() {
                 <button onClick={() => setSelectedList({received : true})}>Received</button>
                 <button onClick={() => setSelectedList({all : true})}>All</button> */}
             </div>
-
-            {(selectedList.new === true && dataNewRequests.length > 0) && 
+            
             <div className="list">
-                {dataNewRequests.reverse().map((item, index) => {
-                    return <RequestsListItem order={item} key={index} />
-                })}
-            </div>}
-
-            {(selectedList.validated === true && dataValidatedRequests.length > 0) && 
-            <div className="list">
-                {dataValidatedRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} />
-                })}
-            </div>}
-
-            {(selectedList.received === true && dataReceivedRequests.length > 0) && 
-            <div className="list">
-                {dataReceivedRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} />
-                })}
-            </div>}
-
-            {(selectedList.all === true && dataAllRequests.length > 0) && 
-            <div className="list">
-                {dataAllRequests.map((item, index) => {
-                    return <RequestsListItem order={item} key={index} />
-                })}
-            </div>}
-  
+                {(selectedList.new === true && dataNewRequests.length > 0) && 
+                    dataNewRequests.reverse().map((item, index) => {
+                        return <RequestsListItem order={item} key={index} />
+                    })
+                }
+                {(selectedList.validated === true && dataValidatedRequests.length > 0) && 
+                    dataValidatedRequests.map((item, index) => {
+                        return <RequestsListItem order={item} key={index} />
+                    })
+                }
+                {(selectedList.received === true && dataReceivedRequests.length > 0) && 
+                    dataReceivedRequests.map((item, index) => {
+                        return <RequestsListItem order={item} key={index} />
+                    })
+                }
+                {(selectedList.all === true && dataAllRequests.length > 0) && 
+                    dataAllRequests.map((item, index) => {
+                        return <RequestsListItem order={item} key={index} />
+                    })
+                }
+            </div>
             <div className="addProductBtn">
-                <Link className="Link" to="/products">Add new request</Link>
+                <Link className="Link" to="/products"><b>+ Add new request</b></Link>
             </div>
         </div>
     )

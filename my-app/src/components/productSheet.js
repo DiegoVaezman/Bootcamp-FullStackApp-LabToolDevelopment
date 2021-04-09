@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import {useState, useEffect} from 'react'
-import { Link , Route} from 'react-router-dom'
+import { Link , Route, withRouter} from 'react-router-dom'
 import Modal from "./modal"
 import ModalResponse from './modalResponse';
 import ModalConfirm from './modalConfirm';
@@ -10,7 +10,7 @@ import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
 
 import {Redirect} from 'react-router-dom'
-import {withRouter} from "react-router-dom"
+
 
 
 function ProductSheet(props) {
@@ -244,7 +244,6 @@ function ProductSheet(props) {
                 </form>
                 <button className="button1 requestButton" onClick={edditProduct}><h2>Save</h2></button>
                 <button className="deleteButton"onClick={openConfirmModal}>Delete</button>
-            
             </Modal>
             <ModalResponse ref={confirmModalRef} >
                 <div className="modalResponse">

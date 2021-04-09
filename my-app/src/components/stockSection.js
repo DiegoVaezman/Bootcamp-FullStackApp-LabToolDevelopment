@@ -108,8 +108,9 @@ function StockSection(dataBase){
 
     
     return (
-        <div>
-            <div className="filter">
+        <div className="gridSection grid">
+            {/* FILTRADO DE STOCK. POR AHORA NO IMPLEMENTADO HASTA CONSEGUIR ACCEDER A PRODUCT DOC DESDE PRODUCT_ID DEL ITEM DOC (modificar estilo listStock para incluir el filtro)*/}
+            {/* <div className="filter">
                 <select id="select" name="bytype" onClick={searchByType}>
                     <option >Type</option>
                     <option defaultValue="All">All</option>
@@ -125,10 +126,10 @@ function StockSection(dataBase){
                     <option value="other">Others</option>
                     <option value="added">Productos agregados</option>
                 </select>
-                <button onClick={openSearchModal}>Advanced Search</button>
-            </div>
+                <button className="button1" onClick={openSearchModal}>Advanced Search</button>
+            </div> */}
 
-            <div className="list">
+            <div className="listStock">
                 {dataFiltered.map((item, index) => {
                     return <StockListItem item={item} key={index} />
                 })}
