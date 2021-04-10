@@ -105,16 +105,14 @@ function Signin(props) {
                     <input type="text" name="password" placeholder="Password" onChange={handleSigninInputChange}/>
                 </div>
             </form>
-            <div className="playground playgroundSignin">
-                <button className="button1 signinButton" onClick={login}>LOG IN</button>
-                <p align="center">New user? <Link to="/signup" className="Link">Signup here</Link></p>
-            </div>
+            <button className="button1 signinButton" onClick={login}>SIGN IN</button>
+            <p className="accountText" align="center">New user? <Link to="/signup" className="Link">Signup here</Link></p>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">
                         <SuccessResponse />
                         <h4>{response.msg}</h4>
-                        <button className="button1 sizeModalButton"><Link to="/home">Close</Link></button>
+                        <button className="button1 sizeModalButton"><Link className="txtNoDeco" to="/home">Close</Link></button>
                     </div>
                 </ModalResponse>
             }

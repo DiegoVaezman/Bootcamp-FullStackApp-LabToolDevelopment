@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom'
 function UserListItem(props) {
 
     return (
-        <Link to={{pathname:`/user/usersheet/${props.user._id}`, data:props}} >
+        <Link className="txtNoDeco" to={{pathname:`/user/usersheet/${props.user._id}`, data:props}} >
             <div className="productListItem" product={props}>
                 
-                    <div>{props.user.fullname}</div>
+                    <div className="productName">{props.user.fullname}</div>
                     <div className="productInfo">
-                        <p>Rol:{props.user.rol}</p>
+                        <p>{props.user.rol}</p>
                     </div>
             
             </div>

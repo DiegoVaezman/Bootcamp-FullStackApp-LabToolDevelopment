@@ -5,8 +5,8 @@ function Register() {
     return (
         <div className="register app grid">
             <div className="registerLogo"><img src="../../img/LabTool_logo.png" alt="LabTool_logo"/></div>
-            <Link to="/signup"className="button1 signupButton"><p>SIGN UP</p></Link>
-            <Link to="/signin" className="button1 signinButton"><p>SIGN IN</p></Link>
+            <Link to="/signup"className="button1 signupButtonRegister"><p>SIGN UP</p></Link>
+            <Link to="/signin" className="button1 signinButtonRegister"><p>SIGN IN</p></Link>
         </div>
 
     )

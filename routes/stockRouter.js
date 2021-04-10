@@ -229,6 +229,10 @@ router.put("/:id/setlimit", protectedRoute, (req, res) => {
             if (control === false) {
                 limit = 0
                 automaticamount = 0
+            } else {
+                if (!limit || !automaticamount) {
+                    return res.status(400).send({ msg: "Minimum amount and quantity to order is required"})
+                }
             }
             console.log(limit)
             console.log(control)

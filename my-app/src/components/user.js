@@ -32,6 +32,7 @@ function User(props) {
         confirmModalRef.current.openModal()
     }
     const closeEdditUserModal = () => {
+        setEdditUserInputValue({})
         edditUserModalRef.current.closeModal()
     };
     const closeUsersModal = () => {
@@ -138,72 +139,72 @@ function User(props) {
 
 
     return (
-        <div>
-            <div>
-            <img></img>
-            <h1>{props.user.fullname}</h1>
-            </div>
-            <div>
-                <p>E-mail: {props.user.email}</p>
-                <p>Position: {props.user.position}</p>
-                <p>Rol: {props.user.rol}</p>
-            </div>
-            <button onClick={openEdditUserModal}>Modify user information</button>
-            <button onClick={logout}>Log out</button>
-
-            <div>
-                <h1>Users</h1>
-                <div className="list">
-                    {data.map((item, index) => {
-                        return <UserListItem user={item} localState={data} key={index} />
-                    })}
+        <div className="gridSection">
+            <div className="sheetBodyUser">
+                <div className="sheetRequestName">
+                    <h1>{props.user.fullname}</h1>
                 </div>
+                <div className="sheetInfo requestInfo">
+                    <p><b>E-mail: </b>{props.user.email}</p>
+                    <p><b>Position: </b>{props.user.position}</p>
+                    <p><b>Rol: </b>{props.user.rol}</p>
+                    <button className="button1 edditButton" onClick={openEdditUserModal}>Modify user</button>
+                </div>
+                <button className="spendButton logoutButton"onClick={logout}><p><b>Log out</b></p></button>
+                    <h2>Users</h2>
+                    <div className="list usersList">
+                        {data.map((item, index) => {
+                            return <UserListItem user={item} localState={data} key={index} />
+                        })}
+                    </div>
             </div>
 
 
             <Modal ref={edditUserModalRef}>
-                <div>
+                <div className="modalHead">
                     <h1>Modify user</h1>
-                    <button onClick={closeEdditUserModal}className="close">Close</button>
+                    <button className="closeButton" onClick={closeEdditUserModal}>X</button>
                 </div>
-                <form className="form">
-                    <div>
+                <form className="form modalFormRequest">
+                    <div className="flex-column">
                         <label htmlFor="fullname">New name</label>
                         <input type="text" name="fullname" placeholder="New name" onChange={handleEdditUserInputChange}/>
                     </div>
-                    <div>
+                    <div className="flex-column">
                         <label htmlFor="position">New position</label>
                         <input type="text" name="position" placeholder="Position" onChange={handleEdditUserInputChange}/>
                     </div>
                 </form>
-                <div>
-                    <button onClick={edditUser}>Save</button>
-                    <button onClick={openConfirmModal}>Delete account</button>
-                </div>
+                <button className="button1 requestButton"onClick={edditUser}><h2>Save</h2></button>
+                <button className="deleteButton" onClick={openConfirmModal}>Delete account</button>
             </Modal>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
-                    <div>
+                    <div className="modalResponse">
                         <SuccessResponse />
-                        <h1>{response.msg}</h1>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <p><b>{response.msg}</b></p>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
             {response.error === true && 
                 <ModalResponse ref={responseModalRef}>
-                    <div>
+                    <div className="modalResponse">
                         <ErrorResponse />
-                        <p>{response.msg}</p>
-                        <button onClick={closeResponseModal}className="close">Close</button>
+                        <p><b>{response.msg}</b></p>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
-            <ModalConfirm ref={confirmModalRef}>
-                <h1>Are you sure?</h1>
-                <button onClick={deleteUser}>Yes</button>
-                <button onClick={closeConfirmModal}>No</button>   {/* ESTO NO SIRVE O DEBERÍA SER DE OTRA FORMA */}
-            </ModalConfirm>
+            <ModalResponse ref={confirmModalRef}>
+                <div className="modalResponse">
+                    <h1>Are you sure?</h1>
+                    <div className="yesNoButtons">
+                        <button className="deleteButton" onClick={deleteUser}>Yes</button>
+                        <button className="deleteButton" onClick={closeConfirmModal}>No</button>
+                    </div>
+                </div>
+            </ModalResponse>
         </div>
     )
 }

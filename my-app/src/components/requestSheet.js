@@ -278,7 +278,7 @@ function RequestSheet(props) {
             <div className="back">
                 <Link className="Link" to="/requests">Back</Link>
             </div>
-            <div className="sheetBody sheetBodyRequest">
+            <div className="sheetBody">
                 <div className="sheetRequestName">
                     <h1>{props.location.productData.name}</h1>
                     <button className="button1 edditButton" onClick={openProductModal}>Show product Sheet</button>
@@ -364,7 +364,7 @@ function RequestSheet(props) {
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">
                         <SuccessResponse />
-                        <h1>{response.msg}</h1>
+                        <p>{response.msg}</p>
                         <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>

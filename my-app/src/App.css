@@ -123,7 +123,6 @@
     color: black;
     grid-row: 1 / 8;
     grid-column: 2 / 10;
-    
 }
 
 
@@ -143,7 +142,14 @@
     width: 100%;
     height: 100%;
 }
-
+.signupButtonRegister{
+    grid-column: 2 / 10;
+    grid-row: 33 / 35;
+}
+.signinButtonRegister{
+    grid-column: 2 / 10;
+    grid-row: 30 / 32;
+}
 /*--SIGNUP--*/
 .logoSignup{
     grid-column: 4 / 8;
@@ -164,10 +170,7 @@
     grid-column: 2 / 10;
     grid-row: 31 / 39;
 }
-.signupButton{
-    grid-row: 31 / 33;
-    grid-column: 2 / 10;
-}
+
 
 /*--SIGNIN*/
 .logoSignin{
@@ -185,11 +188,14 @@
     grid-column: 2 / 10;
     grid-row: 28 / 36;
 }
-.signinButton{
-    grid-row: 34 / 36;
+.signinButton, .signupButton{
+    grid-row: 32 / 34;
     grid-column: 2 / 10;
 }
-
+.accountText{
+    grid-row: 35 / 36;
+    grid-column: 2 / 10;
+}
 /*--HEADER--*/
 .header{
     grid-column: 1 / 11;
@@ -272,7 +278,7 @@
     grid-row: 2 / 39;
     overflow: scroll;
     overflow-x: hidden;  /*No lo pillab*/
-    background-color: rgb(136, 124, 106);
+    background-color: rgb(255, 250, 244);
 }
 .filter{
     display:flex;
@@ -465,7 +471,7 @@
     display:flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 35%;
+    height:40%;
     border-bottom: 2px solid rgb(211, 178, 116);
     padding-bottom: 20px;
 }
@@ -483,7 +489,7 @@
     display:flex;
     flex-direction: column;
     justify-content: space-between;
-    
+    height: 53%;
 }
 /*--radioButtons*/
 .yes-noLimit input[type="radio"] {
@@ -502,7 +508,7 @@
     text-align: center;
 }
 .yes-noLimit input[type="radio"]:checked + label {
-    background-color:rgb(255, 202, 103);
+    background-color:rgb(103, 144, 255);
     border: 3px solid white;
     border-style: outset;
 }
@@ -521,11 +527,34 @@
 .itemFormButton{
     height: 30px;
     width: 130px;
+    margin-top: 10px;
 }
 .deleteItemDiv{
     margin-top: auto;
     margin-bottom: 10px;
 }
+
+/*--USER SECTION*/
+
+.sheetBodyUser{
+    grid-column: 1 / 11;
+    grid-row: 4 / 39;
+    display:flex;
+    flex-direction: column;
+    justify-content: start;
+}
+.logoutButton{
+    width: 30%;
+    height: 25%;
+    align-self: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.usersList{
+    height: 100%;
+}
+
+
 
 /*COMMON FORMS*/
 .form input, .form select, .filter select{
@@ -547,9 +576,9 @@
     grid-template-columns: repeat(10, 1fr);
 
 }
-.signinButton, .signupButton{
+/* .signinButton, .signupButton{
     grid-row: 2 / 5;
-}
+} */
 .playground p{
     grid-row: 7 / 8;
 }

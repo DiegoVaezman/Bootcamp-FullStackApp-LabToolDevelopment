@@ -45,6 +45,14 @@ function ItemSheet(props) {
     };
     const closeModifyItemModal = () => {
         setToggleLimit(dataItem.control)
+        setLimitInputValue({
+            limit: "",
+            automaticamount:""
+        })
+        setEdditInputValue({
+            amount: "",
+            storage:""
+        })
         modifyItemModalRef.current.closeModal()
     };
     const closeResponseModal = () => {
@@ -189,7 +197,8 @@ function ItemSheet(props) {
     
 //-----------------------------
 const [limitInputValue, setLimitInputValue] = useState({
-
+    limit: "",
+    automaticamount:""
 })
 const handleLimitInputChange = (event) => {
     const value = !isNaN(event.target.value) ? parseFloat(event.target.value) : event.target.value
@@ -256,7 +265,7 @@ const handleToggleChange = (value) => {
                     <p><b>In stock: </b>{dataItem.amount} unities</p>
                     <p><b>Storage: </b>{dataItem.storage}</p>
                     <p><b>Limit control: </b>{dataItem.control === true ? `Yes, ${dataItem.limit} units. Amount to order ${dataItem.automaticamount} units`: "No"}</p>
-                    <p><b>Currently ordered? </b>{dataItem.ordered === true ? "Yes" : "No"}</p>
+                    <p><b>Currently ordered? </b>{dataItem.request === true ? "Yes" : "No"}</p>
                     <p><b>Last arrival: </b>{dataItem.received}</p> {/* NO ME DEJA PONER .substring(0,10) */}
                     <button className="button1 edditItemButton" onClick={openModifyItemModal}><p>Modify item or set a <b>limit control</b></p></button>
                 </div>
@@ -320,15 +329,15 @@ const handleToggleChange = (value) => {
                             <div className="limitForm">
                                 <div className="flex-column">
                                     <label htmlFor="limit">Minimum amount</label>
-                                    <input type="text" name="limit" placeholder="minimum amount" onChange={handleLimitInputChange}/>
+                                    <input type="text" name="limit" placeholder={dataItem.control ===true ? dataItem.limit : "Minimum amount"} onChange={handleLimitInputChange}/>
                                 </div>
                                 <div className="flex-column">
                                     <label htmlFor="automaticamount">Quantity to order</label>
-                                    <input type="text" name="automaticamount" placeholder="Quantity" onChange={handleLimitInputChange}/>
+                                    <input type="text" name="automaticamount" placeholder={dataItem.control ===true ? dataItem.automaticamount : "Quantity"} onChange={handleLimitInputChange}/>
                                 </div>
-                                <button className="button1 itemFormButton" onClick={setLimit}><p><b>Set Limit</b></p></button>
                             </div>
                             }
+                            <button className="button1 itemFormButton" onClick={setLimit}><p><b>Set Limit</b></p></button>
                             
                         </form>
                         <div className="deleteItemDiv">
@@ -342,7 +351,7 @@ const handleToggleChange = (value) => {
                     <div className="modalResponse">
                         <SuccessResponse />
                         <p><b>{response.msg}</b></p>
-                        <button className="button1 sizeModalButton" onClick={closeResponseModal}className="close">Close</button>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }
@@ -351,7 +360,7 @@ const handleToggleChange = (value) => {
                     <div className="modalResponse">
                         <ErrorResponse />
                         <p><b>{response.msg}</b></p>
-                        <button className="button1 sizeModalButton" onClick={closeResponseModal}className="close">Close</button>
+                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
             }

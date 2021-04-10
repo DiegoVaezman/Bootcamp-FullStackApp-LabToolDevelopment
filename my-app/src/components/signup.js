@@ -103,16 +103,16 @@ function SignUp() {
                     </select>
                 </div>
             </form>
-            <div className="playground playgroundSignup">
+         
                 <button className="button1 signupButton" onClick={register}>CREATE ACCOUNT</button>
-                <p align="center">Already have an account? <Link className="Link" to="/signin">Login here</Link></p>
-            </div>
+                <p className="accountText" align="center">Already have an account? <Link className="Link" to="/signin">Login here</Link></p>
+          
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">
                         <SuccessResponse />
                         <h4>{response.msg}</h4>
-                        <button className="button1 sizeModalButton"><Link to="/signin" >Close</Link></button>
+                        <button className="button1 sizeModalButton"><Link className="txtNoDeco" to="/signin" >Close</Link></button>
                     </div>
                 </ModalResponse>
             }

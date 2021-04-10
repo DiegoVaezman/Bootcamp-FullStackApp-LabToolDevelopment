@@ -42,12 +42,16 @@ function ProductSection(dataBase){
     };
 
     //CONSIGUIENDO LA DATA DE PRODUCTOS DESDE DB
-    const [data, setData] = useState([])
+    const [data, setData] = useState([""])
 
     async function getData() {
         const dataBase = await axios.get(`${apiURL}product/`);
+        if (dataBase.data.msg) { 
+            return
+        } else {
         setData(dataBase.data)
         setDataFiltered(dataBase.data)
+        }
     }
     useEffect(() => {
         getData()
@@ -162,7 +166,7 @@ function ProductSection(dataBase){
         });
     }
 
-    
+    console.log(dataFiltered)
     return (
         <div className="gridSection grid">
             <div className="filter">
