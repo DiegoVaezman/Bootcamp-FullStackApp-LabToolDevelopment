@@ -27,9 +27,22 @@ function ProductSection(dataBase){
         responseModalRef.current.openModal()
     };
     const closeSearchModal = () => {
+        setInputValue({
+            byname: "",
+            bycatn: "",
+            byrefn:""
+        })
         searchModalRef.current.closeModal()
     };
     const closeAddModal = () => {
+        setAddInputValue({
+            catalog_number: "",
+            name: "",
+            trading_house : "",
+            reference_number: "",
+            price : "",
+            information : ""
+        })
         addModalRef.current.closeModal()
     };
     const closeResponseModal = () => {
@@ -133,18 +146,7 @@ function ProductSection(dataBase){
     }
     const addNewProduct = () => {
      
-        axios.post(`${apiURL}product/newproduct`, 
-        // {
-        //     catalog_number: Number(addInputValue.catalog_number),
-        //     name: addInputValue.name,
-        //     type : addInputValue.type,
-        //     trading_house : addInputValue.trading_house,
-        //     reference_number: addInputValue.reference_number,
-        //     price : Number(addInputValue.price),
-        //     information : addInputValue.information
-        // }
-        {...addInputValue}
-        )
+        axios.post(`${apiURL}product/newproduct`, {...addInputValue})
         .then(res => {
             console.log("producto añadido!")
             console.log(res.data)
@@ -153,6 +155,7 @@ function ProductSection(dataBase){
                 msg: `${res.data.name} has been added to the product list!`
             })
             openResponseModal()
+            closeAddModal()
             getData()
         })
         .catch(error => {
@@ -166,7 +169,6 @@ function ProductSection(dataBase){
         });
     }
 
-    console.log(dataFiltered)
     return (
         <div className="gridSection grid">
             <div className="filter">
@@ -183,7 +185,7 @@ function ProductSection(dataBase){
                     <option value="chemical">Chemicals</option>
                     <option value="glass">Glass</option>
                     <option value="other">Others</option>
-                    <option value="added">Productos agregados</option>
+                    <option value="added">Added</option>
                 </select>
                 <button className="button1"onClick={openSearchModal}>Advanced Search</button>
             </div>
@@ -263,7 +265,6 @@ function ProductSection(dataBase){
             </Modal>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
-                    {closeAddModal()}
                     <div className="modalResponse">
                         <SuccessResponse />
                         <p><b>{response.msg}</b></p>

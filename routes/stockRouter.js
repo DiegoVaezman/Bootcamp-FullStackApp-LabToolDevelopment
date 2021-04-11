@@ -157,6 +157,8 @@ router.put("/reduce/:id", protectedRoute, (req, res) => {
                             res.status(400).send({msg: error.message})
                         })
                     })
+                } else {
+                    return res.status(200).send({ msg:"Amount reduced"})
                 }
             })
         })
@@ -181,21 +183,21 @@ router.put("/:id/modify", protectedRoute, (req, res) => {
             let amount = req.body.amount
             let storage = req.body.storage
             
-            console.log(typeof amount)
-            if (amount == undefined) {
+            console.log(amount)
+            if (amount == "") {
                 amount = item.amount
             }
-            console.log(amount)
-            if (item.storage != undefined && storage == undefined) {
+            console.log(storage)
+            if (storage == "") {
                 storage = item.storage
             }
-            console.log(item.storage)
+            
 
             try {
             validateNumber(amount)
-            if (item.storage != undefined){
-                validateString(storage)
-            }
+            // if (item.storage != undefined){
+            //     validateString(storage)
+            // }
             } catch (error) {
                 return res.status(400).send({ msg: error.message})  
             }

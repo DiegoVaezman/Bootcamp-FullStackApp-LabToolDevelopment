@@ -56,7 +56,7 @@ function RequestsSection() {
                 <input type="radio" id="radioNew" name="radioVar" value="new" onClick={() => setSelectedList({new : true})} defaultChecked/>
                 <label for="radioNew"><b>New</b></label>
                 <input type="radio" id="radioValidate" name="radioVar" value="validated" onClick={() => setSelectedList({validated : true})} />
-                <label for="radioValidate"><b>validated</b></label>
+                <label for="radioValidate"><b>Validated</b></label>
                 <input type="radio" id="radioReceived" name="radioVar" value="received" onClick={() => setSelectedList({received : true})} />
                 <label for="radioReceived"><b>Received</b></label>
                 <input type="radio" id="radioAll" name="radioVar" value="all" onClick={() => setSelectedList({all : true})} />

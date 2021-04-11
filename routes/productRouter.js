@@ -26,7 +26,7 @@ router.post("/newproduct", protectedRoute, (req, res) => {
     try {
         const catalog_number = req.body.catalog_number    
         const name = req.body.name
-        const type = req.body.type
+        const type = "added"
         const trading_house = req.body.trading_house
         const reference_number = req.body.reference_number
         const price = req.body.price

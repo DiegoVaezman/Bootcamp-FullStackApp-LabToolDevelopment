@@ -312,6 +312,9 @@
     overflow: scroll;
     white-space: nowrap;
 }
+.catNInfo{
+    width: 10%;
+}
 .productInfo{
     display:flex;
     flex-direction: row;

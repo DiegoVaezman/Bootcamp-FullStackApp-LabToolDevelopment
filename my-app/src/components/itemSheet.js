@@ -128,6 +128,7 @@ function ItemSheet(props) {
         });
     }
 
+    //REDUCIENDO ITEM
     const reduceItem = () => {
         
         console.log("se reduce")
@@ -160,7 +161,8 @@ function ItemSheet(props) {
 
     //EDITANDO PRODUCTO
     const [edditInputValue, setEdditInputValue] = useState({
-
+        amount: "",
+        storage: ""
     })
     const handleEdditInputChange = (event) => {
         const value = !isNaN(event.target.value) ? parseFloat(event.target.value) : event.target.value

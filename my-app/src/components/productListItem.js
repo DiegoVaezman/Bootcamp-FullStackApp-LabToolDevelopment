@@ -10,7 +10,7 @@ function ProductListItem(props) {
                     <div className="productName"><p>{props.product.name}</p></div>
                     <div className="productInfo">
                         <p><b>Cat.N: </b>{props.product.catalog_number}</p>
-                        <p><b>House: </b>{props.product.trading_house}</p>
+                        <p><b>H: </b>{props.product.trading_house}</p>
                         <p><b>Ref: </b>{props.product.reference_number}</p>
                         <p><b>Price: </b>{props.product.price}€</p>
                     </div>

@@ -364,7 +364,7 @@ function RequestSheet(props) {
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">
                         <SuccessResponse />
-                        <p>{response.msg}</p>
+                        <p><b>{response.msg}</b></p>
                         <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
                     </div>
                 </ModalResponse>
