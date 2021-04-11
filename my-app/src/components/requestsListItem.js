@@ -42,7 +42,9 @@ function RequestsListItem(props) {
         getUser()
     },[])
 
-    console.log(productData.data)
+    const word = "hola"
+    console.log(word)
+    console.log(word.split('').reverse().join(''))
     return (
         <Link className="txtNoDeco" to={{pathname:`/requests/requestsheet/${props.order._id}`, data:props, productData:productData.data}} >
             <div className="productListItem" >
@@ -58,7 +60,7 @@ function RequestsListItem(props) {
                 <div className="productInfo">
                     <p><b>Amount: </b>{props.order.amount}</p>
                     <p>{userData.fullname}</p>
-                    <p>{props.order.date.substring(0,10)}</p>
+                    <p>{props.order.date.substring(0,10).split('-').reverse().join('-')}</p>
                     <div ClassName="requestListItemStatus">
                         {(props.order.status === "waiting") && <p style={{color: "orange"}}><b>{props.order.status}</b></p>}
                         {(props.order.status === "validated") && <p style={{color: "green"}}><b>{props.order.status}</b></p>}

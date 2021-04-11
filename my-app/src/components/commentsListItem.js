@@ -30,7 +30,7 @@ function CommentListItem(props) {
                                 <b>@{userName.data.fullname}</b>
                         </div>
                         <div>
-                                {props.comment.date.substring(0,10)}
+                                <p style={{fontSize:"13px"}}>{`${props.comment.date.substring(0,10).split('-').reverse().join('-')} / ${props.comment.date.substring(11,16)}`}</p>
                         </div>
                 </div>
                 <div className="productInfo">

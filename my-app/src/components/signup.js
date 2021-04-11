@@ -92,7 +92,7 @@ function SignUp() {
                 </div>
                 <div className="flex-column">
                     <label htmlFor="password">Password</label>
-                    <input type="text" name="password" placeholder="Password" onChange={handleSignupInputChange}/>
+                    <input type="password" name="password" placeholder="Password" onChange={handleSignupInputChange}/>
                 </div>
                 <div className="flex-column">
                     <label htmlFor="rol">Rol</label>

@@ -34,17 +34,20 @@ function StockSection(dataBase){
         responseModalRef.current.closeModal()
     };
 
+
+    const [loading, setLoading] = useState(true)
+
     //CONSIGUIENDO LA DATA DE STOCK DESDE DB
     const [data, setData] = useState([])
 
     async function getData() {
         const dataBase = await axios.get(`${apiURL}stock/`);
+        setLoading(false)
         setData(dataBase.data)
         setDataFiltered(dataBase.data)
     }
     useEffect(() => {
         getData()
-        console.log(data)
     },[])
 
     
@@ -130,9 +133,13 @@ function StockSection(dataBase){
             </div> */}
 
             <div className="listStock">
-                {dataFiltered.map((item, index) => {
-                    return <StockListItem item={item} key={index} />
-                })}
+                {loading ? 
+                    <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    :
+                    dataFiltered.map((item, index) => {
+                        return <StockListItem item={item} key={index} />
+                    })
+                }
             </div>
             
 

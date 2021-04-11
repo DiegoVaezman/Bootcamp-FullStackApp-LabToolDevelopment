@@ -102,7 +102,7 @@ function Signin(props) {
                 </div>
                 <div className="flex-column">
                     <label htmlFor="password">Password</label>
-                    <input type="text" name="password" placeholder="Password" onChange={handleSigninInputChange}/>
+                    <input type="password" name="password" placeholder="Password" onChange={handleSigninInputChange}/>
                 </div>
             </form>
             <button className="button1 signinButton" onClick={login}>SIGN IN</button>

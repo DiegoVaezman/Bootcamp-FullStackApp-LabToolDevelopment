@@ -13,7 +13,7 @@ import RequestsListItem from './requestsListItem'
 function RequestsSection() {
 
     
-    
+    const [loading, setLoading] = useState(true)
 
     //CONSIGUIENDO LAS DATAS DE PEDIDOS SEGÚN ESTADO DESDE DB
     const [dataNewRequests, setDataNewRequests] = useState([])
@@ -26,7 +26,7 @@ function RequestsSection() {
         //waiting
         const dataNew = await axios.get(`${apiURL}order/waiting`);
         setDataNewRequests(dataNew.data)
-       
+        
         //validated
         const dataValidated = await axios.get(`${apiURL}order/validated`);
         setdataValidatedRequests(dataValidated.data)
@@ -37,7 +37,7 @@ function RequestsSection() {
         //all
         const dataAll = await axios.get(`${apiURL}order/`);
         setdataAllRequests(dataAll.data)
-
+        setLoading(false)
     }
     useEffect(() => {
         getData()
@@ -61,33 +61,32 @@ function RequestsSection() {
                 <label for="radioReceived"><b>Received</b></label>
                 <input type="radio" id="radioAll" name="radioVar" value="all" onClick={() => setSelectedList({all : true})} />
                 <label for="radioAll"><b>All</b></label>
-
-                {/* <button className="selectVarButton" onClick={() => setSelectedList({new : true})}>New</button>
-                <button onClick={() => setSelectedList({validated : true})}>Validated</button>
-                <button onClick={() => setSelectedList({received : true})}>Received</button>
-                <button onClick={() => setSelectedList({all : true})}>All</button> */}
             </div>
             
             <div className="list">
-                {(selectedList.new === true && dataNewRequests.length > 0) && 
+                {loading ? 
+                <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                :
+                selectedList.new === true && dataNewRequests.length > 0 ? 
                     dataNewRequests.reverse().map((item, index) => {
                         return <RequestsListItem order={item} key={index} />
                     })
-                }
-                {(selectedList.validated === true && dataValidatedRequests.length > 0) && 
+                :
+                selectedList.validated === true && dataValidatedRequests.length > 0 ? 
                     dataValidatedRequests.map((item, index) => {
                         return <RequestsListItem order={item} key={index} />
                     })
-                }
-                {(selectedList.received === true && dataReceivedRequests.length > 0) && 
+                :
+                selectedList.received === true && dataReceivedRequests.length > 0 ?
                     dataReceivedRequests.map((item, index) => {
                         return <RequestsListItem order={item} key={index} />
                     })
-                }
-                {(selectedList.all === true && dataAllRequests.length > 0) && 
+                :
+                selectedList.all === true && dataAllRequests.length > 0 ?
                     dataAllRequests.map((item, index) => {
                         return <RequestsListItem order={item} key={index} />
                     })
+                : <p align="center">There is no request</p>
                 }
             </div>
             <div className="addProductBtn">

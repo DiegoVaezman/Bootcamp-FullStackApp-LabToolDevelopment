@@ -54,6 +54,8 @@ function ProductSection(dataBase){
         responseModalRef.current.closeModal()
     };
 
+    const [loading, setLoading] = useState(true)
+
     //CONSIGUIENDO LA DATA DE PRODUCTOS DESDE DB
     const [data, setData] = useState([""])
 
@@ -62,6 +64,7 @@ function ProductSection(dataBase){
         if (dataBase.data.msg) { 
             return
         } else {
+        setLoading(false)
         setData(dataBase.data)
         setDataFiltered(dataBase.data)
         }
@@ -169,6 +172,8 @@ function ProductSection(dataBase){
         });
     }
 
+    
+
     return (
         <div className="gridSection grid">
             <div className="filter">
@@ -177,7 +182,7 @@ function ProductSection(dataBase){
                     <option defaultValue="All">All</option>
                     <option value="enzime">Enzimes</option>
                     <option value="cleaning">Cleaning</option>
-                    <option value="consumable">Consumables</option>
+                    <option value="consumables">Consumables</option>
                     <option value="laboratory">laboratory</option>
                     <option value="garment">Garments</option>
                     <option value="stationery">Stationery</option>
@@ -191,9 +196,13 @@ function ProductSection(dataBase){
             </div>
 
             <div className="list">
-                {dataFiltered.map((item, index) => {
+                {loading ? 
+                <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                :
+                dataFiltered.map((item, index) => {
                     return <ProductListItem product={item} localState={dataFiltered} key={index} />
-                })}
+                })
+                }
             </div>
             
             <button className="button1 addProductBtn" onClick={openAddModal}>Add new product</button>
