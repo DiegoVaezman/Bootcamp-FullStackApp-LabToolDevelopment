@@ -9,7 +9,6 @@ import './App.css';
 import Home from './components/home'
 import Header from './components/header';
 import ProductSection from './components/productSection';
-
 import Navbar from './components/navbar';
 import Register from './components/register'
 import ProductSheet from './components/productSheet';

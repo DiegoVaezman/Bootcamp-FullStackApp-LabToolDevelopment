@@ -10,7 +10,7 @@ import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
 import UserListItem from './userListItem'
 import CommentsListItem from './commentsListItem'
-
+import formatDate from '../services/formatDate'
 
 
 
@@ -289,7 +289,7 @@ function RequestSheet(props) {
                     
                     <p><b>Amount to order: </b>{order.amount} unities</p>
                     <p><b>Requested by: </b>{userName.data.fullname}</p>
-                    <p><b>Date: </b>{order.date.substring(0,10).split('-').reverse().join('-')}</p>
+                    <p><b>Date: </b>{formatDate(order.date)}</p>
                     {(dataRequest.status === "waiting") && <p style={{color: "orange"}}><b>Status: </b>{dataRequest.status}</p>}
                     {(dataRequest.status === "validated") && <p style={{color: "green"}}><b>Status: </b>{dataRequest.status}</p>}
                     {(dataRequest.status === "received") && <p style={{color: "blue"}}><b>Status: </b>{dataRequest.status}</p>}

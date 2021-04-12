@@ -1,6 +1,7 @@
-# **LabTool**
+# <h1>**LabTool**</h1>
+![Esquema de relaciones](my-app/public/img/LabTool_logo.png)
 
-LabTool es una aplicación de gestión de pedidos principalmente en el ámbito de trabajo de un laboratorio aunque bien podría usarse en otro ámbito en el que se requiera un control de las solicitudes de compras, validación de pedidos y control de stock.
+LabTool es una single-page App de gestión de pedidos principalmente en el ámbito de trabajo de un laboratorio aunque bien podría usarse en otro ámbito en el que se requiera un control de las solicitudes de compras, validación de pedidos y control de stock.
 LabTool es el proyecto final que he elegido desarrollar correspondiente al bootcamp Let's Coder 2021.
 
 
@@ -19,15 +20,43 @@ LabTool permite llevar un control de las solicitudes de pedidos realizadas y, me
 **Filtrar** la lista de productos según el tipo o realizar una búsqueda por nombre, número de catálogo o número de referencia.
 
 **Agregar nuevos productos** que son ofertados por otra fuente y que son requeridos por el laboratorio mediante un formulario de registro.
-**Visualizar la ficha del producto** seleccionado son su información y donde se puede solicitar una compra de una cantidad determinada por el formulario de solicitud. Además es posible modificar el campo de información del producto o eliminarlo de la base de datos.
 
--**Solicitud de compra** de un producto de la base de datos y visualización del estado en que se encuentran. Las solicitudes de compra podrán encontrarse en cuatros estados posibles;
-* **En espera:** La solicitud se encuentra a la espera de ser revisada y validada por el usuario responsable.
+**Visualizar la ficha del producto**  con su información:
+<br>Número de catálogo
+<br>Tipo
+<br>Casa comercial
+<br>Número de referencia
+<br>Precio
+<br>Información del producto
+Además es posible modificar el campo de información del producto o eliminarlo de la base de datos.
+
+-**Solicitud de compra** de un producto de la base de datos especificando la cantidad mediante el formulario de soliciud. 
+
+-**Establecer o modificar información del producto**
+
+-**Eliminar el producto de la base de datos** mediante previa confirmación.
+
+### **SECCIÓN DE PEDIDOS**
+Las solicitudes de compra podrán encontrarse en cuatros estados posibles;
+* **En espera:** La solicitudes recién creadas se encuentran en estado de espera hasta ser revisadas y validadas por el usuario responsable.
 * **Validada:** La solicitud ha sido validada por el usario responsable y es posible proceder a su compra.
 * **Rechazada:** La solicitud ha sido rechazada por el usuario responsable.
 * **Recibida:** La solicitud validada ha sido pedida y ha llegado a su destino.
 
--**Comentar** solicitudes de pedidos y visualizar los comentarios realizados por parte de otros usuarios.
+-**Visualizar las listas de pedidos** según su estado con información relevante como la cantidad solicitada, nombre de la persona solicitante, fecha de solicitud y número de mensajes que contiene.
+A demás dispone de un enlace rápido a la sección de productos para realizar una nueva solicitud.
+
+-**Visualizar la ficha del pedido** con su información:
+<br>Nombre de producto 
+<br>Cantidad solicitada 
+<br>Persona solicitante
+<br>Fecha de solicitud
+<br>Estado
+<br>Comentarios que contiene.
+
+-**Visualizar la ficha del producto** relacionado con el pedido.
+
+-**Añadir y eliminar comentarios del pedido** mostrando el nombre de la persona que realiza el comentario, la fecha de creación y el texto del mensaje.
 
 -**Validación** de una solicitud de compra por parte del usuario resposable.
 
@@ -35,19 +64,47 @@ LabTool permite llevar un control de las solicitudes de pedidos realizadas y, me
 
 -**Marcar como recibida** una solicitud y automáticamente actualizar el stock disponible.
 
--**Visualización del stock** disponible con información útil del estado de cada artículo como pueden ser:
-<br>Conocer si se encuentra en stock o fuera de stock.
+-**Eliminar la solicitud de pedido** en cualquiera de sus estados mediante previa confirmación.
+
+### **SECCIÓN DE STOCK**
+-**Visualización de la lista de stock** disponible con información útil del estado de cada artículo (nombre del producto, en stock o fuera de stock, control de límite activado, actualmente pedido y unidades en stock).
+
+-**Visualización de la ficha del ítem del stock** con su información:
+<br>Nombre del producto.
 <br>Cantidad de unidades en stock.
 <br>Lugar de almacenamiento.
+<br>Conocer si tiene control de límite activado y de ser así, la cantidad límite y unidades a pedir automáticamente.
 <br>Conocer si se encuentra actualmente pedido.
 <br>Fecha de llegada de la última reposición.
 
--**Establecer un límite** inferior de unidades en stock por el cual realizar una solicitud de pedido automática y de una cantidad determinada en caso de que el stock alcance dicho límite.
+-**Visualización de la ficha del producto** relacionado con el ítem.
+ 
+ -**Reducir una unidad del stock** cada vez que se consume un producto.
 
+-**Modificar información del ítem** como la cantidad en stock y el lugar de almacenamiento.
 
+-**Establecer un límite** inferior de unidades en stock por el cual realizar una solicitud de pedido automática y de una cantidad determinada en caso de que el stock alcance dicho límite. La solicitud creada dispondrá de un mensaje donde especifica que fué creada automáticamente.
+
+-**Eliminar el ítem del stock** mediante previa confirmación.
+
+### **SECCIÓN DE USUARIO**
+-**Visualización de la información del usuario logueado** (Nombre, email, posición laboral y rol).
+
+-**Modificar información del usuario** (Nombre y posición laboral).
+
+-**Cerrar sesión**
+
+-**Visualizar una lista y ficha de los demás usuarios registrados** con información sobre su email, posición laboral y rol.
+
+-**Eliminar cuenta de usuario** mediante previa confirmación.
+
+## **Esquema de uso**
+![Esquema de relaciones](my-app/src/img/esquema_app.jpg)
+
+### <h1>**BACKEND**</h1>
 ## **Esquema de relaciones**
 
-![Esquema de relaciones](img/relaciones.png)
+![Esquema de relaciones](my-app/src/img/relaciones.png)
 
 ## **Direccionamiento**
 
@@ -150,9 +207,9 @@ get order/rejected
 ^ Ruta privada que devuelve los pedidos con status "rejected".
 
 ```
-get order/recived 
+get order/received 
 ```
-^ Ruta privada que devuelve los pedidos con status "recived".
+^ Ruta privada que devuelve los pedidos con status "received".
 
 
 **Comentarios:**
@@ -191,9 +248,9 @@ get stock/
 ```
 post stock/newitem/id(pedido) 
 ```
-^ Ruta privada que requiere del id del pedido con status "validated" y que ya se disponga de él para añadirlo al stock. Si es la primera vez que el producto entra al stock se crea un nuevo documento en el que algunos parámetro se toman a partir de la información del pedido: product(ObjectId), amount(number), status("In stock"), request("false", por defecto), recived(date) y storage(string). 
-<br>En caso de ya estar registrado este producto en el stock se actualizarán los parámetros "amount", "status" y "recived" en el documento ya existente. 
-<br>Al mismo tiempo se modifica el status del pedido a "recived" y también se comprueba si existen más pedidos en estado "waiting" o "validated" de ese mismo producto y, de ser así, establece el parámetro "request" del ítem en "true". 
+^ Ruta privada que requiere del id del pedido con status "validated" y que ya se disponga de él para añadirlo al stock. Si es la primera vez que el producto entra al stock se crea un nuevo documento en el que algunos parámetro se toman a partir de la información del pedido: product(ObjectId), amount(number), status("In stock"), request("false", por defecto), received(date) y storage(string). 
+<br>En caso de ya estar registrado este producto en el stock se actualizarán los parámetros "amount", "status" y "received" en el documento ya existente. 
+<br>Al mismo tiempo se modifica el status del pedido a "received" y también se comprueba si existen más pedidos en estado "waiting" o "validated" de ese mismo producto y, de ser así, establece el parámetro "request" del ítem en "true". 
 <br>Devuelve el documento creado o un mensaje de confirmación de la actualización del ítem.
 
 ```
@@ -226,11 +283,14 @@ post login/
 ^ Ruta pública que permite loguearse a través de los parámetros "email" y "password" del usuario. 
 <br>En caso de confirmación devuelve un token válido por 24 horas con información del usuario ("id","fullname", "position" y "rol").
 
+<!-- ### <h1>**FRONTEND**</h1> -->
+
 
 ## **Tecnologías usadas**
 
 - `Node.js v14.16.0.`
 - `MongoDB`
+- `React`
 
 ## **Dependencias**
 
@@ -241,11 +301,23 @@ post login/
 - `mongoose: ^5.11.18`
 - `nodemon: ^2.0.7`
 - `validator: ^13.5.2`
+- `axios: ^0.21.1`
+- `concurrently: ^6.0.0`
+- `react: ^17.0.2`
+- `react-dom: ^17.0.2`
+- `react-scripts: 4.0.1`
+- `web-vitals: ^1.1.1`
 
 ## **TO DO**
 
-- Implementar sólo un usuario validador o administrador que pueda establecer el rol de validador a otro usuario.
+- Implementar sólo un usuario validador o administrador que pueda establecer el rol de validador a otro usuario en vez de establecerse el rol al hacer el registro.
 - Si se crea un pedido nuevo y ya hay uno en estado "waiting" preguntar y sumar las cantidad en caso de aceptación.
-- Establecer ruta independiente para el establecimiento del control de límite de stock donde modificar los parámetros correspondientes.
+- Implementar buscador de producto en el stock.
+- Ordenar las listas de pedidos de manera que los más recientes estén los primeros en la lista.
+- Al crear nuevo producto adjudicarle un número de catálaogo por defecto que sería el siguiente disponible.
+- Al eliminar un producto de la base de datos, eliminar o modificar las solicitudes y/o el stock que hubiese de él.
+- Establecer dos inputs de password para evitar equivocaciones a la hora de nuevo registro de usuario.
+- Poder modificar la contraseña del usuario logueado.
+- Que el usuario con rol de usuario no vea los botones de validar o rechazar solicitud de pedido.
+
 - Mejora del código en general. Refactoring.
-- Implementación de frontend.

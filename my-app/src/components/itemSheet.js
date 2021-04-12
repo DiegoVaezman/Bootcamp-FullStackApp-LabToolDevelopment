@@ -10,7 +10,7 @@ import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
 import UserListItem from './userListItem'
 import CommentsListItem from './commentsListItem'
-
+import formatDate from '../services/formatDate'
 
 
 
@@ -255,41 +255,7 @@ function ItemSheet(props) {
     }
 
 
-    const formatDate = (utcDate) => {
-        if (utcDate == undefined) return
-        var date = new Date(utcDate);
-        var h = date.getHours();
-        var m = date.getMinutes();
-        function checkTime(i) {
-            if (i < 10) {
-                i = "0" + i;
-            }
-            return i;
-        }
-        m = checkTime(m);
-        var month = new Array();
-        month[0] = "January";
-        month[1] = "February";
-        month[2] = "March";
-        month[3] = "April";
-        month[4] = "May";
-        month[5] = "June";
-        month[6] = "July";
-        month[7] = "August";
-        month[8] = "September";
-        month[9] = "October";
-        month[10] = "November";
-        month[11] = "December";
-        var weekday = new Array(7);
-        weekday[0] = "Sunday";
-        weekday[1] = "Monday";
-        weekday[2] = "Tuesday";
-        weekday[3] = "Wednesday";
-        weekday[4] = "Thursday";
-        weekday[5] = "Friday";
-        weekday[6] = "Saturday";
-        return `${weekday[date.getDay()].slice(0, 3)} ${date.getDate()} ${month[date.getMonth()]} ${date.getFullYear()} ${h}:${m} h.`;
-    };
+    
 
 
 
@@ -311,7 +277,7 @@ function ItemSheet(props) {
                     <p><b>Storage: </b>{dataItem.storage}</p>
                     <p><b>Limit control: </b>{dataItem.control === true ? `Yes, ${dataItem.limit} units. Amount to order ${dataItem.automaticamount} units` : "No"}</p>
                     <p><b>Currently ordered? </b>{dataItem.request === true ? "Yes" : "No"}</p>
-                    <p><b>Last arrival: </b>{formatDate(dataItem.received)}</p> {/* NO ME DEJA PONER .substring(0,10) */}
+                    <p><b>Last arrival: </b>{formatDate(dataItem.received)}</p>
                     <button className="button1 edditItemButton" onClick={openModifyItemModal}><p>Modify item or set a <b>limit control</b></p></button>
                 </div>
             </div>
@@ -361,18 +327,10 @@ function ItemSheet(props) {
                         <form className="form limitItemSec">
                             <p><b>LIMIT CONTROL</b></p>
                             <div className="yes-noLimit">
-
-
-
                                 <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => { handleToggleChange(true) }} defaultChecked={dataItem.control} />
                                     <label htmlFor="radioLimitYes">Yes</label>
-
-
-
                                 <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => { handleToggleChange(false) }} defaultChecked={!dataItem.control} />
                                     <label htmlFor="radioLimitNo">No</label>
-
-
                             </div>
                             {toggleLimit === true &&
                                 <div className="limitForm">

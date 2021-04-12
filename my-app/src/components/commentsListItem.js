@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import {useState, useEffect} from 'react'
 import apiURL from '../services/apiURL'
 import axios from 'axios';
-
+import formatDate from '../services/formatDate'
 
 
 function CommentListItem(props) {
@@ -44,7 +44,7 @@ function CommentListItem(props) {
                                 <b>@{userName.data.fullname}</b>
                         </div>
                         <div>
-                                <p style={{fontSize:"13px"}}>{`${props.comment.date.substring(0,10).split('-').reverse().join('-')} / ${props.comment.date.substring(11,16)}`}</p>
+                                <p style={{fontSize:"13px"}}>{`${formatDate(props.comment.date)}`}</p>
                         </div>
                 </div>
                 <div className="productInfo">
