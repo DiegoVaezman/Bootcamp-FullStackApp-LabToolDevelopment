@@ -108,7 +108,7 @@ function StockSection(dataBase){
 
 
 
-
+console.log(dataFiltered)
     
     return (
         <div className="gridSection grid">
@@ -134,11 +134,12 @@ function StockSection(dataBase){
 
             <div className="listStock">
                 {loading ? 
-                    <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                    :
+                    <div className="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                    : dataFiltered.length > 0 ?
                     dataFiltered.map((item, index) => {
                         return <StockListItem item={item} key={index} />
                     })
+                    : <p align="center">There is no item</p>
                 }
             </div>
             

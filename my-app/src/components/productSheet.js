@@ -211,7 +211,7 @@ function ProductSheet(props) {
                     <p><b>Reference number: </b>{dataProduct.reference_number}</p>
                     <p><b>Price: </b>{dataProduct.price}€</p>
                     {dataProduct.information != "" && <p><b>Information: </b>{dataProduct.information}</p>}
-                    <button className="button1 edditButton" onClick={openEdditModal}>Eddit this product</button>
+                    <button className="button1 edditButton" onClick={openEdditModal}>Edit this product</button>
                 </div>
             </div>
             <div className="playground playgroundSheet">

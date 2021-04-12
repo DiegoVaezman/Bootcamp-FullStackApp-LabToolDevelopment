@@ -319,5 +319,6 @@ post login/
 - Establecer dos inputs de password para evitar equivocaciones a la hora de nuevo registro de usuario.
 - Poder modificar la contraseña del usuario logueado.
 - Que el usuario con rol de usuario no vea los botones de validar o rechazar solicitud de pedido.
-
+- Al eliminar pedido eliminar los comentarios de ese pedido de la base de datos.
+- Hacer versión responsive web.
 - Mejora del código en general. Refactoring.
