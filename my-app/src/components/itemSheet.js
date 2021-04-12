@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import {useState, useEffect} from 'react'
-import { Link , Route, Redirect, withRouter} from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, Route, Redirect, withRouter } from 'react-router-dom'
 import Modal from "./modal"
 import ModalResponse from './modalResponse';
 import ModalConfirm from './modalConfirm';
@@ -16,7 +16,7 @@ import CommentsListItem from './commentsListItem'
 
 function ItemSheet(props) {
 
-  
+
     console.log(props)
 
     // VENTANAS MODALES
@@ -47,11 +47,11 @@ function ItemSheet(props) {
         setToggleLimit(dataItem.control)
         setLimitInputValue({
             limit: "",
-            automaticamount:""
+            automaticamount: ""
         })
         setEdditInputValue({
             amount: "",
-            storage:""
+            storage: ""
         })
         modifyItemModalRef.current.closeModal()
     };
@@ -86,77 +86,81 @@ function ItemSheet(props) {
 
     //CONSIGUIENDO LA DATA DEL ITEM
     const getData = () => {
-    
+
         axios.get(`${apiURL}stock/${props.match.params.id}`)
-        .then(res => {
-            setDataItem(res.data)
-            console.log("dataitem.control en "+ dataItem.control)
-            setToggleLimit(dataItem.control)
-            console.log("toglelimit en "+ toggleLimit)
-        })
-        .catch(error => {
-            console.log(error.response)
-        });
+            .then(res => {
+                setDataItem(res.data)
+                console.log("dataitem.control en " + dataItem.control)
+                setToggleLimit(dataItem.control)
+                console.log("toglelimit en " + toggleLimit)
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
     }
     useEffect(() => {
         getData()
-    },[change])
+    }, [change])
 
 
-    
+
     //DELETE ITEM
     const deleteItem = () => {
         console.log(dataItem._id)
         axios.delete(`${apiURL}stock/deleteitem/${dataItem._id}`)
-        .then(res => {
-            console.log("Item eliminado")
-            console.log(res.data)
-            setResponse({...response,
-                success: true,
-                delete: true,
-                msg: res.data.msg
+            .then(res => {
+                console.log("Item eliminado")
+                console.log(res.data)
+                setResponse({
+                    ...response,
+                    success: true,
+                    delete: true,
+                    msg: res.data.msg
+                })
+                openResponseModal()
             })
-            openResponseModal()
-        })
-        .catch(error => {
-            console.log(error.response)
-            setResponse({...response,
-                error: true,
-                msg: error.response.data.msg
-            })
-            openResponseModal()
-        });
+            .catch(error => {
+                console.log(error.response)
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
     }
 
     //REDUCIENDO ITEM
     const reduceItem = () => {
-        
+
         console.log("se reduce")
         axios.put(`${apiURL}stock/reduce/${dataItem._id}`)
-        .then(
-            res => {
-            console.log("Item reduced")
-            console.log(res.data)
-            setResponse({...response,
-                success: true,
-                msg: res.data.msg
-            })
-            openResponseModal()
-            setChange([])
-        }
-    
-        // setChange([])
-        )
-        
-        .catch(error => {
-            console.log(error.response)
-            setResponse({...response,
-                error: true,
-                msg: error.response.data.msg
-            })
-            openResponseModal()
-        });
-        
+            .then(
+                res => {
+                    console.log("Item reduced")
+                    console.log(res.data)
+                    setResponse({
+                        ...response,
+                        success: true,
+                        msg: res.data.msg
+                    })
+                    openResponseModal()
+                    setChange([])
+                }
+
+                // setChange([])
+            )
+
+            .catch(error => {
+                console.log(error.response)
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
+
     }
 
     //EDITANDO PRODUCTO
@@ -168,85 +172,124 @@ function ItemSheet(props) {
         const value = !isNaN(event.target.value) ? parseFloat(event.target.value) : event.target.value
         setEdditInputValue({
             ...edditInputValue,
-            [event.target.name] : value
+            [event.target.name]: value
         })
     }
     const edditItem = (event) => {
 
         event.preventDefault()
-        axios.put(`${apiURL}stock/${dataItem._id}/modify`, {...edditInputValue})
-        .then(res => {
-            console.log("Item modificado")
-            console.log(res.data)
-            setResponse({...response,
-                success: true,
-                msg: res.data.msg
+        axios.put(`${apiURL}stock/${dataItem._id}/modify`, { ...edditInputValue })
+            .then(res => {
+                console.log("Item modificado")
+                console.log(res.data)
+                setResponse({
+                    ...response,
+                    success: true,
+                    msg: res.data.msg
+                })
+                openResponseModal()
+                setChange([])
             })
-            openResponseModal()
-            setChange([])
-        })
-        .catch(error => {
-            console.log(error)
-            setResponse({...response,
-                error: true,
-                msg: error.response.data.msg
-            })
-            openResponseModal()
-        });
+            .catch(error => {
+                console.log(error)
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
     }
-    
 
-    
-//-----------------------------
-const [limitInputValue, setLimitInputValue] = useState({
-    limit: "",
-    automaticamount:""
-})
-const handleLimitInputChange = (event) => {
-    const value = !isNaN(event.target.value) ? parseFloat(event.target.value) : event.target.value
-    setLimitInputValue({
-        ...limitInputValue,
-        [event.target.name] : value
+
+
+    //-----------------------------
+    const [limitInputValue, setLimitInputValue] = useState({
+        limit: "",
+        automaticamount: ""
     })
-}
-const setLimit = (event) => {
-    event.preventDefault()
-    console.log(limitInputValue)
-    axios.put(`${apiURL}stock/${dataItem._id}/setlimit`, {...limitInputValue})
-    .then(res => {
-        console.log("limite establecido")
-        console.log(res.data)
-        setResponse({...response,
-            success: true,
-            msg: res.data.msg
+    const handleLimitInputChange = (event) => {
+        const value = !isNaN(event.target.value) ? parseFloat(event.target.value) : event.target.value
+        setLimitInputValue({
+            ...limitInputValue,
+            [event.target.name]: value
         })
-        openResponseModal()
-        setChange([])
-    })
-    .catch(error => {
-        console.log(error)
-        setResponse({...response,
-            error: true,
-            msg: error.response.data.msg
+    }
+    const setLimit = (event) => {
+        event.preventDefault()
+        console.log(limitInputValue)
+        axios.put(`${apiURL}stock/${dataItem._id}/setlimit`, { ...limitInputValue })
+            .then(res => {
+                console.log("limite establecido")
+                console.log(res.data)
+                setResponse({
+                    ...response,
+                    success: true,
+                    msg: res.data.msg
+                })
+                openResponseModal()
+                setChange([])
+            })
+            .catch(error => {
+                console.log(error)
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
+    }
+
+    const [toggleLimit, setToggleLimit] = useState()
+
+    const handleToggleChange = (value) => {
+        console.log("buton esta en " + value)
+        setToggleLimit(value)
+
+
+        setLimitInputValue({
+            ...edditInputValue,
+            control: value
         })
-        openResponseModal()
-    });
-}
-
-const [toggleLimit, setToggleLimit] = useState()
-
-const handleToggleChange = (value) => {
-    console.log("buton esta en " + value)
-    setToggleLimit(value)
-    
-    
-    setLimitInputValue({...edditInputValue,
-    control: value
-    })
-}
+    }
 
 
-
+    const formatDate = (utcDate) => {
+        if (utcDate == undefined) return
+        var date = new Date(utcDate);
+        var h = date.getHours();
+        var m = date.getMinutes();
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+        m = checkTime(m);
+        var month = new Array();
+        month[0] = "January";
+        month[1] = "February";
+        month[2] = "March";
+        month[3] = "April";
+        month[4] = "May";
+        month[5] = "June";
+        month[6] = "July";
+        month[7] = "August";
+        month[8] = "September";
+        month[9] = "October";
+        month[10] = "November";
+        month[11] = "December";
+        var weekday = new Array(7);
+        weekday[0] = "Sunday";
+        weekday[1] = "Monday";
+        weekday[2] = "Tuesday";
+        weekday[3] = "Wednesday";
+        weekday[4] = "Thursday";
+        weekday[5] = "Friday";
+        weekday[6] = "Saturday";
+        return `${weekday[date.getDay()].slice(0, 3)} ${date.getDate()} ${month[date.getMonth()]} ${date.getFullYear()} ${h}:${m} h.`;
+    };
 
 
 
@@ -266,9 +309,9 @@ const handleToggleChange = (value) => {
                 <div className="sheetInfo requestInfo">
                     <p><b>In stock: </b>{dataItem.amount} unities</p>
                     <p><b>Storage: </b>{dataItem.storage}</p>
-                    <p><b>Limit control: </b>{dataItem.control === true ? `Yes, ${dataItem.limit} units. Amount to order ${dataItem.automaticamount} units`: "No"}</p>
+                    <p><b>Limit control: </b>{dataItem.control === true ? `Yes, ${dataItem.limit} units. Amount to order ${dataItem.automaticamount} units` : "No"}</p>
                     <p><b>Currently ordered? </b>{dataItem.request === true ? "Yes" : "No"}</p>
-                    <p><b>Last arrival: </b>{dataItem.received}</p> {/* NO ME DEJA PONER .substring(0,10) */}
+                    <p><b>Last arrival: </b>{formatDate(dataItem.received)}</p> {/* NO ME DEJA PONER .substring(0,10) */}
                     <button className="button1 edditItemButton" onClick={openModifyItemModal}><p>Modify item or set a <b>limit control</b></p></button>
                 </div>
             </div>
@@ -307,54 +350,52 @@ const handleToggleChange = (value) => {
                         <form className="form edditItemSec">
                             <div className="flex-column">
                                 <label htmlFor="amount">Amount</label>
-                                <input type="text" name="amount" placeholder="Amount" onChange={handleEdditInputChange}/>
+                                <input type="text" name="amount" placeholder="Amount" onChange={handleEdditInputChange} />
                             </div>
                             <div className="flex-column">
                                 <label htmlFor="storage">Storage</label>
-                                <input type="text" name="storage" placeholder="Storage" onChange={handleEdditInputChange}/>
+                                <input type="text" name="storage" placeholder="Storage" onChange={handleEdditInputChange} />
                             </div>
                             <button className="button1 itemFormButton" onClick={edditItem}><p><b>Save</b></p></button>
                         </form>
                         <form className="form limitItemSec">
                             <p><b>LIMIT CONTROL</b></p>
                             <div className="yes-noLimit">
-                           
+
+
+
+                                <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => { handleToggleChange(true) }} defaultChecked={dataItem.control} />
                                     <label htmlFor="radioLimitYes">Yes</label>
-                                    {dataItem.control === true ? 
-                                    <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => {handleToggleChange(true)}} defaultChecked/> : 
-                                    <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => {handleToggleChange(true)}}/>
-                                    }
-                            
+
+
+
+                                <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => { handleToggleChange(false) }} defaultChecked={!dataItem.control} />
                                     <label htmlFor="radioLimitNo">No</label>
-                                    {dataItem.control === false ? 
-                                    <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => {handleToggleChange(false)}} defaultChecked/> : 
-                                    <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => {handleToggleChange(false)}}/>
-                                    }
-                             
+
 
                             </div>
                             {toggleLimit === true &&
-                            <div className="limitForm">
-                                <div className="flex-column">
-                                    <label htmlFor="limit">Minimum amount</label>
-                                    <input type="text" name="limit" placeholder={dataItem.control ===true ? dataItem.limit : "Minimum amount"} onChange={handleLimitInputChange}/>
+                                <div className="limitForm">
+                                    <div className="flex-column">
+                                        <label htmlFor="limit">Minimum amount</label>
+                                        <input type="text" name="limit" placeholder={dataItem.control === true ? dataItem.limit : "Minimum amount"} onChange={handleLimitInputChange} />
+                                    </div>
+                                    <div className="flex-column">
+                                        <label htmlFor="automaticamount">Quantity to order</label>
+                                        <input type="text" name="automaticamount" placeholder={dataItem.control === true ? dataItem.automaticamount : "Quantity"} onChange={handleLimitInputChange} />
+                                    </div>
                                 </div>
-                                <div className="flex-column">
-                                    <label htmlFor="automaticamount">Quantity to order</label>
-                                    <input type="text" name="automaticamount" placeholder={dataItem.control ===true ? dataItem.automaticamount : "Quantity"} onChange={handleLimitInputChange}/>
-                                </div>
-                            </div>
                             }
                             <button className="button1 itemFormButton" onClick={setLimit}><p><b>Set Limit</b></p></button>
-                            
+
                         </form>
                         <div className="deleteItemDiv">
-                            <button className="deleteButton"  onClick={openConfirmModal}><p><b>Delete</b></p></button>
+                            <button className="deleteButton" onClick={openConfirmModal}><p><b>Delete</b></p></button>
                         </div>
                     </div>
                 </div>
             </Modal>
-            {response.success === true && 
+            {response.success === true &&
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">
                         <SuccessResponse />
@@ -363,7 +404,7 @@ const handleToggleChange = (value) => {
                     </div>
                 </ModalResponse>
             }
-            {response.error === true && 
+            {response.error === true &&
                 <ModalResponse ref={responseModalRef}>
                     <div className="modalResponse">
                         <ErrorResponse />

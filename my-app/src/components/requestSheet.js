@@ -270,7 +270,6 @@ function RequestSheet(props) {
 
     
     const handleCommentChange = () => {
-        console.log("hace lo de dentro")
         getCommentsData()
     }
 

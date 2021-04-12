@@ -3,16 +3,23 @@
 LabTool es una aplicación de gestión de pedidos principalmente en el ámbito de trabajo de un laboratorio aunque bien podría usarse en otro ámbito en el que se requiera un control de las solicitudes de compras, validación de pedidos y control de stock.
 LabTool es el proyecto final que he elegido desarrollar correspondiente al bootcamp Let's Coder 2021.
 
-Actualmente se encuentra en desarrollo del "backend". Posteriormente se desarrollará el "frontend".
 
 ## **Descripción funcional**
 
 LabTool permite llevar un control de las solicitudes de pedidos realizadas y, mediante la validación del pedido por parte del usuario registrado como validador, autorizar la compra sólo a las solicitudes permitidas. LabTool también permite llevar un control del stock disponible en cada momento proporcionando información útil y actualizada del estado en que se encuentra cada producto para una mayor eficacia en su control. Las distintas funcionalidades que dispone la aplicación se detallan a contiuación:
 
+### **SECCIÓN DE REGISTRO**
 -**Registro** de los usuarios que harán uso de la aplicación y adquisición del rol **"validador"** o **"usuario"** dependiendo de si tendrá permisos de validador de solicitudes.
 
--**Visualización de una base de datos donde se recogen todos los productos** disponibles para solicitar su compra. En este caso práctico, se trata de los productos ofertados por el servicio de suministros generales a los laboratorios en un centro de investigación.
-Además de la visualización para su solicitud de compra es posible agregar nuevos productos que son ofertados por otra fuente y que son requeridos por el laboratorio.
+-**Inicio de sesión** de los usuarios registrados.
+
+### **SECCIÓN DE PRODUCTOS**
+-**Visualización de una base de datos donde se recogen todos los productos** disponibles para solicitar su compra con información sobre el número de catálogo, tipo, casa comercial, número de referencia, precio e información del producto. En este caso práctico, se trata de los productos ofertados por el servicio de suministros generales a los laboratorios en un centro de investigación. 
+
+**Filtrar** la lista de productos según el tipo o realizar una búsqueda por nombre, número de catálogo o número de referencia.
+
+**Agregar nuevos productos** que son ofertados por otra fuente y que son requeridos por el laboratorio mediante un formulario de registro.
+**Visualizar la ficha del producto** seleccionado son su información y donde se puede solicitar una compra de una cantidad determinada por el formulario de solicitud. Además es posible modificar el campo de información del producto o eliminarlo de la base de datos.
 
 -**Solicitud de compra** de un producto de la base de datos y visualización del estado en que se encuentran. Las solicitudes de compra podrán encontrarse en cuatros estados posibles;
 * **En espera:** La solicitud se encuentra a la espera de ser revisada y validada por el usuario responsable.
