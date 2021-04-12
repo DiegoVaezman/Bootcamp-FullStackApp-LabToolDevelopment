@@ -269,7 +269,10 @@ function RequestSheet(props) {
     },[])
 
     
-    
+    const handleCommentChange = () => {
+        console.log("hace lo de dentro")
+        getCommentsData()
+    }
 
 
     console.log(props)
@@ -298,7 +301,7 @@ function RequestSheet(props) {
                     {(commentsData.length > 0) &&
                     <div className="commentsList">
                         {commentsData.map((item, index) => {
-                            return <CommentsListItem comment={item} key={index} />
+                            return <CommentsListItem comment={item} key={index} setchange={handleCommentChange}/>
                         })}
                     </div>}
                

@@ -65,7 +65,7 @@ function RequestsSection() {
             
             <div className="list">
                 {loading ? 
-                <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div className="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 :
                 selectedList.new === true && dataNewRequests.length > 0 ? 
                     dataNewRequests.reverse().map((item, index) => {

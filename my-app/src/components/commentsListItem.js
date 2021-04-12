@@ -22,7 +22,21 @@ function CommentListItem(props) {
                 getUserName()
         },[])
 
-        console.log(userName.data.fullname)
+
+        //BORRANDO COMENTARIO
+        const deleteComment = () => {
+                console.log(props.comment._id)
+                axios.delete(`${apiURL}comment/deletecomment/${props.comment._id}`)
+                .then(res => {
+                    console.log("comentario eliminado")
+                    
+                    props.setchange()
+                })
+                .catch(error => {
+                    console.log(error)
+                });
+        }
+
     return (
         <div className="commentsListItem" >
                 <div className="productListItemHead">
@@ -35,6 +49,7 @@ function CommentListItem(props) {
                 </div>
                 <div className="productInfo">
                         {props.comment.text}
+                        {userName.data.fullname != "AutomaticUser" && <div id="garbage"><img className="garbage"src="../../img/garbage_img.png" onClick={() => deleteComment()}/></div>}
                 </div>
         </div>
     )

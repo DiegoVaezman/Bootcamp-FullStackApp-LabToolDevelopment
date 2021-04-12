@@ -320,10 +320,16 @@ const handleToggleChange = (value) => {
                             <div className="yes-noLimit">
                            
                                     <label htmlFor="radioLimitYes">Yes</label>
-                                    {dataItem.control === true ? <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => {handleToggleChange(true)}} defaultChecked/> : <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => {handleToggleChange(true)}}/>}
+                                    {dataItem.control === true ? 
+                                    <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => {handleToggleChange(true)}} defaultChecked/> : 
+                                    <input type="radio" name="radioLimit" id="radioLimitYes" onChange={() => {handleToggleChange(true)}}/>
+                                    }
                             
                                     <label htmlFor="radioLimitNo">No</label>
-                                    {dataItem.control === false ? <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => {handleToggleChange(false)}} defaultChecked/> : <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => {handleToggleChange(false)}}/>}
+                                    {dataItem.control === false ? 
+                                    <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => {handleToggleChange(false)}} defaultChecked/> : 
+                                    <input type="radio" name="radioLimit" id="radioLimitNo" onChange={() => {handleToggleChange(false)}}/>
+                                    }
                              
 
                             </div>

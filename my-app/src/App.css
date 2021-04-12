@@ -539,6 +539,22 @@
     overflow: scroll;
     white-space: nowrap;
 }
+.garbage{
+    width: 100%;
+    /* display: none; */
+}
+#garbage{
+    width: 4%;
+    margin-right: 3px;
+}
+/* #garbage:hover .garbage{
+    display: block;
+} */
+
+
+
+
+
 .sheetRequestName, .requestInfo{
     padding-bottom: 10px;
 }
