@@ -23,7 +23,7 @@
     "inspect": "node inspect index.js",
     "client": "cd my-app && npm start",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "heroku-postbuild": "cd my-app && npm install --only=dev && npm install && npm run build"
   },
   "engines": {
     "node": "14.16.0"
