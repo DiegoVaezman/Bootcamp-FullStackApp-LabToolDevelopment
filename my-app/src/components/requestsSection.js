@@ -10,7 +10,7 @@ import ProductListItem from './productListItem'
 import apiURL from '../services/apiURL'
 import RequestsListItem from './requestsListItem'
 
-function RequestsSection() {
+function RequestsSection(props) {
 
     
     const [loading, setLoading] = useState(true)

@@ -36,7 +36,7 @@ function CommentListItem(props) {
                     console.log(error)
                 });
         }
-
+        console.log(props.user.fullname)
     return (
         <div className="commentsListItem" >
                 <div className="productListItemHead">
@@ -49,7 +49,7 @@ function CommentListItem(props) {
                 </div>
                 <div className="productInfo">
                         {props.comment.text}
-                        {userName.data.fullname != "AutomaticUser" && <div id="garbage"><img className="garbage"src="../../img/garbage_img.png" onClick={() => deleteComment()}/></div>}
+                        {userName.data.fullname ==  props.user.fullname && <div id="garbage"><img className="garbage"src="../../img/garbage_img.png" onClick={() => deleteComment()}/></div>}
                 </div>
         </div>
     )

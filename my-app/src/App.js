@@ -92,9 +92,9 @@ function App(props) {
 
                         <Route path="/products" exact component={ProductSection} />
                         <Route path="/products/productsheet/:id" component={ProductSheet} />
-
+                        
                         <Route path="/requests" exact component={RequestsSection} />
-                        <Route path="/requests/requestsheet/:id" exact component={RequestSheet} />
+                        <Route path="/requests/requestsheet/:id" exact render={(props) => ( <RequestSheet {...props} user={user} />)} />
 
                         <Route path="/stock" exact component={StockSection} />
                         <Route path="/stock/itemsheet/:id" exact component={ItemSheet} />

@@ -141,7 +141,7 @@ function User(props) {
     return (
         <div className="gridSection">
             <div className="sheetBodyUser">
-                <div className="sheetRequestName">
+                <div className="userName">
                     <h1>{props.user.fullname}</h1>
                 </div>
                 <div className="sheetInfo requestInfo">

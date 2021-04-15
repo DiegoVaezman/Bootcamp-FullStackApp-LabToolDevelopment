@@ -553,10 +553,9 @@
 
 
 
-
-
 .sheetRequestName, .requestInfo{
     padding-bottom: 10px;
+
 }
 .validateButtons{
     grid-column: 2 / 10;
@@ -678,7 +677,9 @@
 }
 
 /*--USER SECTION*/
-
+.userName{
+    margin-bottom: 20px;
+}
 .sheetBodyUser{
     grid-column: 1 / 11;
     grid-row: 4 / 39;

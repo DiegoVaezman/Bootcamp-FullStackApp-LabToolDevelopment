@@ -42,9 +42,8 @@ function RequestsListItem(props) {
         getUser()
     },[])
 
-    const word = "hola"
-    console.log(word)
-    console.log(word.split('').reverse().join(''))
+    
+    console.log(commentData.data)
     return (
         <Link className="txtNoDeco" to={{pathname:`/requests/requestsheet/${props.order._id}`, data:props, productData:productData.data}} >
             <div className="productListItem" >
@@ -53,7 +52,7 @@ function RequestsListItem(props) {
                         {productData.data.name}
                     </div>
                     <div className="flex-row">
-                        <p><b>{commentData.data.msg === "No comments" ? "0" : `${commentData.data.length}`}</b></p>
+                        <p><b>{commentData.data.msg === "No comments" ? "0" : commentData.data.length == undefined ? "" : commentData.data.length}</b></p>
                         <img className="commentImg" src="../../img/comment_img.png"></img>
                     </div>
                 </div>

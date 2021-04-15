@@ -201,7 +201,6 @@ function ProductSheet(props) {
             </div>
             <div className="sheetBody sheetBodyProduct">
                 <div className="nameSheet">
-                    <img />
                     <h1>{dataProduct.name}</h1>
                 </div>
                 <div className="sheetInfo">
