@@ -17,12 +17,16 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node index.js",
+    "start": "node server.js",
     "server": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "inspect": "node inspect index.js",
     "client": "cd my-app && npm start",
-    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+  },
+  "engines": {
+    "node": "14.16.0"
   },
   "author": "Vaezman",
   "license": "ISC"
