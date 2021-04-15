@@ -43,7 +43,6 @@ function App(props) {
         console.log(token)
         axios.get(`${apiURL}user/user`, {headers: {authorization: `Bearer ${token}`}})
         .then(user => {
-            console.log(token)
             console.log(user.data.fullname)
             console.log("pasa por autologin then")
             setAuthToken(token);
