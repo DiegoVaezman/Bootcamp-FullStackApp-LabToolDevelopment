@@ -49,7 +49,9 @@ function App(props) {
             setAuthToken(token);
             setUser({
                 fullname: user.data.fullname,
-                position: user.data.position
+                position: user.data.position,
+                email: user.data.email,
+                rol: user.data.rol
             })
             setLoading(false);
         })
