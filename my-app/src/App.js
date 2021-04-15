@@ -44,9 +44,13 @@ function App(props) {
         axios.get(`${apiURL}user/user`, {headers: {authorization: `Bearer ${token}`}})
         .then(user => {
             console.log(token)
-            console.log(user)
+            console.log(user.data.fullname)
             console.log("pasa por autologin then")
             setAuthToken(token);
+            setUser({
+                fullname: user.data.fullname,
+                position: user.data.position
+            })
             setLoading(false);
         })
         .catch(err => {
@@ -58,7 +62,7 @@ function App(props) {
     };
 
     
-    const token = localStorage.getItem("labToolUser")
+    // const token = localStorage.getItem("labToolUser")
 
     const [user, setUser] = useState({})
 

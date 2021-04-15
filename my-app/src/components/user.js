@@ -103,7 +103,8 @@ function User(props) {
                 success: true,
                 msg: res.data.msg
             })
-            openResponseModal()
+            // openResponseModal()
+            props.history.push('/signin')
         })
         .catch(error => {
             console.log(error.response)
