@@ -10,7 +10,9 @@ const router = new Router()
 
 router.get("/", (req, res) => {
 
-    Order.find({}, function (err, orders) {
+    Order.find({})
+    .populate("product user")
+    .exec (function (err, orders) {
         if (err) {
             res.status(400).send({ msg: err.message})
         }
@@ -154,7 +156,9 @@ router.delete("/deleteorder/:id", protectedRoute, (req, res) => {
 
 router.get("/waiting", protectedRoute, (req, res) => {
     
-    Order.find({status : "waiting"}, function (err, orders){
+    Order.find({status : "waiting"}) 
+    .populate("product user")
+    .exec (function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
             return res.status(200).send({ msg: "Empty waiting"})
@@ -166,7 +170,9 @@ router.get("/waiting", protectedRoute, (req, res) => {
 
 router.get("/validated", protectedRoute, (req, res) => {
 
-    Order.find({status : "validated"}, function (err, orders){
+    Order.find({status : "validated"})
+    .populate("product user")
+    .exec (function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
             return res.status(200).send({ msg: "Empty validated"})
@@ -178,7 +184,9 @@ router.get("/validated", protectedRoute, (req, res) => {
 
 router.get("/received", protectedRoute, (req, res) => {
 
-    Order.find({status : "received"}, function (err, orders){
+    Order.find({status : "received"})
+    .populate("product user")
+    .exec (function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
             return res.status(200).send({ msg: "Empty received"})
@@ -189,7 +197,9 @@ router.get("/received", protectedRoute, (req, res) => {
 
 router.get("/rejected", protectedRoute, (req, res) => {
 
-    Order.find({status : "rejected"}, function (err, orders){
+    Order.find({status : "rejected"})
+    .populate("product user")
+    .exec (function (err, orders){
         if (err) res.status(400).send({ msg: err.message})
         if (orders.length == 0) {
             return res.status(200).send({ msg: "There is not rejected order"})           //SE PODRÍA ELIMINAR
@@ -201,7 +211,9 @@ router.get("/rejected", protectedRoute, (req, res) => {
 router.get("/:id", protectedRoute, (req, res) => {
     try{
         validateId(req.params.id)
-        Order.findById(req.params.id, function (err, order) {
+        Order.findById(req.params.id)
+        .populate("product user")
+        .exec (function (err, order) {
             if (err) throw err;
             if (!order) {
                 return res.status(400).send({ msg: "This order_id dose not exist."})

@@ -7,16 +7,16 @@ import axios from 'axios';
 function RequestsListItem(props) {
 
     //CONSIGUIENDO NOMBRE DE PRODUCTO
-    const [productData, setProductData] = useState({
-        data: {name:""}
-    })
-    useEffect(() => {
-        async function getProductName() {
-            const dataBase = await axios.get(`${apiURL}product/${props.order.product}`);
-            setProductData(dataBase)
-        }
-        getProductName()
-    },[])
+    // const [productData, setProductData] = useState({
+    //     data: {name:""}
+    // })
+    // useEffect(() => {
+    //     async function getProductName() {
+    //         const dataBase = await axios.get(`${apiURL}product/${props.order.product}`);
+    //         setProductData(dataBase)
+    //     }
+    //     getProductName()
+    // },[])
 
     //CONSIGUIENDO MENSAJES
     const [commentData, setCommentData] = useState({
@@ -31,25 +31,25 @@ function RequestsListItem(props) {
     },[])
 
     //CONSIGUIENDO NOMBRE DE USUARIO
-    const [userData, setUserData] = useState({
-        fullname: ""
-    })
-    useEffect(() => {
-        async function getUser() {
-            const dataBase = await axios.get(`${apiURL}user/${props.order.user}`);
-            setUserData(dataBase.data)
-        }
-        getUser()
-    },[])
+    // const [userData, setUserData] = useState({
+    //     fullname: ""
+    // })
+    // useEffect(() => {
+    //     async function getUser() {
+    //         const dataBase = await axios.get(`${apiURL}user/${props.order.user}`);
+    //         setUserData(dataBase.data)
+    //     }
+    //     getUser()
+    // },[])
 
     
-    console.log(commentData.data)
+    console.log(props)
     return (
-        <Link className="txtNoDeco" to={{pathname:`/requests/requestsheet/${props.order._id}`, data:props, productData:productData.data}} >
+        <Link className="txtNoDeco" to={{pathname:`/requests/requestsheet/${props.order._id}`, data:props}} >
             <div className="productListItem" >
                 <div className="productListItemHead">
                     <div className="productName">
-                        {productData.data.name}
+                        {(props.order.product != null) ? props.order.product.name : "No product"}
                     </div>
                     <div className="flex-row">
                         <p><b>{commentData.data.msg === "No comments" ? "0" : commentData.data.length == undefined ? "" : commentData.data.length}</b></p>
@@ -58,7 +58,7 @@ function RequestsListItem(props) {
                 </div>
                 <div className="productInfo">
                     <p><b>Amount: </b>{props.order.amount}</p>
-                    <p>{userData.fullname}</p>
+                    <p>{(props.order.user != null) ? props.order.user.fullname : "No user"}</p>
                     <p>{props.order.date.substring(0,10).split('-').reverse().join('-')}</p>
                     <div ClassName="requestListItemStatus">
                         {(props.order.status === "waiting") && <p style={{color: "orange"}}><b>{props.order.status}</b></p>}

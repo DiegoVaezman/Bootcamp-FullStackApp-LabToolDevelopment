@@ -9,24 +9,24 @@ import axios from 'axios';
 function StockListItem(props) {
 
     //CONSIGUIENDO NOMBRE DE PRODUCTO
-    const [productData, setProductData] = useState({
-        data: {name:""}
-    })
-    useEffect(() => {
-        async function getProductName() {
-            const dataBase = await axios.get(`${apiURL}product/${props.item.product}`);
-            setProductData(dataBase)
-        }
-        getProductName()
-    },[])
+    // const [productData, setProductData] = useState({
+    //     data: {name:""}
+    // })
+    // useEffect(() => {
+    //     async function getProductName() {
+    //         const dataBase = await axios.get(`${apiURL}product/${props.item.product}`);
+    //         setProductData(dataBase)
+    //     }
+    //     getProductName()
+    // },[])
 
    console.log(props)
     return (
-        <Link className="txtNoDeco" to={{pathname:`/stock/itemsheet/${props.item._id}`, data:props, productData:productData.data}} >
+        <Link className="txtNoDeco" to={{pathname:`/stock/itemsheet/${props.item._id}`, data:props}} >
             <div className="productListItem" >
                 <div className="itemList">
                     <div className="itemInfo">
-                        <div className="productName" ><p style={{color: "rgb(46, 46, 46)"}}>{productData.data.name}</p></div>
+                        <div className="productName" ><p style={{color: "rgb(46, 46, 46)"}}>{props.item.product != null ? props.item.product.name : "No product"}</p></div>
                         <div className="itemList">
                             <div className="flex-row">
                                 {props.item.status === "In stock" ? <p style={{color: "rgb(144, 212, 41)", marginRight:"20px"}}>{props.item.status}</p> : <p style={{color: "rgb(206, 0, 0)", marginRight:"20px"}}>{props.item.status}</p>}

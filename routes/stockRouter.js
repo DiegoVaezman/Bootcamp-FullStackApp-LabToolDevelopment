@@ -10,7 +10,9 @@ const router = new Router()
 
 router.get("/", protectedRoute, (req, res) => {
 
-    Stock.find({}, function (err, stocks) {
+    Stock.find({})
+    .populate("product")
+    .exec (function (err, stocks) {
         if (err) {
             res.status(400).send({ msg: err.message})
         }
@@ -280,7 +282,9 @@ router.delete("/deleteitem/:id", protectedRoute, (req, res) => {
 router.get("/:id", protectedRoute, (req, res) => {
     try{
         validateId(req.params.id)
-        Stock.findById(req.params.id, function (err, item) {
+        Stock.findById(req.params.id)
+        .populate("product")
+        .exec (function (err, item) {
             if (err) throw err;
             if (!item) {
                 return res.status(400).send({ msg: "This item_id dose not exist."})

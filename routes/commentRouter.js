@@ -34,7 +34,9 @@ router.get("/:id", protectedRoute, (req, res) => {
             if (!order) {
                 return res.status(400).send({ msg: "This order_id dose not exist."})
             }
-            Comment.find({order : req.params.id}, function (err, comment){
+            Comment.find({order : req.params.id})
+            .populate("owner")
+            .exec (function (err, comment){
                 if (err) throw err;
                 if (comment.length == 0) {
                     return res.status(200).send({ msg: "No comments"})

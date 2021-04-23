@@ -15,11 +15,18 @@ import formatDate from '../services/formatDate'
 
 
 function RequestSheet(props) {
-
-    const order = props.location.data.order
     console.log(props)
+    const order = props.location.data.order
+    
 
-    const [dataRequest, setDataRequest] = useState([])
+    const [dataRequest, setDataRequest] = useState({
+        _id: "",
+        product: "",
+        amount: "",
+        user: "",
+        status: "",
+        date: ""
+    })
     const [change, setchange] = useState([])
 
     //CONSIGUIENDO LA DATA DEL PEDIDO
@@ -27,8 +34,8 @@ function RequestSheet(props) {
     
         axios.get(`${apiURL}order/${props.match.params.id}`)
         .then(res => {
-            console.log(res.data)
             setDataRequest(res.data)
+            console.log(dataRequest)
         })
         .catch(error => {
             console.log(error.response)
@@ -132,7 +139,7 @@ function RequestSheet(props) {
     const [commentsData, setCommentsData] = useState([])
 
     async function getCommentsData() {
-        const dataBase = await axios.get(`${apiURL}comment/${order._id}`);
+        const dataBase = await axios.get(`${apiURL}comment/${props.match.params.id}`);
         setCommentsData(dataBase.data)
     }
     useEffect(() => {
@@ -140,7 +147,7 @@ function RequestSheet(props) {
     },[])
 
     
-
+console.log(commentsData)
 
 
     //VALIDANDO UN PEDIDO
@@ -256,17 +263,17 @@ function RequestSheet(props) {
     }
 
     //CONSIGUIENDO EL USUARIO QUE HIZO EL PEDIDO
-    const [userName, setUserName] = useState({
-        data: {fullname:""}
-    })
-    async function getUserName() {
-        console.log(props.location.data.order.user)
-        const dataBase = await axios.get(`${apiURL}user/${props.location.data.order.user}`);
-        setUserName(dataBase)
-    }
-    useEffect(() => {
-        getUserName()
-    },[])
+    // const [userName, setUserName] = useState({
+    //     data: {fullname:""}
+    // })
+    // async function getUserName() {
+    //     console.log(props.location.data.order.user)
+    //     const dataBase = await axios.get(`${apiURL}user/${props.location.data.order.user}`);
+    //     setUserName(dataBase)
+    // }
+    // useEffect(() => {
+    //     getUserName()
+    // },[])
 
     
     const handleCommentChange = () => {
@@ -275,6 +282,7 @@ function RequestSheet(props) {
 
 
     console.log(props)
+    console.log(dataRequest)
     return (
         <div className="gridSection">
             <div className="back">
@@ -282,14 +290,14 @@ function RequestSheet(props) {
             </div>
             <div className="sheetBody">
                 <div className="sheetRequestName">
-                    <h1>{props.location.productData.name}</h1>
+                    <h1>{(dataRequest.product != null) ? dataRequest.product.name : "No product"}</h1>
                     <button className="button1 edditButton" onClick={openProductModal}>Show product Sheet</button>
                 </div>
                 <div className="sheetInfo requestInfo">
                     
-                    <p><b>Amount to order: </b>{order.amount} unities</p>
-                    <p><b>Requested by: </b>{userName.data.fullname}</p>
-                    <p><b>Date: </b>{formatDate(order.date)}</p>
+                    <p><b>Amount to order: </b>{dataRequest.amount} unities</p>
+                    <p><b>Requested by: </b>{(dataRequest.user != null) ? dataRequest.user.fullname : "No user"}</p>
+                    <p><b>Date: </b>{dataRequest.date != "" && formatDate(dataRequest.date)}</p>
                     {(dataRequest.status === "waiting") && <p style={{color: "orange"}}><b>Status: </b>{dataRequest.status}</p>}
                     {(dataRequest.status === "validated") && <p style={{color: "green"}}><b>Status: </b>{dataRequest.status}</p>}
                     {(dataRequest.status === "received") && <p style={{color: "blue"}}><b>Status: </b>{dataRequest.status}</p>}
@@ -333,19 +341,21 @@ function RequestSheet(props) {
                     <div className="modalHead">
                         <button className="closeButton" onClick={closeProductModal}>X</button>
                     </div>
+                    {dataRequest.product == null ? <div style={{margin:"20px"}}><h1>No product</h1> </div> :
                     <div className="sheetBody sheetBodyProduct">
                         <div>
-                            <h1>{props.location.productData.name}</h1>
+                            <h1>{dataRequest.product.name}</h1>
                         </div>
                         <div className="sheetInfo">
-                            <p><b>Catalog number: </b>{props.location.productData.catalog_number}</p>
-                            <p><b>Type: </b>{props.location.productData.type}</p>
-                            <p><b>Trading house: </b>{props.location.productData.trading_house}</p>
-                            <p><b>Reference number: </b>{props.location.productData.reference_number}</p>
-                            <p><b>Price: </b>{props.location.productData.price}€</p>
-                            <p><b>Information: </b></p>
+                            <p><b>Catalog number: </b>{dataRequest.product.catalog_number}</p>
+                            <p><b>Type: </b>{dataRequest.product.type}</p>
+                            <p><b>Trading house: </b>{dataRequest.product.trading_house}</p>
+                            <p><b>Reference number: </b>{dataRequest.product.reference_number}</p>
+                            <p><b>Price: </b>{dataRequest.product.price}€</p>
+                            <p><b>Information: {dataRequest.product.information}</b></p>
                         </div>
                     </div>
+                    }
                 </div>
             </Modal>
             <Modal ref={addCommentModalRef}>

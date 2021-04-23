@@ -9,7 +9,7 @@ const comment = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         trim: true,
-        ref: "user"
+        ref: "User"
     },
     text: {
         type: String,
@@ -19,7 +19,7 @@ const comment = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         trim: true,
-        ref: "order"
+        ref: "Order"
     },
     date: {
         type: Date,

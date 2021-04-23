@@ -73,11 +73,11 @@ function ProductSheet(props) {
     })
   
 
-    //CONSIGUIENDO INFORMACIÓN DEL PRODUCTO
+    
     const [dataProduct, setDataProduct] = useState([])
     const [change, setchange] = useState([])
 
-    //CONSIGUIENDO LA DATA DEL PEDIDO
+    //CONSIGUIENDO LA DATA DEL PRODUCTO
    
     useEffect(() => {
         const getData = () => {
@@ -95,8 +95,8 @@ function ProductSheet(props) {
 
     console.log(dataProduct)
 
-    //CREANDO NUEVO PEDIDO
 
+    //CREANDO NUEVO PEDIDO
     const [amountInputValue, setAmountInputValue] = useState({
         amount: ""
     })
@@ -108,13 +108,9 @@ function ProductSheet(props) {
             [event.target.name] : value
         })
     }
-
     const makeRequest = () => {
         console.log("hace make request")
-        axios.post(`${apiURL}order/neworder/${dataProduct._id}`, 
-       
-        {...amountInputValue}
-        )
+        axios.post(`${apiURL}order/neworder/${dataProduct._id}`, {...amountInputValue})
         .then(res => {
             console.log("pedido creado!")
             console.log(res.data)
@@ -124,7 +120,6 @@ function ProductSheet(props) {
             })
             setAmountInputValue({amount:""})
             openResponseModal()
-            
         })
         .catch(error => {
             console.log(error.response)

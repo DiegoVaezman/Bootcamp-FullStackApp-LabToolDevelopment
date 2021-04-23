@@ -25,6 +25,7 @@ function RequestsSection(props) {
         console.log("pasa por conseguir dara de rquests")
         //waiting
         const dataNew = await axios.get(`${apiURL}order/waiting`);
+        console.log(dataNew)
         setDataNewRequests(dataNew.data)
         
         //validated

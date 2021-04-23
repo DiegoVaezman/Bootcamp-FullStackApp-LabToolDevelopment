@@ -7,7 +7,7 @@ const stock = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         trim: true,
-        ref: "product",
+        ref: "Product",
         unique: true
     },
     amount: {

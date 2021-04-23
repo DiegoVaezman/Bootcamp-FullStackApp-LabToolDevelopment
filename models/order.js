@@ -7,7 +7,7 @@ const order = new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         trim: true,
-        ref: "product"
+        ref: "Product"
     },
     amount: {
         type: Number,
@@ -18,7 +18,7 @@ const order = new Schema({
         type: Schema.Types.ObjectId,
         trim: true,
         require: true,
-        ref: "user"
+        ref: "User"
     },
     status: {
         type: String,  

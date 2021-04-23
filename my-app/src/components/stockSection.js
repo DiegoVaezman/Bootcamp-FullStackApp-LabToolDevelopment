@@ -58,54 +58,52 @@ function StockSection(dataBase){
     const [dataFiltered, setDataFiltered] = useState([])
 
     
-    const [inputValue, setInputValue] = useState({
-        byname: "",
-        bycatn: "",
-        byrefn:""
-    })
-    const handletTypeInputChange = (event) => {
-        setInputValue({
-            ...inputValue,
-            [event.target.name] : event.target.value
-        })
-    }
-    const searchByName = (event) => {
-        event.preventDefault();
-        const name = inputValue.byname;
-        setDataFiltered(data.filter(item => item.name.toLowerCase().includes(name)));
-        closeSearchModal()
-    }
-    const searchByCatN = (event) => {
-        event.preventDefault();
-        const catN = String(inputValue.bycatn);
-        setDataFiltered(data.filter(item => String(item.catalog_number).includes(catN)));
-        closeSearchModal()
-    }
-    const searchByRefN = (event) => {
-        event.preventDefault();
-        const refN = inputValue.byrefn;
-        setDataFiltered(data.filter(item => item.reference_number.toLowerCase().includes(refN)));
-        closeSearchModal()
-    }
-    const searchByType = (event) => {
-        const type = event.target.value;
-        console.log(type)
-        if (type === "All") {
-            console.log(data)
-            setDataFiltered(data)
-        } else {
-            console.log(data.filter(item => item.type === type))
-            setDataFiltered(data.filter(item => item.type === type))
-        }
-    }
+    // const [inputValue, setInputValue] = useState({
+    //     byname: "",
+    //     bycatn: "",
+    //     byrefn:""
+    // })
+    // const handletTypeInputChange = (event) => {
+    //     setInputValue({
+    //         ...inputValue,
+    //         [event.target.name] : event.target.value
+    //     })
+    // }
+    // const searchByName = (event) => {
+    //     event.preventDefault();
+    //     const name = inputValue.byname;
+    //     setDataFiltered(data.filter(item => item.name.toLowerCase().includes(name)));
+    //     closeSearchModal()
+    // }
+    // const searchByCatN = (event) => {
+    //     event.preventDefault();
+    //     const catN = String(inputValue.bycatn);
+    //     setDataFiltered(data.filter(item => String(item.catalog_number).includes(catN)));
+    //     closeSearchModal()
+    // }
+    // const searchByRefN = (event) => {
+    //     event.preventDefault();
+    //     const refN = inputValue.byrefn;
+    //     setDataFiltered(data.filter(item => item.reference_number.toLowerCase().includes(refN)));
+    //     closeSearchModal()
+    // }
+    // const searchByType = (event) => {
+    //     const type = event.target.value;
+    //     console.log(type)
+    //     if (type === "All") {
+    //         console.log(data)
+    //         setDataFiltered(data)
+    //     } else {
+    //         console.log(data.filter(item => item.type === type))
+    //         setDataFiltered(data.filter(item => item.type === type))
+    //     }
+    // }
     
-
     const [response, setResponse] = useState({
         success: false,
         error: false,
         msg: ""
     })
-
 
 
 console.log(dataFiltered)
@@ -144,7 +142,7 @@ console.log(dataFiltered)
             </div>
             
 
-            <Modal ref={searchModalRef}>
+            {/* <Modal ref={searchModalRef}>
                 <div>
                     <h1>Advanced search</h1>
                     <button onClick={closeSearchModal}className="close">Close</button>
@@ -166,7 +164,7 @@ console.log(dataFiltered)
                     </div>
                     <button onClick={searchByRefN}>Search</button>
                 </form>
-            </Modal>
+            </Modal> */}
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
                     <div>

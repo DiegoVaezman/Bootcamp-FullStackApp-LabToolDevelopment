@@ -3,8 +3,15 @@
     padding: 0;
     box-sizing: border-box;
 }
+body{
+    background-color: rgb(29, 29, 29);
+}
 
 /*COMMON CLASES*/
+.commentsList, .commentsListItem, p{
+    /* overflow-x: hidden;
+    overflow-y: hidden; */
+}
 .section{
     padding: 0 5px 0 5px;
     grid-column: 1 / 11;
@@ -55,6 +62,22 @@
     display: flex;
     flex-direction: column; */
 }
+@media (min-width: 414px) {
+    .App, .modal-wrapper, .modal-backdrop{
+        width: 414px;
+        height: 736px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+     .commentsListItem, p,.nameSheet{
+        overflow:hidden !important;
+    }
+    .commentsList{
+        overflow-x: hidden !important;
+    }
+}
+
+
 .yesNoButtons{
     width: 70%;
     display: flex;
@@ -434,6 +457,8 @@
     font-size: 15px;
     color: rgb(105, 42, 0);
     overflow: scroll;
+    /* overflow-y: hidden;
+    overflow-x: hidden; */
     white-space: nowrap;
 }
 .catNInfo{
@@ -463,6 +488,8 @@
     flex-direction: row;
     overflow: scroll;
     white-space: nowrap;
+    /* overflow-x: hidden;
+    overflow-y: hidden; */
 }
 .sheetBodyProduct div{
     margin-bottom: 30px;
@@ -521,7 +548,8 @@
     padding: 3px;
     height: 100%;
     overflow: scroll;
-    overflow-x: hidden;  /*No lo pillab*/
+    /* overflow-x: hidden;  
+    overflow-y: hidden; */
     background-color: rgb(255, 250, 244);
 }
 .deleteButtonDiv{
@@ -538,6 +566,8 @@
     flex-direction: column;
     overflow: scroll;
     white-space: nowrap;
+    /* overflow-x: hidden;
+    overflow-y: hidden; */
 }
 .garbage{
     width: 100%;
@@ -585,6 +615,8 @@
 .itemList p{
     overflow: scroll;
     white-space: nowrap;
+    /* overflow-x: hidden;
+    overflow-y: hidden; */
 }
 /*itemsheet*/
 .edditItemButton{
@@ -751,8 +783,10 @@
 }
 
 /*--Modal--*/
+/* #modal-root{
+} */
 .modal-wrapper {
-    margin: 5px;
+    padding: 5px;
     position: fixed;
     top: 0;
     bottom: 0;
