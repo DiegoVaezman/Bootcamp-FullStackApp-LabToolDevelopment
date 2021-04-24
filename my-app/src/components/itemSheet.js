@@ -299,9 +299,7 @@ function ItemSheet(props) {
                     <div className="modalHead">
                         <button className="closeButton" onClick={closeProductModal}>X</button>
                     </div>
-                    {dataItem.product == null ? <div style={{margin:"20px"}}>
-                            <h1>No product</h1> </div>
-                       :
+                    {dataItem.product == null ? <div style={{margin:"20px"}}><h1>No product</h1> </div> :
                     <div className="sheetBody sheetBodyProduct">
                         <div>
                             <h1>{dataItem.product.name}</h1>
