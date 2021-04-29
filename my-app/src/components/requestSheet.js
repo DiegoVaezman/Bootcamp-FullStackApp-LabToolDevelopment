@@ -243,10 +243,10 @@ function RequestSheet(props) {
                     <p><b>Amount to order: </b>{dataRequest.amount} unities</p>
                     <p><b>Requested by: </b>{(dataRequest.user != null) ? dataRequest.user.fullname : "No user"}</p>
                     <p><b>Date: </b>{dataRequest.date !== "" && formatDate(dataRequest.date)}</p>
-                    {(dataRequest.status === "waiting") && <p style={{ color: "orange" }}><b>Status: </b>{dataRequest.status}</p>}
-                    {(dataRequest.status === "validated") && <p style={{ color: "green" }}><b>Status: </b>{dataRequest.status}</p>}
-                    {(dataRequest.status === "received") && <p style={{ color: "blue" }}><b>Status: </b>{dataRequest.status}</p>}
-                    {(dataRequest.status === "rejected") && <p style={{ color: "red" }}><b>Status: </b>{dataRequest.status}</p>}
+                    {(dataRequest.status === "waiting") && <p className="" style={{ color: "orange" }}><b>Status: </b>{dataRequest.status}</p>}
+                    {(dataRequest.status === "validated") && <p className="" style={{ color: "green" }}><b>Status: </b>{dataRequest.status}</p>}
+                    {(dataRequest.status === "received") && <p className="" style={{ color: "blue" }}><b>Status: </b>{dataRequest.status}</p>}
+                    {(dataRequest.status === "rejected") && <p className="" style={{ color: "red" }}><b>Status: </b>{dataRequest.status}</p>}
                 </div>
                 <h2>Comments</h2>
                 {(commentsData.length > 0) &&
