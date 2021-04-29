@@ -1,5 +1,6 @@
 const Router = require("express").Router
 const Order = require("../models/order")
+const Comment = require("../models/comment")
 const Product = require("../models/product")
 const Stock = require("../models/stock")
 const protectedRoute = require("../middlewares/protectedRoute")
@@ -167,6 +168,10 @@ router.delete("/deleteorder/:id", protectedRoute, (req, res) => {
                                 if (err) throw err;
                             })
                         }
+                    })
+                    //eliminar comentarios de la BD referentes al pedido.
+                    Comment.deleteMany({ order : req.params.id}, function (err, result){
+                        if (err) throw err;
                     })
                 }
                 res.status(200).send({msg:"Order deleted"});

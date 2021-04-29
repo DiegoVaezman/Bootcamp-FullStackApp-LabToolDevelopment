@@ -288,24 +288,26 @@ post login/
 
 ## **Tecnologías usadas**
 
-- `Node.js v14.16.0.`
+- `HTML5`
+- `CSS3`
+- `JavaScript`
+- `Node.JS v14.16.0.`
 - `MongoDB`
-- `React`
 
 ## **Dependencias**
 
-- `bcrypt: ^5.0.1`
-- `dotenv: ^8.2.0`
-- `express: ^4.17.1`
-- `jsonwebtoken: ^8.5.1`
-- `mongoose: ^5.11.18`
-- `nodemon: ^2.0.7`
-- `validator: ^13.5.2`
-- `axios: ^0.21.1`
-- `concurrently: ^6.0.0`
 - `react: ^17.0.2`
 - `react-dom: ^17.0.2`
 - `react-scripts: 4.0.1`
+- `express: ^4.17.1`
+- `mongoose: ^5.11.18`
+- `axios: ^0.21.1`
+- `nodemon: ^2.0.7`
+- `bcrypt: ^5.0.1`
+- `jsonwebtoken: ^8.5.1`
+- `dotenv: ^8.2.0`
+- `validator: ^13.5.2`
+- `concurrently: ^6.0.0`
 - `web-vitals: ^1.1.1`
 
 ## **TO DO**
@@ -318,7 +320,6 @@ post login/
 - Al eliminar un producto de la base de datos, eliminar o modificar las solicitudes y/o el stock que hubiese de él.
 - Establecer dos inputs de password para evitar equivocaciones a la hora de nuevo registro de usuario.
 - Poder modificar la contraseña del usuario logueado.
-- Que el usuario con rol de usuario no vea los botones de validar o rechazar solicitud de pedido.
 - Al eliminar pedido eliminar los comentarios de ese pedido de la base de datos.
 - Hacer versión responsive web.
 - Mejora del código en general. Refactoring.
