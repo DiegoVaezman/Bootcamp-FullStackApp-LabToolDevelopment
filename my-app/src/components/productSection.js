@@ -1,15 +1,12 @@
 import React from 'react';
 import axios from 'axios';
 import {useState, useEffect} from 'react'
-import {Redirect} from 'react-router-dom'
 import Modal from "./modal"
 import ModalResponse from './modalResponse';
 import SuccessResponse from "./successResponse"
 import ErrorResponse from "./errorResponse"
 import ProductListItem from './productListItem'
 import apiURL from '../services/apiURL'
-
-
 
 function ProductSection(_dataBase){
 
@@ -54,11 +51,30 @@ function ProductSection(_dataBase){
         responseModalRef.current.closeModal()
     };
 
+    //ESTADOS
     const [loading, setLoading] = useState(true)
+    const [data, setData] = useState([""])
+    const [dataFiltered, setDataFiltered] = useState([data])
+    const [inputValue, setInputValue] = useState({
+        byname: "",
+        bycatn: "",
+        byrefn:""
+    })
+    const [response, setResponse] = useState({
+        success: false,
+        error: false,
+        msg: ""
+    })
+    const [addInputValue, setAddInputValue] = useState({
+        catalog_number: "",
+        name: "",
+        trading_house : "",
+        reference_number: "",
+        price : "",
+        information : ""
+    })
 
     //CONSIGUIENDO LA DATA DE PRODUCTOS DESDE DB
-    const [data, setData] = useState([""])
-
     async function getData() {
         const dataBase = await axios.get(`${apiURL}product/`);
         if (dataBase.data.msg) { 
@@ -73,18 +89,7 @@ function ProductSection(_dataBase){
         getData()
     },[])
 
-    
-
-
     //FILTRANDO LA DATA
-    const [dataFiltered, setDataFiltered] = useState([data])
-
-    
-    const [inputValue, setInputValue] = useState({
-        byname: "",
-        bycatn: "",
-        byrefn:""
-    })
     const handletTypeInputChange = (event) => {
         setInputValue({
             ...inputValue,
@@ -121,25 +126,7 @@ function ProductSection(_dataBase){
         }
     }
     
-
-    const [response, setResponse] = useState({
-        success: false,
-        error: false,
-        msg: ""
-    })
-
-
-
-
     //AÑADIENDO NUEVO PRODUCTO
-    const [addInputValue, setAddInputValue] = useState({
-        catalog_number: "",
-        name: "",
-        trading_house : "",
-        reference_number: "",
-        price : "",
-        information : ""
-    })
     const handleAddInputChange = (event) => {
         const value = !isNaN(event.target.value) ? parseFloat(event.target.value) : event.target.value
         setAddInputValue({
@@ -148,11 +135,8 @@ function ProductSection(_dataBase){
         })
     }
     const addNewProduct = () => {
-     
         axios.post(`${apiURL}product/newproduct`, {...addInputValue})
         .then(res => {
-            console.log("producto añadido!")
-            console.log(res.data)
             setResponse({...response,
                 success: true,
                 msg: `${res.data.name} has been added to the product list!`
@@ -162,8 +146,6 @@ function ProductSection(_dataBase){
             getData()
         })
         .catch(error => {
-            console.log(error)
-            console.log("hay un error")
             setResponse({...response,
                 error: true,
                 msg: error.response.data
@@ -171,8 +153,6 @@ function ProductSection(_dataBase){
             openResponseModal()
         });
     }
-
-    
 
     return (
         <div className="gridSection grid">
@@ -194,21 +174,17 @@ function ProductSection(_dataBase){
                 </select>
                 <button className="button1"onClick={openSearchModal}>Advanced Search</button>
             </div>
-
             <div className="list">
                 {loading ? 
-                <div class="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div className="lds-default"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 :
                 dataFiltered.map((item, index) => {
                     return <ProductListItem product={item} localState={dataFiltered} key={index} />
                 })
                 }
             </div>
-            
             <button className="button1 addProductBtn" onClick={openAddModal}>Add new product</button>
-
             <Modal ref={searchModalRef}>
-               
                     <div className="modalHead">
                         <h1>Advanced search</h1>
                         <button className="closeButton"onClick={closeSearchModal}><b>X</b></button>

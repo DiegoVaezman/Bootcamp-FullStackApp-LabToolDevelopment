@@ -7,12 +7,10 @@ import SuccessResponse from "./successResponse";
 import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
 
-
 function SignUp() {
 
     // VENTANAS MODALES
     const responseModalRef = React.useRef();
-
     const openResponseModal = () => {
         responseModalRef.current.openModal()
     };
@@ -25,14 +23,12 @@ function SignUp() {
         responseModalRef.current.closeModal()
     };
 
-
+    //ESTADOS
     const [response, setResponse] = useState({
         success: false,
         error: false,
         msg: ""
     })
-
-    //CREANDO NUEVO USUARIO
     const [signupInputValue, setSignupInputValue] = useState({
         fullname: "",
         position: "",
@@ -40,6 +36,8 @@ function SignUp() {
         password: "",
         rol: ""
     })
+
+    //CREANDO NUEVO USUARIO
     const handleSignupInputChange = (event) => {
         setSignupInputValue({
             ...signupInputValue,
@@ -47,13 +45,8 @@ function SignUp() {
         })
     }
     const register = () => {
-        axios.post(`${apiURL}user/newuser`, 
-  
-        {...signupInputValue}
-        )
+        axios.post(`${apiURL}user/newuser`, {...signupInputValue})
         .then(res => {
-            console.log("user added")
-            console.log(res.data)
             setResponse({...response,
                 success: true,
                 msg: `Hello ${res.data.fullname}! Wellcome to LabTool!`
@@ -61,8 +54,6 @@ function SignUp() {
             openResponseModal()
         })
         .catch(error => {
-            console.log(error.response)
-            console.log("hay un error")
             setResponse({...response,
                 error: true,
                 msg: error.response.data.msg
@@ -70,12 +61,9 @@ function SignUp() {
             openResponseModal()
         });
     }
-    
-
 
     return (
         <div className="signup appGridParent grid">
-            
             <div className="logoSignup"><img src="../../img/LabTool_logo.png" alt="LabTool_logo"/></div>
             <form className="form signupForm">
                 <div className="flex-column">
@@ -103,10 +91,8 @@ function SignUp() {
                     </select>
                 </div>
             </form>
-         
                 <button className="button1 signupButton" onClick={register}>CREATE ACCOUNT</button>
                 <p className="accountText" align="center">Already have an account? <Link className="Link" to="/signin">Login here</Link></p>
-          
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">

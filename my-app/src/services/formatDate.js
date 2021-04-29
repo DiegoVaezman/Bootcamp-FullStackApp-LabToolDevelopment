@@ -1,5 +1,5 @@
 const formatDate = (utcDate) => {
-    if (utcDate == undefined) return
+    if (utcDate === undefined) return
     var date = new Date(utcDate);
     var h = date.getHours();
     var m = date.getMinutes();
@@ -10,7 +10,7 @@ const formatDate = (utcDate) => {
         return i;
     }
     m = checkTime(m);
-    var month = new Array();
+    var month = new Array([]);
     month[0] = "January";
     month[1] = "February";
     month[2] = "March";

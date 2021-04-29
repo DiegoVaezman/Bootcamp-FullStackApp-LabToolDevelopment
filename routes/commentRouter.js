@@ -6,21 +6,17 @@ const {validateId, validateString} = require("../helpers/validations")
 
 const router = new Router()
 
-
-//no la utilizo
-router.get("/", protectedRoute, (req, res) => {
-    Comment.find({}, function (err, comments){
-        if (err) {
-            res.status(400).send({ msg: err.message})
-        }
-        if (comments.length == 0) {
-            return res.status(200).send({msg: "There are no comments"})
-        }
-        res.status(200).send(comments)
-    })
-})
-
-
+// router.get("/", protectedRoute, (req, res) => {
+//     Comment.find({}, function (err, comments){
+//         if (err) {
+//             res.status(400).send({ msg: err.message})
+//         }
+//         if (comments.length == 0) {
+//             return res.status(200).send({msg: "There are no comments"})
+//         }
+//         res.status(200).send(comments)
+//     })
+// })
 
 
 //ver los comentarios de un pedido
@@ -40,7 +36,6 @@ router.get("/:id", protectedRoute, (req, res) => {
                     return res.status(200).send({ msg: "No comments"})
                 }
                 res.status(200).send(comment)
-                console.log(comment)
             })
         // })
     } catch (error) {
@@ -48,14 +43,10 @@ router.get("/:id", protectedRoute, (req, res) => {
     }
 })
 
-
-
-
+//nuevo comentario
 router.post("/newcomment/:id", protectedRoute, (req, res) => {
-
     try {
         validateId(req.params.id)
-        console.log("nuevo comentario")
         const text = req.body.text
         const owner = req.decoded.id   //sera el id del usuario logueado.
         const order = req.params.id
@@ -64,7 +55,6 @@ router.post("/newcomment/:id", protectedRoute, (req, res) => {
             return res.status(400).send({ msg: "Text is required"})
         }
         validateString(text)
-
         Order.findById(req.params.id, function (err, orderfound){
             if (err) throw err;
             if (!orderfound) {
@@ -92,8 +82,7 @@ router.post("/newcomment/:id", protectedRoute, (req, res) => {
     }
 })
 
-
-
+//eliminar comentario
 router.delete("/deletecomment/:id", protectedRoute,(req, res) => {
     try {
         validateId(req.params.id)
@@ -110,7 +99,6 @@ router.delete("/deletecomment/:id", protectedRoute,(req, res) => {
             Order.updateOne({_id: comment.order}, { $pull: {comments: req.params.id}}, function(err, result) {
                 if (err) throw err;
             })
-
             //elimina el comentario de la coleccion de comentarios
             Comment.deleteOne({ _id : req.params.id}, function (err, result){
                 if (err) throw err;
@@ -121,7 +109,5 @@ router.delete("/deletecomment/:id", protectedRoute,(req, res) => {
         res.status(400).send({ msg: error.message})
     }
 })
-
-
 
 module.exports = router

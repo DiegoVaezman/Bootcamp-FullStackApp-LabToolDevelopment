@@ -7,8 +7,7 @@ const {validateId, validateNumber} = require("../helpers/validations")
 
 const router = new Router()
 
-
-
+//obteniendo todas las solicitudes de pedidos
 router.get("/", (req, res) => {
 
     Order.find({})
@@ -23,10 +22,8 @@ router.get("/", (req, res) => {
         res.status(200).send(orders)})
 })
 
-
-
+//nueva solicitud de pedido
 router.post("/neworder/:id", protectedRoute, (req, res) => {
-
     try {
         validateId(req.params.id)
 
@@ -35,7 +32,6 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
             if (!products) {
                 return res.status(400).send({ msg: "This product_Id dose not exist."})
             }
-            console.log(req.decoded)
             const product = req.params.id
             const amount = req.body.amount      //se requiere por formulario
             const user = req.decoded.id    
@@ -51,8 +47,6 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
                 return res.status(400).send({ msg: error.message})  
             }
             
-
-    
             //actualiza el estado del item a "request"
             Stock.updateOne({ product : product}, {$set: {request: true} }, function(err, result) {
                 if (err) throw err;
@@ -70,7 +64,6 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
                 comments :[],
                 date : Date.now()
             })
-        
             order.save()
             .then(doc => res.status(201).send(doc)) 
             .catch(error => {
@@ -82,9 +75,8 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
     }
 })
 
-
+//validando solicitud
 router.put("/validate/:id", protectedRoute, (req, res) => {
-
     try {
         validateId(req.params.id)
     
@@ -118,8 +110,7 @@ router.put("/validate/:id", protectedRoute, (req, res) => {
     }
 })
 
-
-
+//rechazando solicitud
 router.put("/reject/:id", protectedRoute, (req, res) => {
     try {
         validateId(req.params.id)
@@ -155,8 +146,7 @@ router.put("/reject/:id", protectedRoute, (req, res) => {
     }
 })
 
-
-
+//eliminando solicitud
 router.delete("/deleteorder/:id", protectedRoute, (req, res) => {
     try {
         validateId(req.params.id)
@@ -187,9 +177,8 @@ router.delete("/deleteorder/:id", protectedRoute, (req, res) => {
     }
 })
 
-
+//obteniendo solicitudes en espera
 router.get("/waiting", protectedRoute, (req, res) => {
-    
     Order.find({status : "waiting"}) 
     .populate("product user")
     .exec (function (err, orders){
@@ -201,9 +190,8 @@ router.get("/waiting", protectedRoute, (req, res) => {
     })
 })
 
-
+//obteniendo solicitudes validadas
 router.get("/validated", protectedRoute, (req, res) => {
-
     Order.find({status : "validated"})
     .populate("product user")
     .exec (function (err, orders){
@@ -215,7 +203,7 @@ router.get("/validated", protectedRoute, (req, res) => {
     })
 })
 
-
+//obteniendo solicitudes recibidas
 router.get("/received", protectedRoute, (req, res) => {
 
     Order.find({status : "received"})
@@ -229,6 +217,7 @@ router.get("/received", protectedRoute, (req, res) => {
     })
 })
 
+//obteniendo solicitudes rechazadas
 router.get("/rejected", protectedRoute, (req, res) => {
 
     Order.find({status : "rejected"})
@@ -242,6 +231,7 @@ router.get("/rejected", protectedRoute, (req, res) => {
     })
 })
 
+//obteniendo una solicitud por id
 router.get("/:id", protectedRoute, (req, res) => {
     try{
         validateId(req.params.id)

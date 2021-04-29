@@ -1,51 +1,37 @@
 import React from 'react';
 import axios from 'axios';
 import {useState, useEffect} from 'react'
-import { Link , Route, withRouter} from 'react-router-dom'
+import { Link, withRouter} from 'react-router-dom'
 import Modal from "./modal"
 import ModalResponse from './modalResponse';
-import ModalConfirm from './modalConfirm';
 import SuccessResponse from "./successResponse";
 import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
 
-import {Redirect} from 'react-router-dom'
-
-
-
 function ProductSheet(props) {
 
-    // const product = props.location.data.product
-    
     // VENTANAS MODALES
     const edditModalRef = React.useRef();
     const requestModalRef = React.useRef();
     const responseModalRef = React.useRef();
     const confirmModalRef = React.useRef();
-    // const deleteResponseModalRef = React.useRef();
     const openEdditModal = () => {
         edditModalRef.current.openModal()
-        console.log("editmodal abierto")
     };
     const openRequestModal = () => {
         requestModalRef.current.openModal()
     };
     const openResponseModal = () => {
         responseModalRef.current.openModal()
-        console.log("response modal abierto")
     };
     const openConfirmModal = () => {
         confirmModalRef.current.openModal()
     }
-    // const openDeleteResponseModal = () => {
-    //     deleteResponseModalRef.current.openModal()
-    // }
     const closeEdditModal = () => {
         edditModalRef.current.closeModal()
     };
     const closeRequestModal = () => {
         requestModalRef.current.closeModal()
-        console.log("cierra ventana")
         setAmountInputValue({amount:""})
     };
     const closeResponseModal = () => {
@@ -65,42 +51,40 @@ function ProductSheet(props) {
         confirmModalRef.current.closeModal()
     };
 
+    //ESTADOS
+    const [dataProduct, setDataProduct] = useState([])
+    const [change, setchange] = useState([])
+    const [edditInputValue, setEdditInputValue] = useState()
     const [response, setResponse] = useState({
         success: false,
         error: false,
         delete: false,
         msg: ""
     })
-  
-
+    const [amountInputValue, setAmountInputValue] = useState({
+        amount: ""
+    })
     
-    const [dataProduct, setDataProduct] = useState([])
-    const [change, setchange] = useState([])
-
     //CONSIGUIENDO LA DATA DEL PRODUCTO
-   
     useEffect(() => {
         const getData = () => {
             axios.get(`${apiURL}product/${props.match.params.id}`)
             .then(res => {
-                console.log(res.data)
                 setDataProduct(res.data)
             })
             .catch(error => {
-                console.log(error.response)
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: "Was a problem getting the data"
+                })
+                openResponseModal()
             });
         }
         getData()
     },[change])
 
-    console.log(dataProduct)
-
-
     //CREANDO NUEVO PEDIDO
-    const [amountInputValue, setAmountInputValue] = useState({
-        amount: ""
-    })
-    
     const handleAmountInputChange = (event) => {
         const value = !isNaN(event.target.value) ? parseFloat(event.target.value) : event.target.value
         setAmountInputValue({
@@ -109,11 +93,8 @@ function ProductSheet(props) {
         })
     }
     const makeRequest = () => {
-        console.log("hace make request")
         axios.post(`${apiURL}order/neworder/${dataProduct._id}`, {...amountInputValue})
         .then(res => {
-            console.log("pedido creado!")
-            console.log(res.data)
             setResponse({...response,
                 success: true,
                 msg: `Product ${dataProduct.name} ordered `
@@ -122,19 +103,15 @@ function ProductSheet(props) {
             openResponseModal()
         })
         .catch(error => {
-            console.log(error.response)
             setResponse({...response,
                 error: true,
                 msg: error.response.data.msg
             })
-            console.log(error.response)
             openResponseModal()
         });
     }
     
     //EDITANDO PRODUCTO
-    const [edditInputValue, setEdditInputValue] = useState()
-
     const handletEdditInputChange = (event) => {
         setEdditInputValue({
             ...edditInputValue,
@@ -142,11 +119,8 @@ function ProductSheet(props) {
         })
     }
     const edditProduct = () => {
-
         axios.put(`${apiURL}product/${dataProduct._id}/modify`, {...edditInputValue})
         .then(res => {
-            console.log("Producto modificado")
-            console.log(res.data)
             setResponse({...response,
                 success: true,
                 msg: res.data.msg
@@ -156,7 +130,6 @@ function ProductSheet(props) {
             setchange([])
         })
         .catch(error => {
-            console.log(error.response)
             setResponse({...response,
                 error: true,
                 msg: error.response.data.msg
@@ -167,11 +140,8 @@ function ProductSheet(props) {
 
     //ELIMINANDO PRODUCTO
     const deleteProduct = () => {
-
         axios.delete(`${apiURL}product/deleteproduct/${dataProduct._id}`)
         .then(res => {
-            console.log("Producto eliminado")
-            console.log(res.data)
             setResponse({...response,
                 success: true,
                 delete: true,
@@ -181,7 +151,6 @@ function ProductSheet(props) {
             openResponseModal()
         })
         .catch(error => {
-            console.log(error.response)
             setResponse({...response,
                 error: true,
                 msg: error.response.data.msg
@@ -204,7 +173,7 @@ function ProductSheet(props) {
                     <p><b>Trading house: </b>{dataProduct.trading_house}</p>
                     <p><b>Reference number: </b>{dataProduct.reference_number}</p>
                     <p><b>Price: </b>{dataProduct.price}€</p>
-                    {dataProduct.information != "" && <p><b>Information: </b>{dataProduct.information}</p>}
+                    {dataProduct.information !== "" && <p><b>Information: </b>{dataProduct.information}</p>}
                     <button className="button1 edditButton" onClick={openEdditModal}>Edit this product</button>
                 </div>
             </div>
@@ -266,13 +235,6 @@ function ProductSheet(props) {
                     </div>
                 </ModalResponse>
             }
-            {/* <ModalResponse ref={deleteResponseModalRef}>
-                    <div className="modalResponse">
-                        <SuccessResponse />
-                        <p><b>{response.msg}</b></p>
-                        <button className="button1 sizeModalButton" onClick={closeResponseModal}>Close</button>
-                    </div>
-            </ModalResponse> */}
         </div>
     )
 }

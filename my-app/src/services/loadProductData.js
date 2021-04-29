@@ -1,8 +1,6 @@
 import productListCNB from '../services/productListCNB'
 import apiURL from '../services/apiURL'
 import axios from 'axios';
-console.log(productListCNB)
-
 
 // for (var i=0; i < productListCNB.length; i++) {
 
@@ -10,7 +8,6 @@ console.log(productListCNB)
 //     var priceNumber = parseFloat(productListCNB[i].price)
 //     productListCNB[i].catalog_number = catalogNumber
 //     productListCNB[i].price = priceNumber
-//     console.log(productListCNB[i])
 // }
 
 

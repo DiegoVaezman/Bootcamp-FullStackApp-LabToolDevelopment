@@ -7,11 +7,8 @@ const {validatePassword, validateEmail, validateString} = require("../helpers/va
 
 const router = new Router()
 
-
-
-
+//obteniendo toos los usuarios registrados
 router.get("/", protectedRoute, (req, res) => {
-
     User.find({fullname:{ $ne: "AutomaticUser" }}, function (err, users) {
         if (err) {
             res.status(400).send({ msg: err.message})
@@ -23,8 +20,7 @@ router.get("/", protectedRoute, (req, res) => {
     })
 })
 
-
-
+//creando nuevo usuario
 router.post("/newuser", (req, res) => {
 
     const fullname = req.body.fullname
@@ -70,24 +66,22 @@ router.post("/newuser", (req, res) => {
     }
 })
 
-
-
-
-router.get("/comments", protectedRoute, (req, res) => {
+// //obteniendo todos los commentarios del usuario logueado
+// router.get("/comments", protectedRoute, (req, res) => {
     
-    Comment.find({owner : req.decoded.id}, function (err, comments) {
-        if (err) {
-            res.status(400).send({ msg: err.message})
-        }
-        if (comments.length == 0) {
-            return res.status(200).send({ msg: "There are not comments from this user"})
-        }
-        res.status(200).send(comments)
-    })
-})
+//     Comment.find({owner : req.decoded.id}, function (err, comments) {
+//         if (err) {
+//             res.status(400).send({ msg: err.message})
+//         }
+//         if (comments.length == 0) {
+//             return res.status(200).send({ msg: "There are not comments from this user"})
+//         }
+//         res.status(200).send(comments)
+//     })
+// })
 
+//obteniendo el usuario logueado
 router.get("/user", protectedRoute, (req, res) => {
-    
     User.findById((req.decoded.id), function (err, user) {
         if (err) {
             res.status(400).send({ msg: err.message})
@@ -96,10 +90,8 @@ router.get("/user", protectedRoute, (req, res) => {
     })
 })
 
-
+//eliminando el usuario logueado
 router.delete("/deleteuser", protectedRoute, (req, res) => {
-    
-    //elimino usuario logueado de User collection
     User.deleteOne({ _id : req.decoded.id}, function (err, result){
         if (err) {
             res.status(400).send({ msg: err.message})
@@ -108,8 +100,7 @@ router.delete("/deleteuser", protectedRoute, (req, res) => {
     })
 })
 
-
-
+//modificando usuario logueado
 router.put("/modify", protectedRoute, (req, res) => {
     
     let fullname = req.body.fullname
@@ -134,18 +125,18 @@ router.put("/modify", protectedRoute, (req, res) => {
     }
 })
 
-
-router.get("/:id", protectedRoute, (req, res) => {
-    try{
-        User.findById(req.params.id, function (err, user) {
-            if (err) throw err;
-            if (!user) {
-                return res.status(400).send({ msg: "This user_id dose not exist."})
-            }
-            res.status(200).send(user)
-        })
-    } catch (error) {
-        res.status(400).send({ msg: error.message})  
-    }
-})
+// //obteniendo usuario por id
+// router.get("/:id", protectedRoute, (req, res) => {
+//     try{
+//         User.findById(req.params.id, function (err, user) {
+//             if (err) throw err;
+//             if (!user) {
+//                 return res.status(400).send({ msg: "This user_id dose not exist."})
+//             }
+//             res.status(200).send(user)
+//         })
+//     } catch (error) {
+//         res.status(400).send({ msg: error.message})  
+//     }
+// })
 module.exports = router

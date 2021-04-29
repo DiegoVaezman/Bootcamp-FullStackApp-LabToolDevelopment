@@ -349,7 +349,7 @@ body{
     grid-row: 1 / 5;
     display:flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
     background-color: rgb(46, 46, 46);
     align-items: center;
     text-decoration: none;
@@ -483,7 +483,7 @@ body{
     grid-row: 5 / 30;
     display:flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
 }
 .nameSheet{
     display: flex;
@@ -655,7 +655,7 @@ body{
     margin-top: 20px;
     display:flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
     height: 50%;
 }
 .limitItemSec p, .yes-noLimit{
@@ -719,7 +719,7 @@ body{
     grid-row: 4 / 39;
     display:flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
 }
 .logoutButton{
     width: 30%;
@@ -818,14 +818,14 @@ body{
     z-index:101;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: flex-start;
 }
 
 .modalHead{
     display:flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: start;
+    align-items: flex-start;
     height: 15%;
 }
 .modalHead h1{

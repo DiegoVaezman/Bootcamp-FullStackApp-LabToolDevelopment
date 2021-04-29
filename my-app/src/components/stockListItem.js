@@ -1,26 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import {useState, useEffect} from 'react'
-import apiURL from '../services/apiURL'
-import axios from 'axios';
-
 
 
 function StockListItem(props) {
-
-    //CONSIGUIENDO NOMBRE DE PRODUCTO
-    // const [productData, setProductData] = useState({
-    //     data: {name:""}
-    // })
-    // useEffect(() => {
-    //     async function getProductName() {
-    //         const dataBase = await axios.get(`${apiURL}product/${props.item.product}`);
-    //         setProductData(dataBase)
-    //     }
-    //     getProductName()
-    // },[])
-
-   console.log(props)
     return (
         <Link className="txtNoDeco" to={{pathname:`/stock/itemsheet/${props.item._id}`, data:props}} >
             <div className="productListItem" >

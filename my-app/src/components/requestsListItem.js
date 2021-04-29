@@ -1,49 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
-import {useState, useEffect} from 'react'
-import apiURL from '../services/apiURL'
-import axios from 'axios';
 
 function RequestsListItem(props) {
-
-    //CONSIGUIENDO NOMBRE DE PRODUCTO
-    // const [productData, setProductData] = useState({
-    //     data: {name:""}
-    // })
-    // useEffect(() => {
-    //     async function getProductName() {
-    //         const dataBase = await axios.get(`${apiURL}product/${props.order.product}`);
-    //         setProductData(dataBase)
-    //     }
-    //     getProductName()
-    // },[])
-
-    //CONSIGUIENDO MENSAJES
-    // const [commentData, setCommentData] = useState({
-    //     data: {msg: ""}
-    // })
-    // useEffect(() => {
-    //     async function getComment() {
-    //         const dataBase = await axios.get(`${apiURL}comment/${props.order._id}`);
-    //         setCommentData(dataBase)
-    //     }
-    //     getComment()
-    // },[])
-
-    //CONSIGUIENDO NOMBRE DE USUARIO
-    // const [userData, setUserData] = useState({
-    //     fullname: ""
-    // })
-    // useEffect(() => {
-    //     async function getUser() {
-    //         const dataBase = await axios.get(`${apiURL}user/${props.order.user}`);
-    //         setUserData(dataBase.data)
-    //     }
-    //     getUser()
-    // },[])
-
-    
-    
     return (
         <Link className="txtNoDeco" to={{pathname:`/requests/requestsheet/${props.order._id}`, data:props}} >
             <div className="productListItem" >
@@ -53,7 +11,7 @@ function RequestsListItem(props) {
                     </div>
                     <div className="flex-row">
                         <p><b>{props.order.comments.length === 0 ? "0" : props.order.comments.length}</b></p>
-                        <img className="commentImg" src="../../img/comment_img.png"></img>
+                        <img alt="comment_img" className="commentImg" src="../../img/comment_img.png"></img>
                     </div>
                 </div>
                 <div className="productInfo">

@@ -8,11 +8,8 @@ const path = require("path")
 const PORT = process.env.PORT
 const MONGODB_URL = process.env.MONGODB_URL
 
-
-
 mongoose.connect(MONGODB_URL, {useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true}) //devuelve una promise
 .then( () => {
-
     app.use(express.urlencoded())  //realmente es necesario????
     app.use(express.json())
     app.use(cors())
@@ -31,19 +28,15 @@ mongoose.connect(MONGODB_URL, {useUnifiedTopology: true, useNewUrlParser: true, 
     app.use("/order", orderRouter)
     app.use("/login", loginRouter)
 
-    
     app.get("*", (req, res) => {
         res.sendFile(path.join(__dirname, "my-app", "build", "index.html"));
     });
 
     app.listen((PORT || 8000), () => 
     console.log(`Server running on port:${PORT}`));
-
 })
-
 .catch((error) => {
     console.log(error)
-
     if(mongoose.connection.readyState === 1)
     return mongoose.disconnect()
     .catch(console.error)

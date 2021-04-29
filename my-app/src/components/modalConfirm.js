@@ -5,7 +5,6 @@ import ReactDOM from "react-dom"
 
 const ModalConfirm = forwardRef((props, ref) => {
 
-
     const [display, setDisplay] = useState(false)
 
     useImperativeHandle(ref, () => {

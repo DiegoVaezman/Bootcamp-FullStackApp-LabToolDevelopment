@@ -6,10 +6,8 @@ const {validateId, validateNumber, validateBoolean, validateString} = require(".
 
 const router = new Router()
 
-
-
+//obteniendo todos los items
 router.get("/", protectedRoute, (req, res) => {
-
     Stock.find({})
     .populate("product")
     .exec (function (err, stocks) {
@@ -23,10 +21,8 @@ router.get("/", protectedRoute, (req, res) => {
     })
 })
 
-
-
+//agregando nuevo item al stock
 router.post("/newitem/:id", protectedRoute, (req, res) => {
-
     try {
         validateId(req.params.id)
     
@@ -42,7 +38,6 @@ router.post("/newitem/:id", protectedRoute, (req, res) => {
             let request = false   
             const received = Date.now()        
 
-        
             //Actualiza el status del order a received
             Order.updateOne({_id : req.params.id}, {$set: {status : "received"} }, function(err, result) {
                 if (err) throw err;
@@ -58,7 +53,6 @@ router.post("/newitem/:id", protectedRoute, (req, res) => {
                 console.log(`Order status modified to "received"`)
             })
             .then(
-                
                 Stock.findOne({product : product}, function (err, item) {
                     if (err) throw err;
 
@@ -96,7 +90,7 @@ router.post("/newitem/:id", protectedRoute, (req, res) => {
     }
 })
 
-
+//reduciendo la  cantidad de item en stock
 router.put("/reduce/:id", protectedRoute, (req, res) => {
     try {
         validateId(req.params.id)
@@ -169,8 +163,7 @@ router.put("/reduce/:id", protectedRoute, (req, res) => {
     }
 })
 
-
-
+//modificando item
 router.put("/:id/modify", protectedRoute, (req, res) => {
 
     try {
@@ -185,16 +178,13 @@ router.put("/:id/modify", protectedRoute, (req, res) => {
             let amount = req.body.amount
             let storage = req.body.storage
             
-            console.log(amount)
             if (amount == "") {
                 amount = item.amount
             }
-            console.log(storage)
             if (storage == "") {
                 storage = item.storage
             }
             
-
             try {
             validateNumber(amount)
             // if (item.storage != undefined){
@@ -214,9 +204,8 @@ router.put("/:id/modify", protectedRoute, (req, res) => {
     }
 })
 
-
+//estableciendo límite al item del stock
 router.put("/:id/setlimit", protectedRoute, (req, res) => {
-
     try {
         validateId(req.params.id)
     
@@ -238,9 +227,6 @@ router.put("/:id/setlimit", protectedRoute, (req, res) => {
                     return res.status(400).send({ msg: "Minimum amount and quantity to order is required"})
                 }
             }
-            console.log(limit)
-            console.log(control)
-            console.log(automaticamount)
             try {
             validateNumber(limit)
             validateNumber(automaticamount)    
@@ -259,9 +245,8 @@ router.put("/:id/setlimit", protectedRoute, (req, res) => {
     }
 })
 
-
+//eliminando item del stock
 router.delete("/deleteitem/:id", protectedRoute, (req, res) => {
-
     try {
         validateId(req.params.id)
 
@@ -279,6 +264,7 @@ router.delete("/deleteitem/:id", protectedRoute, (req, res) => {
     }
 })
 
+//obteniendo un solo item por su id
 router.get("/:id", protectedRoute, (req, res) => {
     try{
         validateId(req.params.id)

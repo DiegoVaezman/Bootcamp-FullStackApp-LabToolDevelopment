@@ -1,9 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-
 function ProductListItem(props) {
-
     return (
         <Link className="txtNoDeco" to={{pathname:`/products/productsheet/${props.product._id}`, data:props}} >
             <div className="productListItem" product={props}>

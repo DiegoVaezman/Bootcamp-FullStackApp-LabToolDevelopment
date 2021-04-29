@@ -1,14 +1,10 @@
-import { PromiseProvider } from 'mongoose';
 import React, { forwardRef, useImperativeHandle } from 'react';
 import {useState} from 'react'
 import ReactDOM from "react-dom"
 
-
 const Modal = forwardRef((props, ref) => {
 
-
     const [display, setDisplay] = useState(false)
-
 
     useImperativeHandle(ref, () => {
         return {
@@ -22,7 +18,6 @@ const Modal = forwardRef((props, ref) => {
     const close = () => {
         setDisplay(false)
     };
-
 
     if (display) {
         return (

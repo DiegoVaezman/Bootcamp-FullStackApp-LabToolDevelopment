@@ -1,13 +1,10 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
 import axios from 'axios';
-import {BrowserRouter as Router, Switch, Route, Redirect, Link} from 'react-router-dom'
+import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom'
 import PrivateRoute from './services/privateRoute'
 import './App.css';
-// import SignupPage from './pages/signup'
-// import SigninPage from './pages/signin'
 import Home from './components/home'
-import Header from './components/header';
 import ProductSection from './components/productSection';
 import Navbar from './components/navbar';
 import Register from './components/register'
@@ -25,26 +22,22 @@ import setAuthToken from './services/authToken'
 
 
 function App(props) {
-    const [loading, setLoading] = useState(true)
+    //ESTADOS
+    // const [loading, setLoading] = useState(true)
+    const [user, setUser] = useState({})
 
     useEffect(() => {
         let token = localStorage.getItem("labToolUser");
         if (token) {
-            console.log("pasa por use effect if token hacer autologin")
             autoLogin(token);
         } else {
-            console.log("pasa por use effect if token else")
-            setLoading(false);
-            console.log(loading)
+            // setLoading(false);
         }
     },[]);
 
     const autoLogin = token => {
-        console.log(token)
         axios.get(`${apiURL}user/user`, {headers: {authorization: `Bearer ${token}`}})
         .then(user => {
-            console.log(user.data.fullname)
-            console.log("pasa por autologin then")
             setAuthToken(token);
             setUser({
                 fullname: user.data.fullname,
@@ -52,25 +45,18 @@ function App(props) {
                 email: user.data.email,
                 rol: user.data.rol
             })
-            setLoading(false);
+            // setLoading(false);
         })
         .catch(err => {
-            console.log("pasa por autologin catch")
             setAuthToken();
             localStorage.removeItem('labToolUser');
-            setLoading(false);
+            // setLoading(false);
         });
     };
-
-    
-    // const token = localStorage.getItem("labToolUser")
-
-    const [user, setUser] = useState({})
 
     const handlerUser = (userN) => {
         userN.email ? setUser(userN) : setUser({...user, fullname: userN.fullname, position: userN.position})
     }
-
 
     return (
         <Router>

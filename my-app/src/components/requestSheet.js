@@ -1,50 +1,16 @@
 import React from 'react';
 import axios from 'axios';
-import {useState, useEffect} from 'react'
-import { Link , Route, Redirect, withRouter} from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, withRouter } from 'react-router-dom'
 import Modal from "./modal"
 import ModalResponse from './modalResponse';
-import ModalConfirm from './modalConfirm';
 import SuccessResponse from "./successResponse";
 import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
-import UserListItem from './userListItem'
 import CommentsListItem from './commentsListItem'
 import formatDate from '../services/formatDate'
 
-
-
 function RequestSheet(props) {
-    console.log(props)
-    const order = props.location.data.order
-    
-
-    const [dataRequest, setDataRequest] = useState({
-        _id: "",
-        product: "",
-        amount: "",
-        user: "",
-        status: "",
-        date: ""
-    })
-    const [change, setchange] = useState([])
-
-    //CONSIGUIENDO LA DATA DEL PEDIDO
-    const getData = () => {
-    
-        axios.get(`${apiURL}order/${props.match.params.id}`)
-        .then(res => {
-            setDataRequest(res.data)
-            console.log(dataRequest)
-        })
-        .catch(error => {
-            console.log(error.response)
-        });
-    }
-    useEffect(() => {
-        getData()
-    },[change])
-
 
     // VENTANAS MODALES
     const productModalRef = React.useRef();
@@ -52,7 +18,6 @@ function RequestSheet(props) {
     const responseModalRef = React.useRef();
     const confirmRejectModalRef = React.useRef();
     const confirmModalRef = React.useRef();
-    const deleteResponseModalRef = React.useRef();
     const openProductModal = () => {
         productModalRef.current.openModal()
     };
@@ -68,16 +33,12 @@ function RequestSheet(props) {
     const openConfirmModal = () => {
         confirmModalRef.current.openModal()
     }
-    const openDeleteResponseModal = () => {
-        deleteResponseModalRef.current.openModal()
-    }
-
     const closeProductModal = () => {
         productModalRef.current.closeModal()
     };
     const closeAddCommentModal = () => {
         addCommentModalRef.current.closeModal()
-        setCommentInputValue({text:""})
+        setCommentInputValue({ text: "" })
     };
     const closeResponseModal = () => {
         response.delete === true && props.history.push("/requests")
@@ -99,191 +60,175 @@ function RequestSheet(props) {
         confirmModalRef.current.closeModal()
     };
 
-
+    //ESTADOS
+    const [change, setchange] = useState([])
+    const [commentsData, setCommentsData] = useState([])
+    const [dataRequest, setDataRequest] = useState({
+        _id: "",
+        product: "",
+        amount: "",
+        user: "",
+        status: "",
+        date: ""
+    })
     const [response, setResponse] = useState({
         success: false,
         error: false,
         delete: false,
         msg: ""
     })
+    const [commentInputValue, setCommentInputValue] = useState({
+        text: ""
+    })
 
-
+    //CONSIGUIENDO LA DATA DEL PEDIDO
+    const getData = () => {
+        axios.get(`${apiURL}order/${props.match.params.id}`)
+            .then(res => {
+                setDataRequest(res.data)
+            })
+            .catch(error => {
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: "Was a problem getting the data"
+                })
+                openResponseModal()
+            });
+    }
+    useEffect(() => {
+        getData()
+    }, [change])
 
     //DELETE PEDIDO
     const deleteRequest = () => {
-        console.log(dataRequest._id)
         axios.delete(`${apiURL}order/deleteorder/${dataRequest._id}`)
-        .then(res => {
-            console.log("Order eliminado")
-            console.log(res.data)
-            setResponse({...response,
-                success: true,
-                delete: true,
-                msg: res.data.msg
+            .then(res => {
+                setResponse({
+                    ...response,
+                    success: true,
+                    delete: true,
+                    msg: res.data.msg
+                })
+                openResponseModal()
             })
-            // openDeleteResponseModal()
-            openResponseModal()
-        })
-        .catch(error => {
-            console.log(error.response)
-            setResponse({...response,
-                error: true,
-                msg: error.response.data.msg
-            })
-            openResponseModal()
-        });
+            .catch(error => {
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
     }
 
-
     // CONSIGUIENDO LA DATA DE MENSAJE
-    const [commentsData, setCommentsData] = useState([])
-
     async function getCommentsData() {
-        console.log(props.match.params.id)
         const dataBase = await axios.get(`${apiURL}comment/${props.match.params.id}`);
         setCommentsData(dataBase.data)
     }
     useEffect(() => {
         getCommentsData()
-    },[])
-
-    
-console.log(commentsData)
-
+    }, [])
 
     //VALIDANDO UN PEDIDO
     const validateRequest = () => {
-    
-        axios.put(`${apiURL}order//validate/${order._id}`)
-        .then(res => {
-            console.log("Order validated")
-            console.log(res.data)
-            setResponse({...response,
-                success: true,
-                msg: res.data.msg
+        axios.put(`${apiURL}order//validate/${props.match.params.id}`)
+            .then(res => {
+                setResponse({
+                    ...response,
+                    success: true,
+                    msg: res.data.msg
+                })
+                openResponseModal()
+                setchange([])
             })
-            openResponseModal()
-            setchange([])
-        })
-        .catch(error => {
-            console.log(error)
-            setResponse({...response,
-                error: true,
-                msg: error.response.data.msg
-            })
-            openResponseModal()
-        });
+            .catch(error => {
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
     }
-
-
 
     //RECHAZANDO UN PEDIDO
     const rejectRequest = () => {
-    
-        axios.put(`${apiURL}order/reject/${order._id}`)
-        .then(res => {
-            console.log("Order rejected")
-            console.log(res.data)
-            setResponse({...response,
-                success: true,
-                msg: res.data.msg
+        axios.put(`${apiURL}order/reject/${props.match.params.id}`)
+            .then(res => {
+                setResponse({
+                    ...response,
+                    success: true,
+                    msg: res.data.msg
+                })
+                openResponseModal()
+                setchange([])
             })
-            openResponseModal()
-            setchange([])
-        })
-        .catch(error => {
-            console.log(error.response)
-            setResponse({...response,
-                error: true,
-                msg: error.response.data.msg
-            })
-            openResponseModal()
-        });
+            .catch(error => {
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
     }
 
-
     //ENVIANDO COMENTARIO
-    const [commentInputValue, setCommentInputValue] = useState({
-        text: ""
-    })
     const handleCommentInputChange = (event) => {
         setCommentInputValue({
             ...commentInputValue,
-            [event.target.name] : event.target.value
+            [event.target.name]: event.target.value
         })
     }
-
     const sendComment = () => {
-        
-        axios.post(`${apiURL}comment/newcomment/${order._id}`, 
-       
-        {...commentInputValue}
-        )
-        .then(res => {
-            console.log("comentario enviado!")
-            console.log(res.data)
-            setResponse({...response,
-                success: true,
-                msg: `Comment sent`
+        axios.post(`${apiURL}comment/newcomment/${props.match.params.id}`, { ...commentInputValue })
+            .then(res => {
+                setResponse({
+                    ...response,
+                    success: true,
+                    msg: `Comment sent`
+                })
+                openResponseModal()
+                getCommentsData()
             })
-            openResponseModal()
-            getCommentsData()
-        })
-        .catch(error => {
-            console.log(error.response)
-            setResponse({...response,
-                error: true,
-                msg: error.response.data.msg
-            })
-            openResponseModal()
-        });
+            .catch(error => {
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
     }
 
     //AÑADIENDO AL STOCK
     const addToStock = () => {
-        console.log(order._id)
-        axios.post(`${apiURL}stock/newitem/${order._id}`)
-        .then(res => {
-            console.log("añadido al stock")
-            console.log(res)
-            setResponse({...response,
-                success: true,
-                msg: res.data.msg
+        axios.post(`${apiURL}stock/newitem/${props.match.params.id}`)
+            .then(res => {
+                setResponse({
+                    ...response,
+                    success: true,
+                    msg: res.data.msg
+                })
+                openResponseModal()
+                setchange([])
             })
-            openResponseModal()
-            setchange([])
-        })
-        .catch(error => {
-            console.log(error)
-            setResponse({...response,
-                error: true,
-                msg: error.response.data.msg
-            })
-            openResponseModal()
-        });
+            .catch(error => {
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
     }
 
-    //CONSIGUIENDO EL USUARIO QUE HIZO EL PEDIDO
-    // const [userName, setUserName] = useState({
-    //     data: {fullname:""}
-    // })
-    // async function getUserName() {
-    //     console.log(props.location.data.order.user)
-    //     const dataBase = await axios.get(`${apiURL}user/${props.location.data.order.user}`);
-    //     setUserName(dataBase)
-    // }
-    // useEffect(() => {
-    //     getUserName()
-    // },[])
-
-    
     const handleCommentChange = () => {
         getCommentsData()
     }
 
-
-    console.log(props)
-    console.log(dataRequest)
     return (
         <div className="gridSection">
             <div className="back">
@@ -295,45 +240,40 @@ console.log(commentsData)
                     <button className="button1 edditButton" onClick={openProductModal}>Show product Sheet</button>
                 </div>
                 <div className="sheetInfo requestInfo">
-                    
                     <p><b>Amount to order: </b>{dataRequest.amount} unities</p>
                     <p><b>Requested by: </b>{(dataRequest.user != null) ? dataRequest.user.fullname : "No user"}</p>
-                    <p><b>Date: </b>{dataRequest.date != "" && formatDate(dataRequest.date)}</p>
-                    {(dataRequest.status === "waiting") && <p style={{color: "orange"}}><b>Status: </b>{dataRequest.status}</p>}
-                    {(dataRequest.status === "validated") && <p style={{color: "green"}}><b>Status: </b>{dataRequest.status}</p>}
-                    {(dataRequest.status === "received") && <p style={{color: "blue"}}><b>Status: </b>{dataRequest.status}</p>}
-                    {(dataRequest.status === "rejected") && <p style={{color: "red"}}><b>Status: </b>{dataRequest.status}</p>}
+                    <p><b>Date: </b>{dataRequest.date !== "" && formatDate(dataRequest.date)}</p>
+                    {(dataRequest.status === "waiting") && <p style={{ color: "orange" }}><b>Status: </b>{dataRequest.status}</p>}
+                    {(dataRequest.status === "validated") && <p style={{ color: "green" }}><b>Status: </b>{dataRequest.status}</p>}
+                    {(dataRequest.status === "received") && <p style={{ color: "blue" }}><b>Status: </b>{dataRequest.status}</p>}
+                    {(dataRequest.status === "rejected") && <p style={{ color: "red" }}><b>Status: </b>{dataRequest.status}</p>}
                 </div>
-               
-                    <h2>Comments</h2>
-                    {(commentsData.length > 0) &&
+                <h2>Comments</h2>
+                {(commentsData.length > 0) &&
                     <div className="commentsList">
                         {commentsData.map((item, index) => {
-                            return <CommentsListItem comment={item} key={index} user ={props.user} setchange={handleCommentChange}/>
+                            return <CommentsListItem comment={item} key={index} user={props.user} setchange={handleCommentChange} />
                         })}
                     </div>}
-               
                 <div>
                     <button className="button1 edditButton" onClick={openAddCommentModal}>Add new comment</button>
                 </div>
             </div>
-
             {(dataRequest.status !== "received") &&
-            <div className="playground playgroundSheet">
-                <div className="validateButtons">
-                    {dataRequest.status != "validated" &&
-                        <button className="val-rejButton valButton" onClick={validateRequest}><b>VALIDATE</b></button>
-                    }
-                    {dataRequest.status != "rejected" &&
-                        <button className="val-rejButton rejButton" onClick={openConfirmRejectModal}><b>REJECT</b></button>
-                    }
-                    {dataRequest.status === "validated" &&
-                        <button className="val-rejButton addStockButton" onClick={addToStock}><p>Product arrived?</p><p><b>Add to stock</b></p></button>
-                    }
+                <div className="playground playgroundSheet">
+                    <div className="validateButtons">
+                        {dataRequest.status !== "validated" &&
+                            <button className="val-rejButton valButton" onClick={validateRequest}><b>VALIDATE</b></button>
+                        }
+                        {dataRequest.status !== "rejected" &&
+                            <button className="val-rejButton rejButton" onClick={openConfirmRejectModal}><b>REJECT</b></button>
+                        }
+                        {dataRequest.status === "validated" &&
+                            <button className="val-rejButton addStockButton" onClick={addToStock}><p>Product arrived?</p><p><b>Add to stock</b></p></button>
+                        }
+                    </div>
                 </div>
-            </div>
             }
-         
             <div className="deleteButtonDiv">
                 <button className="deleteButton" onClick={openConfirmModal}>Delete</button>
             </div>
@@ -342,38 +282,37 @@ console.log(commentsData)
                     <div className="modalHead">
                         <button className="closeButton" onClick={closeProductModal}>X</button>
                     </div>
-                    {dataRequest.product == null ? <div style={{margin:"20px"}}><h1>No product</h1> </div> :
-                    <div className="sheetBody sheetBodyProduct">
-                        <div>
-                            <h1>{dataRequest.product.name}</h1>
+                    {dataRequest.product == null ? <div style={{ margin: "20px" }}><h1>No product</h1> </div> :
+                        <div className="sheetBody sheetBodyProduct">
+                            <div>
+                                <h1>{dataRequest.product.name}</h1>
+                            </div>
+                            <div className="sheetInfo">
+                                <p><b>Catalog number: </b>{dataRequest.product.catalog_number}</p>
+                                <p><b>Type: </b>{dataRequest.product.type}</p>
+                                <p><b>Trading house: </b>{dataRequest.product.trading_house}</p>
+                                <p><b>Reference number: </b>{dataRequest.product.reference_number}</p>
+                                <p><b>Price: </b>{dataRequest.product.price}€</p>
+                                <p><b>Information: {dataRequest.product.information}</b></p>
+                            </div>
                         </div>
-                        <div className="sheetInfo">
-                            <p><b>Catalog number: </b>{dataRequest.product.catalog_number}</p>
-                            <p><b>Type: </b>{dataRequest.product.type}</p>
-                            <p><b>Trading house: </b>{dataRequest.product.trading_house}</p>
-                            <p><b>Reference number: </b>{dataRequest.product.reference_number}</p>
-                            <p><b>Price: </b>{dataRequest.product.price}€</p>
-                            <p><b>Information: {dataRequest.product.information}</b></p>
-                        </div>
-                    </div>
                     }
                 </div>
             </Modal>
             <Modal ref={addCommentModalRef}>
-                
-                    <div className="modalHead">
-                        <h1>Add a comment to the order request</h1>
-                        <button className="closeButton" onClick={closeAddCommentModal}>X</button>
+                <div className="modalHead">
+                    <h1>Add a comment to the order request</h1>
+                    <button className="closeButton" onClick={closeAddCommentModal}>X</button>
+                </div>
+                <form className="form modalFormRequest">
+                    <div className="flex-column">
+                        <label htmlFor="text">Comment</label>
+                        <input type="text" name="text" placeholder="Write a comment" onChange={handleCommentInputChange} />
                     </div>
-                    <form className="form modalFormRequest">
-                        <div className="flex-column">
-                            <label htmlFor="text">Comment</label>
-                            <input type="text" name="text" placeholder="Write a comment" onChange={handleCommentInputChange}/>
-                        </div>
-                    </form>
+                </form>
                 <button className="button1 requestButton" onClick={sendComment}><h2>Send</h2></button>
             </Modal>
-            {response.success === true && 
+            {response.success === true &&
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">
                         <SuccessResponse />
@@ -382,7 +321,7 @@ console.log(commentsData)
                     </div>
                 </ModalResponse>
             }
-            {response.error === true && 
+            {response.error === true &&
                 <ModalResponse ref={responseModalRef}>
                     <div className="modalResponse">
                         <ErrorResponse />
@@ -391,13 +330,6 @@ console.log(commentsData)
                     </div>
                 </ModalResponse>
             }
-            {/* <ModalResponse ref={deleteResponseModalRef}>
-                    <div>
-                        <SuccessResponse />
-                        <p>{response.msg}</p>
-                        <Link to="/requests" className="close">Close</Link>
-                    </div>
-            </ModalResponse> */}
             <ModalResponse ref={confirmRejectModalRef}>
                 <div className="modalResponse">
                     <h1>Are you sure?</h1>
@@ -413,7 +345,7 @@ console.log(commentsData)
                     <div className="yesNoButtons">
                         <button className="deleteButton" onClick={deleteRequest}>Yes</button>
                         <button className="deleteButton" onClick={closeConfirmModal}>No</button>
-                    </div> 
+                    </div>
                 </div>
             </ModalResponse>
         </div>

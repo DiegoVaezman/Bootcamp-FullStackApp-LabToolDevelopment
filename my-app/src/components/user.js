@@ -1,29 +1,22 @@
 import React from 'react';
 import axios from 'axios';
-import {useState, useEffect} from 'react'
-import { Link , Route, Redirect} from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import Modal from "./modal"
 import ModalResponse from './modalResponse';
-import ModalConfirm from './modalConfirm';
 import SuccessResponse from "./successResponse";
 import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
 import UserListItem from './userListItem'
 import setAuthToken from '../services/authToken'
 
-
 function User(props) {
 
     // VENTANAS MODALES
     const edditUserModalRef = React.useRef();
-    const usersModalRef = React.useRef();
     const responseModalRef = React.useRef();
     const confirmModalRef = React.useRef();
     const openEdditUserModal = () => {
         edditUserModalRef.current.openModal()
-    };
-    const openUsersModal = () => {
-        usersModalRef.current.openModal()
     };
     const openResponseModal = () => {
         responseModalRef.current.openModal()
@@ -35,10 +28,8 @@ function User(props) {
         setEdditUserInputValue({})
         edditUserModalRef.current.closeModal()
     };
-    const closeUsersModal = () => {
-        usersModalRef.current.closeModal()
-    };
     const closeResponseModal = () => {
+        response.success === true && closeEdditUserModal()
         setResponse({
             error: false,
             success: false,
@@ -50,70 +41,63 @@ function User(props) {
         confirmModalRef.current.closeModal()
     };
 
+    //ESTADOS
+    const [data, setData] = useState([])
+    const [edditUserInputValue, setEdditUserInputValue] = useState({})
     const [response, setResponse] = useState({
         success: false,
         error: false,
         msg: ""
     })
 
-
-
     //MODIFICANDO USUARIO
-    const [edditUserInputValue, setEdditUserInputValue] = useState({})
     const handleEdditUserInputChange = (event) => {
         setEdditUserInputValue({
             ...edditUserInputValue,
-            [event.target.name] : event.target.value
+            [event.target.name]: event.target.value
         })
     }
     const edditUser = (event) => {
-        
-        axios.put(`${apiURL}user/modify`, 
-
-        {...edditUserInputValue}
-        )
-        .then(res => {
-            setResponse({...response,
-                success: true,
-                msg: `User information modified.`
+        axios.put(`${apiURL}user/modify`, { ...edditUserInputValue })
+            .then(res => {
+                setResponse({
+                    ...response,
+                    success: true,
+                    msg: `User information modified.`
+                })
+                openResponseModal()
+                props.handlerUser(res.data)
             })
-            openResponseModal()
-            console.log(res.data)
-            props.handlerUser(res.data)
-        })
-        .catch(error => {
-            console.log(error)
-            setResponse({...response,
-                error: true,
-                msg: error.response.data.msg
-            })
-            openResponseModal()
-        });
+            .catch(error => {
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
     }
-
 
     //DELETE USER
     const deleteUser = () => {
-    
         axios.delete(`${apiURL}user/deleteuser`)
-        .then(res => {
-            console.log("user eliminado")
-            console.log(res.data)
-            setResponse({...response,
-                success: true,
-                msg: res.data.msg
+            .then(res => {
+                setResponse({
+                    ...response,
+                    success: true,
+                    msg: res.data.msg
+                })
+                // openResponseModal()
+                props.history.push('/signin')
             })
-            // openResponseModal()
-            props.history.push('/signin')
-        })
-        .catch(error => {
-            console.log(error.response)
-            setResponse({...response,
-                error: true,
-                msg: error.response.data.msg
-            })
-            openResponseModal()
-        });
+            .catch(error => {
+                setResponse({
+                    ...response,
+                    error: true,
+                    msg: error.response.data.msg
+                })
+                openResponseModal()
+            });
     }
 
     //LOG OUT
@@ -123,21 +107,14 @@ function User(props) {
         props.history.push('/signin')
     }
 
-
-
     //CONSIGUIENDO LA DATA DE USUARIOS PARA LISTA DE USUARIOS
-    const [data, setData] = useState([])
-
     async function getData() {
         const dataBase = await axios.get(`${apiURL}user/`);
         setData(dataBase.data)
     }
     useEffect(() => {
         getData()
-    },[])
-
-
-
+    }, [])
 
     return (
         <div className="gridSection">
@@ -151,16 +128,14 @@ function User(props) {
                     <p><b>Rol: </b>{props.user.rol}</p>
                     <button className="button1 edditButton" onClick={openEdditUserModal}>Modify user</button>
                 </div>
-                <button className="spendButton logoutButton"onClick={logout}><p><b>Log out</b></p></button>
-                    <h2>Users</h2>
-                    <div className="list usersList">
-                        {data.map((item, index) => {
-                            return <UserListItem user={item} localState={data} key={index} />
-                        })}
-                    </div>
+                <button className="spendButton logoutButton" onClick={logout}><p><b>Log out</b></p></button>
+                <h2>Users</h2>
+                <div className="list usersList">
+                    {data.map((item, index) => {
+                        return <UserListItem user={item} localState={data} key={index} />
+                    })}
+                </div>
             </div>
-
-
             <Modal ref={edditUserModalRef}>
                 <div className="modalHead">
                     <h1>Modify user</h1>
@@ -169,17 +144,17 @@ function User(props) {
                 <form className="form modalFormRequest">
                     <div className="flex-column">
                         <label htmlFor="fullname">New name</label>
-                        <input type="text" name="fullname" placeholder="New name" onChange={handleEdditUserInputChange}/>
+                        <input type="text" name="fullname" placeholder="New name" onChange={handleEdditUserInputChange} />
                     </div>
                     <div className="flex-column">
                         <label htmlFor="position">New position</label>
-                        <input type="text" name="position" placeholder="Position" onChange={handleEdditUserInputChange}/>
+                        <input type="text" name="position" placeholder="Position" onChange={handleEdditUserInputChange} />
                     </div>
                 </form>
-                <button className="button1 requestButton"onClick={edditUser}><h2>Save</h2></button>
+                <button className="button1 requestButton" onClick={edditUser}><h2>Save</h2></button>
                 <button className="deleteButton" onClick={openConfirmModal}>Delete account</button>
             </Modal>
-            {response.success === true && 
+            {response.success === true &&
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">
                         <SuccessResponse />
@@ -188,7 +163,7 @@ function User(props) {
                     </div>
                 </ModalResponse>
             }
-            {response.error === true && 
+            {response.error === true &&
                 <ModalResponse ref={responseModalRef}>
                     <div className="modalResponse">
                         <ErrorResponse />

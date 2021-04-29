@@ -8,8 +8,6 @@ const tokenpass = process.env.TOKENPASS
 
 const router = new Router();
 
-
-
 router.post("/", (req, res) => {
     try {
         const email = req.body.email
@@ -40,32 +38,4 @@ router.post("/", (req, res) => {
     }
 })      
     
-
-
-//intentando hacer la autenticación de usuario mediante async/awayt
-
-
-//     async function authenticateUser(req, res) {
-
-//         try {
-//             const user = await User.findOne({email : email});
-//             if (user) {
-//                 const comparePassword = await bcrypt.compare(password, user.password);
-//                 if (!comparePassword) {
-//                     return res.send("password incorrect")
-//                 }
-//                 console.log(comparepassword)
-//                 res.send("ok")
-//             }
-//         } catch(err) {
-//             console.log(err)
-//         }
-//     }
-//     authenticateUser().then(nose => 
-//     res.send(nose)
-//     )
-// })   
-
-
-
 module.exports = router

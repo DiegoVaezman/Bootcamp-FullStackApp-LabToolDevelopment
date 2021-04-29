@@ -1,30 +1,26 @@
 import React from 'react';
 import axios from 'axios';
 import {useState, useEffect} from 'react'
-import {Redirect} from 'react-router-dom'
-import Modal from "./modal"
 import ModalResponse from './modalResponse';
 import SuccessResponse from "./successResponse"
 import ErrorResponse from "./errorResponse"
 import StockListItem from './stockListItem'
 import apiURL from '../services/apiURL'
 
-
-
 function StockSection(dataBase){
 
     // VENTANAS MODALES
-    const searchModalRef = React.useRef();
+    // const searchModalRef = React.useRef();
     const responseModalRef = React.useRef();
-    const openSearchModal = () => {
-        searchModalRef.current.openModal()
-    };
-    const openResponseModal = () => {
-        responseModalRef.current.openModal()
-    };
-    const closeSearchModal = () => {
-        searchModalRef.current.closeModal()
-    };
+    // const openSearchModal = () => {
+    //     searchModalRef.current.openModal()
+    // };
+    // const openResponseModal = () => {
+    //     responseModalRef.current.openModal()
+    // };
+    // const closeSearchModal = () => {
+    //     searchModalRef.current.closeModal()
+    // };
     const closeResponseModal = () => {
         setResponse({
             error: false,
@@ -34,12 +30,17 @@ function StockSection(dataBase){
         responseModalRef.current.closeModal()
     };
 
-
+    //ESTADOS
     const [loading, setLoading] = useState(true)
-
-    //CONSIGUIENDO LA DATA DE STOCK DESDE DB
     const [data, setData] = useState([])
-
+    const [dataFiltered, setDataFiltered] = useState([])
+    const [response, setResponse] = useState({
+        success: false,
+        error: false,
+        msg: ""
+    })
+    
+    //CONSIGUIENDO LA DATA DE STOCK DESDE DB
     async function getData() {
         const dataBase = await axios.get(`${apiURL}stock/`);
         setLoading(false)
@@ -50,14 +51,7 @@ function StockSection(dataBase){
         getData()
     },[])
 
-    
-    
-
-
     //FILTRANDO LA DATA
-    const [dataFiltered, setDataFiltered] = useState([])
-
-    
     // const [inputValue, setInputValue] = useState({
     //     byname: "",
     //     bycatn: "",
@@ -89,24 +83,12 @@ function StockSection(dataBase){
     // }
     // const searchByType = (event) => {
     //     const type = event.target.value;
-    //     console.log(type)
     //     if (type === "All") {
-    //         console.log(data)
     //         setDataFiltered(data)
     //     } else {
-    //         console.log(data.filter(item => item.type === type))
     //         setDataFiltered(data.filter(item => item.type === type))
     //     }
     // }
-    
-    const [response, setResponse] = useState({
-        success: false,
-        error: false,
-        msg: ""
-    })
-
-
-console.log(dataFiltered)
     
     return (
         <div className="gridSection grid">

@@ -1,10 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-
-
 function UserSheet(props) {
-
     const user = props.location.data.user
     return (
         <div className="gridSection"> 

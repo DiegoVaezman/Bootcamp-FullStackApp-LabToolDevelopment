@@ -5,10 +5,8 @@ const {validateNumber, validateString, validateId} = require("../helpers/validat
 
 const router = new Router()
 
-
-
+//obteniendo todos los productos
 router.get("/", protectedRoute, (req, res) => {
-
     Product.find({}, function (err, products) {
         if (err) {
             res.status(400).send({ msg: err.message})
@@ -19,10 +17,8 @@ router.get("/", protectedRoute, (req, res) => {
         res.status(200).send(products)})
 })
 
-
-
+//agregando nuevo producto
 router.post("/newproduct", protectedRoute, (req, res) => {
-
     try {
         const catalog_number = req.body.catalog_number    
         const name = req.body.name
@@ -40,7 +36,6 @@ router.post("/newproduct", protectedRoute, (req, res) => {
         validateNumber(price)
         validateString(name)
 
-        
         Product.find({catalog_number : catalog_number}, function (err, product) {
             if(err) throw err;
             if (product.length > 0) {
@@ -68,11 +63,8 @@ router.post("/newproduct", protectedRoute, (req, res) => {
     }
 })
 
-
-
-
+//eliminando producto
 router.delete("/deleteproduct/:id", protectedRoute,(req, res) => {
-
     try {
         validateId(req.params.id)
 
@@ -91,9 +83,8 @@ router.delete("/deleteproduct/:id", protectedRoute,(req, res) => {
     }
 })
 
-
+//modificando producto
 router.put("/:id/modify", protectedRoute, (req, res) => {
-
     try {
         let information = req.body.information
 
@@ -122,7 +113,7 @@ router.put("/:id/modify", protectedRoute, (req, res) => {
     }
 })
 
-
+//obteniendo un producto por su id
 router.get("/:id", protectedRoute, (req, res) => {
     try{
         validateId(req.params.id)
@@ -137,7 +128,5 @@ router.get("/:id", protectedRoute, (req, res) => {
         res.status(400).send({ msg: error.message})  
     }
 })
-
-
 
 module.exports = router
