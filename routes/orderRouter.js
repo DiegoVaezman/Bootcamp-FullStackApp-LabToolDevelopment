@@ -1,6 +1,7 @@
 const Router = require("express").Router
 const Order = require("../models/order")
 const Product = require("../models/product")
+const Stock = require("../models/stock")
 const protectedRoute = require("../middlewares/protectedRoute")
 const {validateId, validateNumber} = require("../helpers/validations")
 
@@ -55,7 +56,9 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
             //actualiza el estado del item a "request"
             Stock.updateOne({ product : product}, {$set: {request: true} }, function(err, result) {
                 if (err) throw err;
-                console.log(`Item request modified to true`)
+                if (result) {
+                    console.log(`Item request modified to true`)
+                }
             })
 
             //Crea el pedido y lo guarda en la collección de Orders
@@ -64,6 +67,7 @@ router.post("/neworder/:id", protectedRoute, (req, res) => {
                 amount : amount,
                 user :user,
                 status : status,
+                comments :[],
                 date : Date.now()
             })
         
@@ -97,6 +101,15 @@ router.put("/validate/:id", protectedRoute, (req, res) => {
 
             Order.updateOne({ _id : req.params.id}, {$set: {status: "validated"} }, function(err, result) {
                 if (err) throw err;
+                if (result) {
+                    //actualiza el estado del item a "request"
+                    Stock.updateOne({ product : order.product}, {$set: {request: true} }, function(err, result) {
+                        if (err) throw err;
+                        if (result) {
+                            console.log(`Item request modified to true`)
+                        }
+                    })
+                }
                 res.status(200).send({ msg:"Order validated"})
             })
         })
@@ -116,14 +129,24 @@ router.put("/reject/:id", protectedRoute, (req, res) => {
             return res.status(401).send({ msg: "You do not have permission for reject an order"})
         }
 
-        Order.findById(req.params.id, function (err, orders){
+        Order.findById(req.params.id, function (err, order){
             if (err) throw err;
-            if (!orders) {
+            if (!order) {
                 return res.status(400).send({ msg: "This order_id dose not exist."})
             }
-
             Order.updateOne({ _id : req.params.id}, {$set: {status: "rejected"} }, function(err, result) {
                 if (err) throw err;
+                if (result){
+                    //si existen más pedidos de ese producto -> item/request se mantiene en true
+                    Order.findOne({ $and: [{product: order.product}, {status : { $in: ["validated", "waiting"] }}] }, function (err, ordersfound) {
+                        if (err) throw err;
+                        if (!ordersfound) {
+                            Stock.updateOne({ product : order.product}, {$set: {request: false} }, function(err, result) {
+                                if (err) throw err;
+                            })
+                        }
+                    })
+                }
                 res.status(200).send({ msg:"Order rejected"})
             })
         })
@@ -145,6 +168,17 @@ router.delete("/deleteorder/:id", protectedRoute, (req, res) => {
             //elimina el producto de la coleccion de cproducto
             Order.deleteOne({ _id : req.params.id}, function (err, result){
                 if (err) throw err;
+                if (result){
+                    //si existen más pedidos de ese producto -> item/request se mantiene en true
+                    Order.findOne({ $and: [{product: order.product}, {status : { $in: ["validated", "waiting"] }}] }, function (err, ordersfound) {
+                        if (err) throw err;
+                        if (!ordersfound) {
+                            Stock.updateOne({ product : order.product}, {$set: {request: false} }, function(err, result) {
+                                if (err) throw err;
+                            })
+                        }
+                    })
+                }
                 res.status(200).send({msg:"Order deleted"});
             })
         })

@@ -139,6 +139,7 @@ function RequestSheet(props) {
     const [commentsData, setCommentsData] = useState([])
 
     async function getCommentsData() {
+        console.log(props.match.params.id)
         const dataBase = await axios.get(`${apiURL}comment/${props.match.params.id}`);
         setCommentsData(dataBase.data)
     }

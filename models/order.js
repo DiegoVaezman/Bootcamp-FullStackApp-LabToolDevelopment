@@ -25,6 +25,12 @@ const order = new Schema({
         enum:['waiting','validated', 'recived', 'rejected'],
         require: true
     },
+    comments: [{
+        type: Schema.Types.ObjectId,
+        trim: true,
+        require: true,
+        ref: "Comment"
+    }],
     date: {
         type: Date,
         required: true

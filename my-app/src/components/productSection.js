@@ -11,7 +11,7 @@ import apiURL from '../services/apiURL'
 
 
 
-function ProductSection(dataBase){
+function ProductSection(_dataBase){
 
     // VENTANAS MODALES
     const searchModalRef = React.useRef();

@@ -19,16 +19,16 @@ function RequestsListItem(props) {
     // },[])
 
     //CONSIGUIENDO MENSAJES
-    const [commentData, setCommentData] = useState({
-        data: {msg: ""}
-    })
-    useEffect(() => {
-        async function getComment() {
-            const dataBase = await axios.get(`${apiURL}comment/${props.order._id}`);
-            setCommentData(dataBase)
-        }
-        getComment()
-    },[])
+    // const [commentData, setCommentData] = useState({
+    //     data: {msg: ""}
+    // })
+    // useEffect(() => {
+    //     async function getComment() {
+    //         const dataBase = await axios.get(`${apiURL}comment/${props.order._id}`);
+    //         setCommentData(dataBase)
+    //     }
+    //     getComment()
+    // },[])
 
     //CONSIGUIENDO NOMBRE DE USUARIO
     // const [userData, setUserData] = useState({
@@ -43,7 +43,7 @@ function RequestsListItem(props) {
     // },[])
 
     
-    console.log(props)
+    
     return (
         <Link className="txtNoDeco" to={{pathname:`/requests/requestsheet/${props.order._id}`, data:props}} >
             <div className="productListItem" >
@@ -52,7 +52,7 @@ function RequestsListItem(props) {
                         {(props.order.product != null) ? props.order.product.name : "No product"}
                     </div>
                     <div className="flex-row">
-                        <p><b>{commentData.data.msg === "No comments" ? "0" : commentData.data.length == undefined ? "" : commentData.data.length}</b></p>
+                        <p><b>{props.order.comments.length === 0 ? "0" : props.order.comments.length}</b></p>
                         <img className="commentImg" src="../../img/comment_img.png"></img>
                     </div>
                 </div>

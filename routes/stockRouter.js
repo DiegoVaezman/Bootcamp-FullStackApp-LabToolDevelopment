@@ -46,16 +46,16 @@ router.post("/newitem/:id", protectedRoute, (req, res) => {
             //Actualiza el status del order a received
             Order.updateOne({_id : req.params.id}, {$set: {status : "received"} }, function(err, result) {
                 if (err) throw err;
-                console.log(`Order status modified to "received"`)
-            })
-
-
-            //si existen más pedidos de ese producto -> request se mantiene en true
-            Order.find({ $and: [{product: order.product}, {status : { $in: ["validated", "waiting"] }}] }, function (err, ordersfound) {
-                if (err) throw err;
-                if (ordersfound.length > 1) {
-                    request = true
+                if (result) {
+                    //si existen más pedidos de ese producto -> request se mantiene en true
+                    Order.findOne({ $and: [{product: order.product}, {status : { $in: ["validated", "waiting"] }}] }, function (err, ordersfound) {
+                        if (err) throw err;
+                        if (ordersfound) {
+                            request = true
+                        }
+                    })
                 }
+                console.log(`Order status modified to "received"`)
             })
             .then(
                 

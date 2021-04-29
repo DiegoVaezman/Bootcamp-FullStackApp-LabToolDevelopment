@@ -7,9 +7,8 @@ const {validateId, validateString} = require("../helpers/validations")
 const router = new Router()
 
 
-
+//no la utilizo
 router.get("/", protectedRoute, (req, res) => {
-    
     Comment.find({}, function (err, comments){
         if (err) {
             res.status(400).send({ msg: err.message})
@@ -28,12 +27,11 @@ router.get("/", protectedRoute, (req, res) => {
 router.get("/:id", protectedRoute, (req, res) => {
     try {
         validateId(req.params.id)
-
-        Order.findById(req.params.id, function (err, order){
-            if(err) throw err;
-            if (!order) {
-                return res.status(400).send({ msg: "This order_id dose not exist."})
-            }
+        // Order.findById(req.params.id, function (err, order){
+        //     if(err) throw err;
+        //     if (!order) {
+        //         return res.status(400).send({ msg: "This order_id dose not exist."})
+        //     }
             Comment.find({order : req.params.id})
             .populate("owner")
             .exec (function (err, comment){
@@ -42,8 +40,9 @@ router.get("/:id", protectedRoute, (req, res) => {
                     return res.status(200).send({ msg: "No comments"})
                 }
                 res.status(200).send(comment)
+                console.log(comment)
             })
-        })
+        // })
     } catch (error) {
         res.status(400).send({ msg: error.message})
     }
@@ -56,7 +55,7 @@ router.post("/newcomment/:id", protectedRoute, (req, res) => {
 
     try {
         validateId(req.params.id)
-    
+        console.log("nuevo comentario")
         const text = req.body.text
         const owner = req.decoded.id   //sera el id del usuario logueado.
         const order = req.params.id
@@ -71,7 +70,6 @@ router.post("/newcomment/:id", protectedRoute, (req, res) => {
             if (!orderfound) {
                 return res.status(400).send({ msg: "This order_id dose not exist."})
             }
-
             //Crea el comentario y lo guarda en la collección de comentarios
             const comment = new Comment({
                 owner: owner,
@@ -79,7 +77,12 @@ router.post("/newcomment/:id", protectedRoute, (req, res) => {
                 order : order
             })
             comment.save()
-            .then(doc => res.status(201).send(doc)) 
+            .then((doc) => {
+                res.status(201).send(doc)
+                Order.updateOne({ _id : req.params.id}, {$push: {comments : doc.id} }, function(err, result) {
+                    if (err) throw err;
+                })
+            }) 
             .catch(error => {
                 res.status(400).send({msg: error.message})
             })
@@ -103,7 +106,11 @@ router.delete("/deletecomment/:id", protectedRoute,(req, res) => {
             if(comment.owner != req.decoded.id) {
                 return res.status(401).send({msg : `You do not have permission for delete this comment`})
             }
-            
+            //elimina el comentario del array de comentarios del order document
+            Order.updateOne({_id: comment.order}, { $pull: {comments: req.params.id}}, function(err, result) {
+                if (err) throw err;
+            })
+
             //elimina el comentario de la coleccion de comentarios
             Comment.deleteOne({ _id : req.params.id}, function (err, result){
                 if (err) throw err;

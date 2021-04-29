@@ -451,6 +451,8 @@ body{
 .productName{
     color: rgb(105, 42, 0);
     font-size: 20px;
+    
+    white-space: nowrap;
 }
 .productInfo p{
     width: 100%;
