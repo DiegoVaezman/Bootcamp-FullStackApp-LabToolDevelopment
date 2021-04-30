@@ -116,70 +116,86 @@ Direccionamiento con `Express`.<br>
 ## **Esquema de relaciones**
 
 ![Esquema de relaciones](my-app/src/img/relaciones.png)
-
+<br>
+<br>
 
 ## **Direccionamiento:**
+<br>
 
 **Usuario:**
+<br>
 
 ```
 get user/ 
 ```
 ^ Ruta privada que devuelve todos los documentos de usuarios registrados.
+<br>
 
 ```
 post user/newuser 
 ```
 ^ Ruta pública que permite el regístro de usuarios con los parámetros validados de fullname(string), position(string), email(email-string), password(string) y rol("user"/"validator"). 
 <br>Devuelve el documento creado.
+<br>
 
 ```
 delete user/deleteuser 
 ```
 ^ Ruta privada que elimina el documento del usuario logueado de la base de datos. 
 <br>Devuelve un mensaje de confirmación.
+<br>
 
 ```
 put user/modify 
 ```
 ^ Ruta privada que permite modificar los parámetros de "fullname" y "position" en el documento del usuario logueado. 
 <br>Devuelve un mensaje de confirmación.
-
+<br>
+<br>
 
 **Producto:**
+<br>
 
 ```
 get product/ 
 ```
 ^ Ruta privada que devuelve los productos disponibles en la base de datos.
+<br>
 
 ```
 post product/newproduct 
 ```
 ^ Ruta privada que permite añadir un nuevo producto a la base de datos con los parámetros validados de catalog_number(number), name(string), type(string), trading_house(string), reference_number(string), price(number), information(string). 
 <br>Devuelve el documento creado.
+<br>
 
 ```
 delete product/deleteproduct/id(producto) 
 ```
 ^ Ruta privada que requiere del id del producto a eliminar. Elimina el producto de la base de datos y devuele un mensaje de confirmación.
+<br>
 
 ```
 put /id(producto)/modify 
 ```
 ^ Ruta privada que requiere del id del producto a modificar. Modifica o establece información sobre el producto.
+<br>
 
 ```
 get /id(producto)
 ```
 ^ Ruta privada que requiere del id del producto. Devuelve un producto concreto por su id.
+<br>
+<br>
 
 **Pedido:**
+<br>
 
 ```
 get order/ 
 ```
 ^ Ruta privada que devuelve todos los pedidos de la base de datos independientemente de su estado.
+<br>
 
 ```
 post order/neworder/id(producto) 
@@ -187,6 +203,7 @@ post order/neworder/id(producto)
 ^ Ruta privada que requiere del id del producto a pedir (en la ruta) y de la cantidad (amount). Crea un documento de pedido con los parámetros validados de product(ObjectId), amount(number), user(ObjectId), status("waiting", por defecto) y date(date). 
 <br>Al crear el documento se cambia el párametro "request" a "true" en el documento de este producto en el stock (si es que lo hubiera). 
 <br>Devuelve el documento creado.
+<br>
 
 ```
 put order/validate/id(pedido) 
@@ -194,6 +211,7 @@ put order/validate/id(pedido)
 ^ Ruta privada que requiere del id del pedido a validar (en la ruta). 
 <br>Comprueba que el usuario logueado disponga de rol "validator" y si es así modifica el parámetro "status" a "validated" en el documento del pedido. 
 <br>Devuelve un mensaje de confirmación.
+<br>
 
 ```
 put order/reject/id(pedido) 
@@ -201,44 +219,54 @@ put order/reject/id(pedido)
 ^ Ruta privada que requiere del id del pedido a rechazar (en la ruta). 
 <br>Comprueba que el usuario logueado disponga de rol "validator" y si es así modifica el parámetro "status" a "rejected" en el documento del pedido. 
 <br>Devuelve un mensaje de confirmación.
+<br>
 
 ```
 delete order/deleteorder/id(pedido) 
 ```
 ^ Ruta privada que requiere del id del pedido a eliminar (en la ruta). 
 <br>Elimina el documento del pedido en la base de datos y devuelve un mensaje de confirmación.
+<br>
 
 ```
 get order/waiting 
 ```
 ^ Ruta privada que devuelve los pedidos con status "waiting" a la espera de validación.
+<br>
 
 ```
 get /order/validated 
 ```
 ^ Ruta privada que devuelve los pedidos con status "validated".
+<br>
 
 ```
 get order/rejected 
 ```
 ^ Ruta privada que devuelve los pedidos con status "rejected".
+<br>
 
 ```
 get order/received 
 ```
 ^ Ruta privada que devuelve los pedidos con status "received".
+<br>
 
 ```
 get /id(pedido)
 ```
 ^ Ruta privada que requiere del id del pedido. Devuelve un pedido concreto por su id.
+<br>
+<br>
 
 **Comentarios:**
+<br>
 
 ```
 get comment/id(pedido) 
 ```
 ^ Ruta privada que requiere del id del pedido (en la ruta) para mostrar los comentarios asociados a ese pedido. Devuelve los documentos de comentarios de ese pedido.
+<br>
 
 ```
 post comment/newcomment/id(pedido) 
@@ -246,6 +274,7 @@ post comment/newcomment/id(pedido)
 ^ Ruta privada que requiere del id del pedido a comentar(en la ruta). 
 <br>Crea un documento de comentario en la base de datos con los parámetros validados text(string), owner(ObjectId), order(ObjectId), date(date). 
 <br>Devuelve el documento creado.
+<br>
 
 ```
 delete comment/deletecomment/id(comentario) 
@@ -253,13 +282,17 @@ delete comment/deletecomment/id(comentario)
 ^ Ruta privada que requiere del id del comentario a eliminar (en la ruta). 
 <br>Comprueba que el comentario pertenece al usuario logueado y si es así lo elimina de la base de datos. 
 <br>Devuelve un mensaje de confirmación.
-
+<br>
+<br>
 
 **Stock:**
+<br>
+
 ```
 get stock/ 
 ```
 ^ Ruta privada que devuelve los ítems guardados en stock.
+<br>
 
 ```
 post stock/newitem/id(pedido) 
@@ -268,6 +301,7 @@ post stock/newitem/id(pedido)
 <br>En caso de ya estar registrado este producto en el stock se actualizarán los parámetros "amount", "status" y "received" en el documento ya existente. 
 <br>Al mismo tiempo se modifica el status del pedido a "received" y también se comprueba si existen más pedidos en estado "waiting" o "validated" de ese mismo producto y, de ser así, establece el parámetro "request" del ítem en "true". 
 <br>Devuelve el documento creado o un mensaje de confirmación de la actualización del ítem.
+<br>
 
 ```
 put stock/reduce/id(ítem) 
@@ -276,6 +310,7 @@ put stock/reduce/id(ítem)
 <br>LÍMITE -> En caso de que el ítem tenga el parámetro "control" establecido en "true", la cantidad de ítem alcance el valor del parámetro "limit" y que no exista actualmente un pedido automático en estado "waiting" o "validated", se crea un nuevo pedido automático con la cantidad establecida en el parámero "automaticamount". 
 <br>Al mismo tiempo modifica el parámetro "request" del ítem a "true". 
 <br>Devuelve un mensaje de confirmación de cantidad reducida o cantidad reducida y pedido automático creado.
+<br>
 
 ```
 put stock/id(ítem)/modify 
@@ -284,30 +319,38 @@ put stock/id(ítem)/modify
 <br>Permite modificar los parámetros validados de amount(number), storage(string).
 <br>En caso de no especificar alguno se mantendrá con el valor en el que se encontraban. 
 <br>Devuelve un mensaje de confiración de la modificación.
+<br>
 
 ```
 put stock/id(ítem)/modify 
 ```
 ^ Ruta privada que requiere del id del ítem a modificar (en la ruta).<br>
 Permite modificar los parámetros validados de limit(number), control(boolean), automaticamount(number) del ítem para establecer el control del límite de stock.
+<br>
 
 ```
 delete stock/deleteitem/id(ítem) 
 ```
 ^ Ruta privada que elimina el ítem de la base de datos. 
 <br>Devuelve un mensaje de confirmación. 
+<br>
 
 ```
 get /id(ítem)
 ```
 ^ Ruta privada que requiere del id del ítem en stock. Devuelve un ítem concreto por su id.
+<br>
+<br>
 
 **Login:**
+<br>
+
 ```
 post login/ 
 ```
 ^ Ruta pública que permite loguearse a través de los parámetros "email" y "password" del usuario. 
 <br>En caso de confirmación devuelve un token válido por 24 horas con información del usuario ("id","fullname", "position" y "rol").
+<br>
 <br>
 <br>
 
@@ -427,7 +470,7 @@ Funciona a través de dos roots en el index.html; uno para el renderizado genera
 - `web-vitals: ^1.1.1`
 <br>
 <br>
-<br>
+
 ## **TO DO**
 
 - Implementar sólo un usuario validador o administrador que pueda establecer el rol de validador a otro usuario en vez de establecerse el rol al hacer el registro.
