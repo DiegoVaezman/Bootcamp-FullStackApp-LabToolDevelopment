@@ -3,6 +3,8 @@
 
 LabTool es una single-page App de gestión de pedidos principalmente en el ámbito de trabajo de un laboratorio aunque bien podría usarse en otro ámbito en el que se requiera un control de las solicitudes de compras, validación de pedidos y control de stock.
 LabTool es el proyecto final que he elegido desarrollar correspondiente al bootcamp Let's Coder 2021.
+<br>
+<br>
 
 
 ## **Descripción funcional**
@@ -13,6 +15,8 @@ LabTool permite llevar un control de las solicitudes de pedidos realizadas y, me
 -**Registro** de los usuarios que harán uso de la aplicación y adquisición del rol **"validador"** o **"usuario"** dependiendo de si tendrá permisos de validador de solicitudes.
 
 -**Inicio de sesión** de los usuarios registrados.
+<br>
+<br>
 
 ### **SECCIÓN DE PRODUCTOS**
 -**Visualización de una base de datos donde se recogen todos los productos** disponibles para solicitar su compra con información sobre el número de catálogo, tipo, casa comercial, número de referencia, precio e información del producto. En este caso práctico, se trata de los productos ofertados por el servicio de suministros generales a los laboratorios en un centro de investigación. 
@@ -35,6 +39,8 @@ Además es posible modificar el campo de información del producto o eliminarlo 
 -**Establecer o modificar información del producto**
 
 -**Eliminar el producto de la base de datos** mediante previa confirmación.
+<br>
+<br>
 
 ### **SECCIÓN DE PEDIDOS**
 Las solicitudes de compra podrán encontrarse en cuatros estados posibles;
@@ -65,6 +71,8 @@ A demás dispone de un enlace rápido a la sección de productos para realizar u
 -**Marcar como recibida** una solicitud y automáticamente actualizar el stock disponible.
 
 -**Eliminar la solicitud de pedido** en cualquiera de sus estados mediante previa confirmación.
+<br>
+<br>
 
 ### **SECCIÓN DE STOCK**
 -**Visualización de la lista de stock** disponible con información útil del estado de cada artículo (nombre del producto, en stock o fuera de stock, control de límite activado, actualmente pedido y unidades en stock).
@@ -86,6 +94,8 @@ A demás dispone de un enlace rápido a la sección de productos para realizar u
 -**Establecer un límite** inferior de unidades en stock por el cual realizar una solicitud de pedido automática y de una cantidad determinada en caso de que el stock alcance dicho límite. La solicitud creada dispondrá de un mensaje donde especifica que fué creada automáticamente.
 
 -**Eliminar el ítem del stock** mediante previa confirmación.
+<br>
+<br>
 
 ### **SECCIÓN DE USUARIO**
 -**Visualización de la información del usuario logueado** (Nombre, email, posición laboral y rol).
@@ -97,6 +107,9 @@ A demás dispone de un enlace rápido a la sección de productos para realizar u
 -**Visualizar una lista y ficha de los demás usuarios registrados** con información sobre su email, posición laboral y rol.
 
 -**Eliminar cuenta de usuario** mediante previa confirmación.
+<br>
+<br>
+<br>
 
 ## **Esquema de flujo**
 ![Esquema de flujo](my-app/src/img/flowchart.png)
@@ -113,6 +126,9 @@ Basado en Node.JS.<br>
 Base de datos alojada en `MongoAtlas`. Llamadas a la BD y modelo de datos a través de `Mongoose`.<br>
 Encriptamiento de datos (password) y protección de rutas privadas con `bcrypt` y `jsonwebtoken`.<br>
 Direccionamiento con `Express`.<br>
+<br>
+<br>
+
 ## **Esquema de relaciones**
 
 ![Esquema de relaciones](my-app/src/img/relaciones.png)
@@ -130,12 +146,14 @@ get user/
 ```
 ^ Ruta privada que devuelve todos los documentos de usuarios registrados.
 <br>
+<br>
 
 ```
 post user/newuser 
 ```
 ^ Ruta pública que permite el regístro de usuarios con los parámetros validados de fullname(string), position(string), email(email-string), password(string) y rol("user"/"validator"). 
 <br>Devuelve el documento creado.
+<br>
 <br>
 
 ```
@@ -144,12 +162,14 @@ delete user/deleteuser
 ^ Ruta privada que elimina el documento del usuario logueado de la base de datos. 
 <br>Devuelve un mensaje de confirmación.
 <br>
+<br>
 
 ```
 put user/modify 
 ```
 ^ Ruta privada que permite modificar los parámetros de "fullname" y "position" en el documento del usuario logueado. 
 <br>Devuelve un mensaje de confirmación.
+<br>
 <br>
 <br>
 
@@ -161,6 +181,7 @@ get product/
 ```
 ^ Ruta privada que devuelve los productos disponibles en la base de datos.
 <br>
+<br>
 
 ```
 post product/newproduct 
@@ -168,11 +189,13 @@ post product/newproduct
 ^ Ruta privada que permite añadir un nuevo producto a la base de datos con los parámetros validados de catalog_number(number), name(string), type(string), trading_house(string), reference_number(string), price(number), information(string). 
 <br>Devuelve el documento creado.
 <br>
+<br>
 
 ```
 delete product/deleteproduct/id(producto) 
 ```
 ^ Ruta privada que requiere del id del producto a eliminar. Elimina el producto de la base de datos y devuele un mensaje de confirmación.
+<br>
 <br>
 
 ```
@@ -180,11 +203,13 @@ put /id(producto)/modify
 ```
 ^ Ruta privada que requiere del id del producto a modificar. Modifica o establece información sobre el producto.
 <br>
+<br>
 
 ```
 get /id(producto)
 ```
 ^ Ruta privada que requiere del id del producto. Devuelve un producto concreto por su id.
+<br>
 <br>
 <br>
 
@@ -196,6 +221,7 @@ get order/
 ```
 ^ Ruta privada que devuelve todos los pedidos de la base de datos independientemente de su estado.
 <br>
+<br>
 
 ```
 post order/neworder/id(producto) 
@@ -203,6 +229,7 @@ post order/neworder/id(producto)
 ^ Ruta privada que requiere del id del producto a pedir (en la ruta) y de la cantidad (amount). Crea un documento de pedido con los parámetros validados de product(ObjectId), amount(number), user(ObjectId), status("waiting", por defecto) y date(date). 
 <br>Al crear el documento se cambia el párametro "request" a "true" en el documento de este producto en el stock (si es que lo hubiera). 
 <br>Devuelve el documento creado.
+<br>
 <br>
 
 ```
@@ -212,6 +239,7 @@ put order/validate/id(pedido)
 <br>Comprueba que el usuario logueado disponga de rol "validator" y si es así modifica el parámetro "status" a "validated" en el documento del pedido. 
 <br>Devuelve un mensaje de confirmación.
 <br>
+<br>
 
 ```
 put order/reject/id(pedido) 
@@ -220,6 +248,7 @@ put order/reject/id(pedido)
 <br>Comprueba que el usuario logueado disponga de rol "validator" y si es así modifica el parámetro "status" a "rejected" en el documento del pedido. 
 <br>Devuelve un mensaje de confirmación.
 <br>
+<br>
 
 ```
 delete order/deleteorder/id(pedido) 
@@ -227,11 +256,13 @@ delete order/deleteorder/id(pedido)
 ^ Ruta privada que requiere del id del pedido a eliminar (en la ruta). 
 <br>Elimina el documento del pedido en la base de datos y devuelve un mensaje de confirmación.
 <br>
+<br>
 
 ```
 get order/waiting 
 ```
 ^ Ruta privada que devuelve los pedidos con status "waiting" a la espera de validación.
+<br>
 <br>
 
 ```
@@ -239,11 +270,13 @@ get /order/validated
 ```
 ^ Ruta privada que devuelve los pedidos con status "validated".
 <br>
+<br>
 
 ```
 get order/rejected 
 ```
 ^ Ruta privada que devuelve los pedidos con status "rejected".
+<br>
 <br>
 
 ```
@@ -251,11 +284,13 @@ get order/received
 ```
 ^ Ruta privada que devuelve los pedidos con status "received".
 <br>
+<br>
 
 ```
 get /id(pedido)
 ```
 ^ Ruta privada que requiere del id del pedido. Devuelve un pedido concreto por su id.
+<br>
 <br>
 <br>
 
@@ -267,6 +302,7 @@ get comment/id(pedido)
 ```
 ^ Ruta privada que requiere del id del pedido (en la ruta) para mostrar los comentarios asociados a ese pedido. Devuelve los documentos de comentarios de ese pedido.
 <br>
+<br>
 
 ```
 post comment/newcomment/id(pedido) 
@@ -275,6 +311,7 @@ post comment/newcomment/id(pedido)
 <br>Crea un documento de comentario en la base de datos con los parámetros validados text(string), owner(ObjectId), order(ObjectId), date(date). 
 <br>Devuelve el documento creado.
 <br>
+<br>
 
 ```
 delete comment/deletecomment/id(comentario) 
@@ -282,6 +319,7 @@ delete comment/deletecomment/id(comentario)
 ^ Ruta privada que requiere del id del comentario a eliminar (en la ruta). 
 <br>Comprueba que el comentario pertenece al usuario logueado y si es así lo elimina de la base de datos. 
 <br>Devuelve un mensaje de confirmación.
+<br>
 <br>
 <br>
 
@@ -293,6 +331,7 @@ get stock/
 ```
 ^ Ruta privada que devuelve los ítems guardados en stock.
 <br>
+<br>
 
 ```
 post stock/newitem/id(pedido) 
@@ -301,6 +340,7 @@ post stock/newitem/id(pedido)
 <br>En caso de ya estar registrado este producto en el stock se actualizarán los parámetros "amount", "status" y "received" en el documento ya existente. 
 <br>Al mismo tiempo se modifica el status del pedido a "received" y también se comprueba si existen más pedidos en estado "waiting" o "validated" de ese mismo producto y, de ser así, establece el parámetro "request" del ítem en "true". 
 <br>Devuelve el documento creado o un mensaje de confirmación de la actualización del ítem.
+<br>
 <br>
 
 ```
@@ -311,6 +351,7 @@ put stock/reduce/id(ítem)
 <br>Al mismo tiempo modifica el parámetro "request" del ítem a "true". 
 <br>Devuelve un mensaje de confirmación de cantidad reducida o cantidad reducida y pedido automático creado.
 <br>
+<br>
 
 ```
 put stock/id(ítem)/modify 
@@ -320,12 +361,15 @@ put stock/id(ítem)/modify
 <br>En caso de no especificar alguno se mantendrá con el valor en el que se encontraban. 
 <br>Devuelve un mensaje de confiración de la modificación.
 <br>
+<br>
 
 ```
 put stock/id(ítem)/modify 
 ```
 ^ Ruta privada que requiere del id del ítem a modificar (en la ruta).<br>
 Permite modificar los parámetros validados de limit(number), control(boolean), automaticamount(number) del ítem para establecer el control del límite de stock.
+<br>
+<br>
 <br>
 
 ```
@@ -334,11 +378,14 @@ delete stock/deleteitem/id(ítem)
 ^ Ruta privada que elimina el ítem de la base de datos. 
 <br>Devuelve un mensaje de confirmación. 
 <br>
+<br>
+<br>
 
 ```
 get /id(ítem)
 ```
 ^ Ruta privada que requiere del id del ítem en stock. Devuelve un ítem concreto por su id.
+<br>
 <br>
 <br>
 
