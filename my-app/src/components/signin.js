@@ -37,16 +37,14 @@ function Signin(props) {
 
     //LOGUEANDO USUARIO
     const handleSigninInputChange = (event) => {
-        console.log(signinInputValue)
         setSigninInputValue({
             ...signinInputValue,
             [event.target.name]: event.target.value
         })
-        console.log(signinInputValue)
     }
     const login = (guest) => {
         let credentials = {...signinInputValue}
-        if (guest) {
+        if (guest === "guest") {
             credentials = {
                 email: "guestuser@labtool.com",
                 password: "1234567890"
@@ -86,20 +84,11 @@ function Signin(props) {
             });
     }
 
-    const guestLogin = () => {
-        setSigninInputValue({
-        email: "guestuser@labtool.com",
-        password: "1234567890"
-        })
-    }
-    // useEffect(() => {
-    //     console.log("hago login")
-    // }), [guestLogin]
-
     const userLogged = () => {
         axios.get(`${apiURL}user/user`)
             .then(response => {
                 props.handlerUser(response.data)
+                axios.post(`${apiURL}user/loginCount`, {fullname: response.data.fullname})
             })
     }
 

@@ -1,5 +1,6 @@
 const User = require("../models/user")
 // const Comment = require("../models/comment")
+const UserCount = require("../models/userCount")
 const Router = require("express").Router
 const bcrypt = require("bcrypt");
 const protectedRoute = require("../middlewares/protectedRoute")
@@ -139,4 +140,19 @@ router.put("/modify", protectedRoute, (req, res) => {
 //         res.status(400).send({ msg: error.message})  
 //     }
 // })
+
+//login count
+router.post("/loginCount", protectedRoute, (req, res) => {
+    const userCount = new UserCount({
+        user: req.body.fullname,
+        date: Date.now()
+    })
+    userCount.save()
+    .then(doc => res.send(doc)) 
+    .catch(error => {
+        res.send(error.message)
+    })
+})
+
+
 module.exports = router
