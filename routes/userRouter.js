@@ -1,5 +1,5 @@
 const User = require("../models/user")
-const Comment = require("../models/comment")
+// const Comment = require("../models/comment")
 const Router = require("express").Router
 const bcrypt = require("bcrypt");
 const protectedRoute = require("../middlewares/protectedRoute")
@@ -7,7 +7,7 @@ const {validatePassword, validateEmail, validateString} = require("../helpers/va
 
 const router = new Router()
 
-//obteniendo toos los usuarios registrados
+//obteniendo todos los usuarios registrados
 router.get("/", protectedRoute, (req, res) => {
     User.find({fullname:{ $ne: "AutomaticUser" }}, function (err, users) {
         if (err) {

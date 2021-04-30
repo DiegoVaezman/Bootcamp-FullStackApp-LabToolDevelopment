@@ -98,15 +98,27 @@ A demás dispone de un enlace rápido a la sección de productos para realizar u
 
 -**Eliminar cuenta de usuario** mediante previa confirmación.
 
+## **Esquema de flujo**
+![Esquema de flujo](my-app/src/img/flowchart.png)
+<br>
+<br>
+
 ## **Esquema de uso**
 ![Esquema de relaciones](my-app/src/img/esquema_app.jpg)
-
+<br>
+<br>
+<br>
 ### <h1>**BACKEND**</h1>
+Basado en Node.JS.<br>
+Base de datos alojada en `MongoAtlas`. Llamadas a la BD y modelo de datos a través de `Mongoose`.<br>
+Encriptamiento de datos (password) y protección de rutas privadas con `bcrypt` y `jsonwebtoken`.<br>
+Direccionamiento con `Express`.<br>
 ## **Esquema de relaciones**
 
 ![Esquema de relaciones](my-app/src/img/relaciones.png)
 
-## **Direccionamiento**
+
+## **Direccionamiento:**
 
 **Usuario:**
 
@@ -120,11 +132,6 @@ post user/newuser
 ```
 ^ Ruta pública que permite el regístro de usuarios con los parámetros validados de fullname(string), position(string), email(email-string), password(string) y rol("user"/"validator"). 
 <br>Devuelve el documento creado.
-
-```
-get user/comment 
-```
-^ Ruta privada que devuelve los comentarios realizados en las solicitudes de compra por parte del usuario logueado.
 
 ```
 delete user/deleteuser 
@@ -157,6 +164,15 @@ delete product/deleteproduct/id(producto)
 ```
 ^ Ruta privada que requiere del id del producto a eliminar. Elimina el producto de la base de datos y devuele un mensaje de confirmación.
 
+```
+put /id(producto)/modify 
+```
+^ Ruta privada que requiere del id del producto a modificar. Modifica o establece información sobre el producto.
+
+```
+get /id(producto)
+```
+^ Ruta privada que requiere del id del producto. Devuelve un producto concreto por su id.
 
 **Pedido:**
 
@@ -201,6 +217,7 @@ get order/waiting
 get /order/validated 
 ```
 ^ Ruta privada que devuelve los pedidos con status "validated".
+
 ```
 get order/rejected 
 ```
@@ -211,13 +228,12 @@ get order/received
 ```
 ^ Ruta privada que devuelve los pedidos con status "received".
 
+```
+get /id(pedido)
+```
+^ Ruta privada que requiere del id del pedido. Devuelve un pedido concreto por su id.
 
 **Comentarios:**
-
-```
-get comment/ 
-```
-^ Ruta privada que devuelve todos los comentarios.
 
 ```
 get comment/id(pedido) 
@@ -265,9 +281,15 @@ put stock/reduce/id(ítem)
 put stock/id(ítem)/modify 
 ```
 ^ Ruta privada que requiere del id del ítem a modificar (en la ruta). 
-<br>Permite modificar los parámetros validados de amount(number), storage(string), limit(number), control(boolean), automaticamount(number) del ítem. 
+<br>Permite modificar los parámetros validados de amount(number), storage(string).
 <br>En caso de no especificar alguno se mantendrá con el valor en el que se encontraban. 
 <br>Devuelve un mensaje de confiración de la modificación.
+
+```
+put stock/id(ítem)/modify 
+```
+^ Ruta privada que requiere del id del ítem a modificar (en la ruta).<br>
+Permite modificar los parámetros validados de limit(number), control(boolean), automaticamount(number) del ítem para establecer el control del límite de stock.
 
 ```
 delete stock/deleteitem/id(ítem) 
@@ -275,6 +297,10 @@ delete stock/deleteitem/id(ítem)
 ^ Ruta privada que elimina el ítem de la base de datos. 
 <br>Devuelve un mensaje de confirmación. 
 
+```
+get /id(ítem)
+```
+^ Ruta privada que requiere del id del ítem en stock. Devuelve un ítem concreto por su id.
 
 **Login:**
 ```
@@ -282,9 +308,97 @@ post login/
 ```
 ^ Ruta pública que permite loguearse a través de los parámetros "email" y "password" del usuario. 
 <br>En caso de confirmación devuelve un token válido por 24 horas con información del usuario ("id","fullname", "position" y "rol").
+<br>
+<br>
 
-<!-- ### <h1>**FRONTEND**</h1> -->
+### <h1>**FRONTEND**</h1>
+Basado en componentes `React`, `JSX`, `HTML5`.<br>
+Renderizado con `React-dom`<br>
+Llamadas ajax a la BD con `axios`.<br>
+Enrutamiento a través del browser con `react-router-dom`.<br>
+Estilo con `CSS3`.<br>
 
+Funciona a través de dos roots en el index.html; uno para el renderizado general de los componentes de la app y otro para el renderizado de ventanas modales.
+<br>
+
+## **Componentes**
+
+**Inicio:**
+```
+- register.
+- signin.
+- signup.
+```
+<br>
+
+**Comunes:**
+```
+- header.
+- navbar.
+```
+<br>
+
+**Sección Home**
+```
+- home.
+```
+<br>
+
+**Sección de productos**
+```
+- productSection.
+- productListItem.
+- productSheet.
+```
+<br>
+
+**Sección de pedidos**
+```
+- requestSection.
+- requestListItem.
+- requestSheet.
+```
+<br>
+
+**Sección de stock**
+```
+- stockSection.
+- stockListItem.
+- itemSheet.
+```
+<br>
+
+ **Sección de usuario**
+```
+- user.
+- userListItem.
+- userSheet.
+```
+<br>
+
+**Ventanas modales**
+```
+ - modal.
+ - modalResponse + successResponse / errorResponse.
+```
+<br>
+
+## **Servicios**
+
+**apiURL**<br>
+^ Permite cambiar el servidor para motivos de desarrollo o deploy.
+
+**authToken**<br>
+^ Incorpora o elimina en los headers de las llamadas ajax a la BD el token del usuario logueado para acceder a las rutas privadas.
+
+**loadProductData**<br>
+^ Carga en la BD los productos disponibles para su solicitud de compra.
+
+**privateRoute**<br>
+^ Redirecciona a 'signin' cuando no existe token de usuario logueado en localStorage.
+<br>
+<br>
+<br>
 
 ## **Tecnologías usadas**
 
@@ -293,6 +407,8 @@ post login/
 - `JavaScript`
 - `Node.JS v14.16.0.`
 - `MongoDB`
+<br>
+<br>
 
 ## **Dependencias**
 
@@ -309,7 +425,9 @@ post login/
 - `validator: ^13.5.2`
 - `concurrently: ^6.0.0`
 - `web-vitals: ^1.1.1`
-
+<br>
+<br>
+<br>
 ## **TO DO**
 
 - Implementar sólo un usuario validador o administrador que pueda establecer el rol de validador a otro usuario en vez de establecerse el rol al hacer el registro.
@@ -320,6 +438,5 @@ post login/
 - Al eliminar un producto de la base de datos, eliminar o modificar las solicitudes y/o el stock que hubiese de él.
 - Establecer dos inputs de password para evitar equivocaciones a la hora de nuevo registro de usuario.
 - Poder modificar la contraseña del usuario logueado.
-- Al eliminar pedido eliminar los comentarios de ese pedido de la base de datos.
 - Hacer versión responsive web.
 - Mejora del código en general. Refactoring.
