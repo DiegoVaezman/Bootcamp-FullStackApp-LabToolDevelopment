@@ -126,7 +126,7 @@ function User(props) {
                     <p><b>E-mail: </b>{props.user.email}</p>
                     <p><b>Position: </b>{props.user.position}</p>
                     <p><b>Rol: </b>{props.user.rol}</p>
-                    <button className="button1 edditButton" onClick={openEdditUserModal}>Modify user</button>
+                    {props.user.email !== "guestuser@labtool.com" && <button className="button1 edditButton" onClick={openEdditUserModal}>Modify user</button>}
                 </div>
                 <button className="spendButton logoutButton" onClick={logout}><p><b>Log out</b></p></button>
                 <h2>Users</h2>

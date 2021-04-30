@@ -64,6 +64,9 @@ function SignUp() {
 
     return (
         <div className="signup appGridParent grid">
+            <div className="back">
+                <Link className="Link" to="/">Back</Link>
+            </div>
             <div className="logoSignup"><img src="../../img/LabTool_logo.png" alt="LabTool_logo"/></div>
             <form className="form signupForm">
                 <div className="flex-column">
@@ -93,6 +96,7 @@ function SignUp() {
             </form>
                 <button className="button1 signupButton" onClick={register}>CREATE ACCOUNT</button>
                 <p className="accountText" align="center">Already have an account? <Link className="Link" to="/signin">Login here</Link></p>
+                <p className="guestText" align="center">If you want to take a look, you can enter as a{"\n"}<Link to="/signin" className="Link">Guest user</Link></p>
             {response.success === true && 
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">

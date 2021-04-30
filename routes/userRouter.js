@@ -9,7 +9,7 @@ const router = new Router()
 
 //obteniendo todos los usuarios registrados
 router.get("/", protectedRoute, (req, res) => {
-    User.find({fullname:{ $ne: "AutomaticUser" }}, function (err, users) {
+    User.find({ $and: [ {fullname:{ $ne: "AutomaticUser" }}, {fullname:{ $ne: "Guest user"}} ] }, function (err, users) {
         if (err) {
             res.status(400).send({ msg: err.message})
         }

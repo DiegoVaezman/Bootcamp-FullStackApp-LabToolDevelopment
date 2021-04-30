@@ -19,10 +19,10 @@ function RequestsListItem(props) {
                     <p>{(props.order.user != null) ? props.order.user.fullname : "No user"}</p>
                     <p>{props.order.date.substring(0,10).split('-').reverse().join('-')}</p>
                     <div ClassName="requestListItemStatus">
-                        {(props.order.status === "waiting") && <p style={{color: "orange"}}><b>{props.order.status}</b></p>}
-                        {(props.order.status === "validated") && <p style={{color: "green"}}><b>{props.order.status}</b></p>}
-                        {(props.order.status === "received") && <p style={{color: "blue"}}><b>{props.order.status}</b></p>}
-                        {(props.order.status === "rejected") && <p style={{color: "red"}}><b>{props.order.status}</b></p>}
+                        {(props.order.status === "waiting") && <p className="" style={{color: "orange"}}><b>{props.order.status}</b></p>}
+                        {(props.order.status === "validated") && <p className=""  style={{color: "green"}}><b>{props.order.status}</b></p>}
+                        {(props.order.status === "received") && <p className=""  style={{color: "blue"}}><b>{props.order.status}</b></p>}
+                        {(props.order.status === "rejected") && <p className=""  style={{color: "red"}}><b>{props.order.status}</b></p>}
                     </div>
                 </div>
             </div>

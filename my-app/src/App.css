@@ -8,10 +8,7 @@ body{
 }
 
 /*COMMON CLASES*/
-.commentsList, .commentsListItem, p{
-    /* overflow-x: hidden;
-    overflow-y: hidden; */
-}
+
 .section{
     padding: 0 5px 0 5px;
     grid-column: 1 / 11;
@@ -291,11 +288,21 @@ body{
 }
 .signupButtonRegister{
     grid-column: 2 / 10;
-    grid-row: 33 / 35;
+    grid-row: 30 / 32;
 }
 .signinButtonRegister{
     grid-column: 2 / 10;
-    grid-row: 30 / 32;
+    grid-row: 27 / 29;
+}
+.contact{
+    grid-column: 3 / 9;
+    grid-row: 36 / 39;
+}
+.contactImg{
+    width: 30%;
+}
+.contactImg img{
+    width: 100%;
 }
 /*--SIGNUP--*/
 .logoSignup{
@@ -317,8 +324,6 @@ body{
     grid-column: 2 / 10;
     grid-row: 31 / 39;
 }
-
-
 /*--SIGNIN*/
 .logoSignin{
     grid-column: 4 / 8;
@@ -336,11 +341,15 @@ body{
     grid-row: 28 / 36;
 }
 .signinButton, .signupButton{
-    grid-row: 32 / 34;
+    grid-row: 31 / 33;
     grid-column: 2 / 10;
 }
 .accountText{
-    grid-row: 35 / 36;
+    grid-row: 34 / 36;
+    grid-column: 2 / 10;
+}
+.guestText{
+    grid-row: 37 / 41;
     grid-column: 2 / 10;
 }
 /*--HEADER--*/

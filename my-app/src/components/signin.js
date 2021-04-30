@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link} from 'react-router-dom'
 import axios from 'axios';
 import { useState} from 'react';
@@ -37,13 +37,21 @@ function Signin(props) {
 
     //LOGUEANDO USUARIO
     const handleSigninInputChange = (event) => {
+        console.log(signinInputValue)
         setSigninInputValue({
             ...signinInputValue,
             [event.target.name]: event.target.value
         })
+        console.log(signinInputValue)
     }
-    const login = () => {
-        axios.post(`${apiURL}login/`, { ...signinInputValue })
+    const login = (guest) => {
+        let credentials = {...signinInputValue}
+        if (guest) {
+            credentials = {
+                email: "guestuser@labtool.com",
+                password: "1234567890"
+            }}
+        axios.post(`${apiURL}login/`, credentials)
             .then(res => {
                 localStorage.removeItem('labToolUser')
                 localStorage.setItem('labToolUser', res.data)
@@ -56,6 +64,10 @@ function Signin(props) {
                 })
                 openResponseModal()
                 userLogged()
+                setSigninInputValue({
+                    email: "",
+                    password: ""
+                })
             })
             .catch(error => {
                 localStorage.removeItem('labToolUser')
@@ -65,9 +77,24 @@ function Signin(props) {
                     error: true,
                     msg: error.response.data.msg
                 })
+                console.log(error.response)
                 openResponseModal()
+                setSigninInputValue({
+                    email: "",
+                    password: ""
+                })
             });
     }
+
+    const guestLogin = () => {
+        setSigninInputValue({
+        email: "guestuser@labtool.com",
+        password: "1234567890"
+        })
+    }
+    // useEffect(() => {
+    //     console.log("hago login")
+    // }), [guestLogin]
 
     const userLogged = () => {
         axios.get(`${apiURL}user/user`)
@@ -78,6 +105,9 @@ function Signin(props) {
 
     return (
         <div className="signup appGridParent grid">
+            <div className="back">
+                <Link className="Link" to="/">Back</Link>
+            </div>
             <div className="logoSignin"><img src="../../img/LabTool_logo.png" alt="LabTool_logo" /></div>
             <form className="form signinForm">
                 <div className="flex-column">
@@ -91,6 +121,7 @@ function Signin(props) {
             </form>
             <button className="button1 signinButton" onClick={login}>SIGN IN</button>
             <p className="accountText" align="center">New user? <Link to="/signup" className="Link">Signup here</Link></p>
+            <p className="guestText" align="center">Enter as a{"\n"}<p onClick={() => {login("guest")}}className="Link" style={{fontWeight: "bold"}}>Guest user</p></p>
             {response.success === true &&
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">
