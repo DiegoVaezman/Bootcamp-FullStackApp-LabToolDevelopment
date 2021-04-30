@@ -145,7 +145,7 @@ router.put("/modify", protectedRoute, (req, res) => {
 router.post("/loginCount", protectedRoute, (req, res) => {
     const userCount = new UserCount({
         user: req.body.fullname,
-        date: Date.now()
+        date: req.body.date
     })
     userCount.save()
     .then(doc => res.send(doc)) 

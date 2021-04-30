@@ -9,8 +9,9 @@ const userCount = new Schema({
         trim: true
     },
     date: {
-        type: Date,
-        required: true
+        type: String,
+        required: true,
+        trim: true
     }
 })
 

@@ -7,6 +7,7 @@ import SuccessResponse from "./successResponse";
 import ErrorResponse from "./errorResponse"
 import apiURL from '../services/apiURL'
 import setAuthToken from '../services/authToken'
+import formatDate from '../services/formatDate'
 
 function Signin(props) {
 
@@ -88,7 +89,7 @@ function Signin(props) {
         axios.get(`${apiURL}user/user`)
             .then(response => {
                 props.handlerUser(response.data)
-                axios.post(`${apiURL}user/loginCount`, {fullname: response.data.fullname})
+                axios.post(`${apiURL}user/loginCount`, {fullname: response.data.fullname, date: formatDate(Date.now())})
             })
     }
 
