@@ -113,6 +113,8 @@ function User(props) {
         setData(dataBase.data)
     }
     useEffect(() => {
+        let token = localStorage.getItem("labToolUser");
+        props.autoLogin(token)
         getData()
     }, [])
 

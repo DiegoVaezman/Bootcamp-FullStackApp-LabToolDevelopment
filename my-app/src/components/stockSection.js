@@ -7,7 +7,7 @@ import ErrorResponse from "./errorResponse"
 import StockListItem from './stockListItem'
 import apiURL from '../services/apiURL'
 
-function StockSection(dataBase){
+function StockSection(props){
 
     // VENTANAS MODALES
     // const searchModalRef = React.useRef();
@@ -48,6 +48,8 @@ function StockSection(dataBase){
         setDataFiltered(dataBase.data)
     }
     useEffect(() => {
+        let token = localStorage.getItem("labToolUser");
+        props.autoLogin(token)
         getData()
     },[])
 

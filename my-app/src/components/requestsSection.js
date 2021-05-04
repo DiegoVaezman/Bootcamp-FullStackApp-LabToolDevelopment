@@ -37,6 +37,8 @@ function RequestsSection(props) {
         setLoading(false)
     }
     useEffect(() => {
+        let token = localStorage.getItem("labToolUser");
+        props.autoLogin(token)
         getData()
     },[])
 

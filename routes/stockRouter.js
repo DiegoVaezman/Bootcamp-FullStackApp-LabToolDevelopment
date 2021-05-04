@@ -147,6 +147,11 @@ router.put("/reduce/:id", protectedRoute, (req, res) => {
                                 date : Date.now()
                             })
                             comment.save()
+                            .then( (comment) => {
+                                Order.updateOne({ _id : doc._id}, {$push: {comments : comment._id} }, function(err, result) {
+                                    if (err) throw err;
+                                })
+                            })
                             res.status(201).send({msg: "Amount reduced and new order registered"})
                         })
                         .catch(error => {

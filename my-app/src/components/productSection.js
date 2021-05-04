@@ -7,8 +7,9 @@ import SuccessResponse from "./successResponse"
 import ErrorResponse from "./errorResponse"
 import ProductListItem from './productListItem'
 import apiURL from '../services/apiURL'
+import { PromiseProvider } from 'mongoose';
 
-function ProductSection(_dataBase){
+function ProductSection(props){
 
     // VENTANAS MODALES
     const searchModalRef = React.useRef();
@@ -86,6 +87,8 @@ function ProductSection(_dataBase){
         }
     }
     useEffect(() => {
+        let token = localStorage.getItem("labToolUser");
+        props.autoLogin(token)
         getData()
     },[])
 

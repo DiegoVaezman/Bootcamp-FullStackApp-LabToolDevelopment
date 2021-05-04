@@ -171,6 +171,13 @@ put user/modify
 <br>Devuelve un mensaje de confirmación.
 <br>
 <br>
+
+```
+get user/id(usuario)
+```
+^ Ruta privada que requiere del id del usuario. Devuelve un usuario concreto por su id.
+<br>
+<br>
 <br>
 
 **Producto:**
@@ -199,14 +206,14 @@ delete product/deleteproduct/id(producto)
 <br>
 
 ```
-put /id(producto)/modify 
+put product/id(producto)/modify 
 ```
 ^ Ruta privada que requiere del id del producto a modificar. Modifica o establece información sobre el producto.
 <br>
 <br>
 
 ```
-get /id(producto)
+get product/id(producto)
 ```
 ^ Ruta privada que requiere del id del producto. Devuelve un producto concreto por su id.
 <br>
@@ -287,7 +294,7 @@ get order/received
 <br>
 
 ```
-get /id(pedido)
+get order/id(pedido)
 ```
 ^ Ruta privada que requiere del id del pedido. Devuelve un pedido concreto por su id.
 <br>
@@ -382,7 +389,7 @@ delete stock/deleteitem/id(ítem)
 <br>
 
 ```
-get /id(ítem)
+get stock/id(ítem)
 ```
 ^ Ruta privada que requiere del id del ítem en stock. Devuelve un ítem concreto por su id.
 <br>

@@ -36,9 +36,13 @@ function App(props) {
     },[]);
 
     const autoLogin = token => {
-        axios.get(`${apiURL}user/user`, {headers: {authorization: `Bearer ${token}`}})
+
+        setAuthToken(token);
+        axios.get(`${apiURL}user/user`
+        // , {headers: {authorization: `Bearer ${token}`}}
+        )
         .then(user => {
-            setAuthToken(token);
+            
             setUser({
                 fullname: user.data.fullname,
                 position: user.data.position,
@@ -78,17 +82,17 @@ function App(props) {
                     <Switch>
                         <Route path="/home" component={Home} />
 
-                        <Route path="/user" exact render={(props) => ( <User {...props} user={user} handlerUser={handlerUser}/>)} />
-                        <Route path="/user/usersheet/:id" component={UserSheet} />
+                        <Route path="/user" exact render={(props) => ( <User {...props} autoLogin={autoLogin} user={user} handlerUser={handlerUser}/>)} />
+                        <Route path="/user/usersheet/:id" render={(props) => ( <UserSheet  {...props} autoLogin={autoLogin} /> )} />
 
-                        <Route path="/products" exact component={ProductSection} />
-                        <Route path="/products/productsheet/:id" component={ProductSheet} />
+                        <Route path="/products" exact render={(props) => ( <ProductSection {...props} autoLogin={autoLogin} /> )} />
+                        <Route path="/products/productsheet/:id" exact render={(props) => ( <ProductSheet {...props} autoLogin={autoLogin} /> )} />
                         
-                        <Route path="/requests" exact component={RequestsSection} />
-                        <Route path="/requests/requestsheet/:id" exact render={(props) => ( <RequestSheet {...props} user={user} />)} />
+                        <Route path="/requests" exact render={(props) => ( <RequestsSection {...props} autoLogin={autoLogin} /> )} />
+                        <Route path="/requests/requestsheet/:id" exact render={(props) => ( <RequestSheet {...props} autoLogin={autoLogin} user={user} />)} />
 
-                        <Route path="/stock" exact component={StockSection} />
-                        <Route path="/stock/itemsheet/:id" exact component={ItemSheet} />
+                        <Route path="/stock" exact render={(props) => ( <StockSection {...props} autoLogin={autoLogin} /> )} />
+                        <Route path="/stock/itemsheet/:id" exact render={(props) => ( <ItemSheet {...props} autoLogin={autoLogin} /> )} />
 
                     </Switch>
                     <Navbar />

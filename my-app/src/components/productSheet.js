@@ -66,21 +66,23 @@ function ProductSheet(props) {
     })
     
     //CONSIGUIENDO LA DATA DEL PRODUCTO
-    useEffect(() => {
-        const getData = () => {
-            axios.get(`${apiURL}product/${props.match.params.id}`)
-            .then(res => {
-                setDataProduct(res.data)
+    const getData = () => {
+        axios.get(`${apiURL}product/${props.match.params.id}`)
+        .then(res => {
+            setDataProduct(res.data)
+        })
+        .catch(error => {
+            setResponse({
+                ...response,
+                error: true,
+                msg: "Was a problem getting the data"
             })
-            .catch(error => {
-                setResponse({
-                    ...response,
-                    error: true,
-                    msg: "Was a problem getting the data"
-                })
-                openResponseModal()
-            });
-        }
+            openResponseModal()
+        });
+    }
+    useEffect(() => {
+        let token = localStorage.getItem("labToolUser");
+        props.autoLogin(token)
         getData()
     },[change])
 

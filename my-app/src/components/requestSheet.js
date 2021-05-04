@@ -97,6 +97,8 @@ function RequestSheet(props) {
             });
     }
     useEffect(() => {
+        let token = localStorage.getItem("labToolUser");
+        props.autoLogin(token)
         getData()
     }, [change])
 
