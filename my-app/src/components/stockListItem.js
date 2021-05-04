@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 function StockListItem(props) {
     return (
-        <Link className="txtNoDeco" to={{pathname:`/stock/itemsheet/${props.item._id}`, data:props}} >
+        <Link className="txtNoDeco" to={{pathname:`/stockitems/itemsheet/${props.item._id}`, data:props}} >
             <div className="productListItem" >
                 <div className="itemList">
                     <div className="itemInfo">

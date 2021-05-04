@@ -75,15 +75,15 @@ function App(props) {
                 <Route path="/signin" render={(props) => (<Signin {...props} handlerUser={handlerUser} />)} />
                   
                 <PrivateRoute>
-                    <Link to="/user" className="header">
+                    <Link to="/users" className="header">
                         <div><img src="../../img/LabTool_logo_white.png" alt="LabTool_logo"/></div>
                         <h1>{user.fullname}</h1>
                     </Link>
                     <Switch>
                         <Route path="/home" component={Home} />
 
-                        <Route path="/user" exact render={(props) => ( <User {...props} autoLogin={autoLogin} user={user} handlerUser={handlerUser}/>)} />
-                        <Route path="/user/usersheet/:id" render={(props) => ( <UserSheet  {...props} autoLogin={autoLogin} /> )} />
+                        <Route path="/users" exact render={(props) => ( <User {...props} autoLogin={autoLogin} user={user} handlerUser={handlerUser}/>)} />
+                        <Route path="/users/usersheet/:id" render={(props) => ( <UserSheet  {...props} autoLogin={autoLogin} /> )} />
 
                         <Route path="/products" exact render={(props) => ( <ProductSection {...props} autoLogin={autoLogin} /> )} />
                         <Route path="/products/productsheet/:id" exact render={(props) => ( <ProductSheet {...props} autoLogin={autoLogin} /> )} />
@@ -91,8 +91,8 @@ function App(props) {
                         <Route path="/requests" exact render={(props) => ( <RequestsSection {...props} autoLogin={autoLogin} /> )} />
                         <Route path="/requests/requestsheet/:id" exact render={(props) => ( <RequestSheet {...props} autoLogin={autoLogin} user={user} />)} />
 
-                        <Route path="/stock" exact render={(props) => ( <StockSection {...props} autoLogin={autoLogin} /> )} />
-                        <Route path="/stock/itemsheet/:id" exact render={(props) => ( <ItemSheet {...props} autoLogin={autoLogin} /> )} />
+                        <Route path="/stockitems" exact render={(props) => ( <StockSection {...props} autoLogin={autoLogin} /> )} />
+                        <Route path="/stockitems/itemsheet/:id" exact render={(props) => ( <ItemSheet {...props} autoLogin={autoLogin} /> )} />
 
                     </Switch>
                     <Navbar />

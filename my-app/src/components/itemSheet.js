@@ -44,7 +44,7 @@ function ItemSheet(props) {
         modifyItemModalRef.current.closeModal()
     };
     const closeResponseModal = () => {
-        response.delete === true && props.history.push("/stock")
+        response.delete === true && props.history.push("/stockitems")
         response.success === true && closeModifyItemModal()
         closeConfirmModal()
         setResponse({
@@ -227,7 +227,7 @@ function ItemSheet(props) {
     return (
         <div className="gridSection">
             <div className="back">
-                <Link className="Link" to="/stock">Back</Link>
+                <Link className="Link" to="/stockitems">Back</Link>
             </div>
             <div className="sheetBody sheetBodyRequest">
                 <div className="sheetRequestName">
@@ -345,7 +345,7 @@ function ItemSheet(props) {
                     <div>
                         <SuccessResponse />
                         <p>{response.msg}</p>
-                        <Link to="/stock" className="close">Close</Link>
+                        <Link to="/stockitems" className="close">Close</Link>
                     </div>
             </ModalResponse> */}
         </div>

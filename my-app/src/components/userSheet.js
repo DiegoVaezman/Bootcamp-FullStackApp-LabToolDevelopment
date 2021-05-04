@@ -23,7 +23,7 @@ function UserSheet(props) {
     return (
         <div className="gridSection"> 
             <div className="back">
-                <Link className="Link" to="/user">Back</Link>
+                <Link className="Link" to="/users">Back</Link>
             </div>
             <div className="sheetBody">
                 <div className="sheetRequestName">
