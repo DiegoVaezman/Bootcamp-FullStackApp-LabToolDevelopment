@@ -93,7 +93,7 @@ function ItemSheet(props) {
         axios.get(`${apiURL}stock/${props.match.params.id}`)
             .then(res => {
                 setDataItem(res.data)
-                setToggleLimit(dataItem.control)
+                setToggleLimit(res.data.control)
             })
             .catch(error => {
                 setResponse({
@@ -341,13 +341,6 @@ function ItemSheet(props) {
                     </div>
                 </div>
             </ModalResponse>
-            {/* <ModalResponse ref={deleteResponseModalRef}>
-                    <div>
-                        <SuccessResponse />
-                        <p>{response.msg}</p>
-                        <Link to="/stockitems" className="close">Close</Link>
-                    </div>
-            </ModalResponse> */}
         </div>
     )
 }

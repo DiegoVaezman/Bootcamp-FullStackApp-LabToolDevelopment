@@ -111,7 +111,7 @@ function Signin(props) {
             </form>
             <button className="button1 signinButton" onClick={login}>SIGN IN</button>
             <p className="accountText" align="center">New user? <Link to="/signup" className="Link">Signup here</Link></p>
-            <p className="guestText" align="center">Enter as a{"\n"}<p onClick={() => {login("guest")}}className="Link" style={{fontWeight: "bold"}}>Guest user</p></p>
+            <p className="guestText" align="center">Enter as a{"\n"}<a onClick={() => {login("guest")}}className="Link" style={{fontWeight: "bold"}}>Guest user</a></p>
             {response.success === true &&
                 <ModalResponse ref={responseModalRef} response="true">
                     <div className="modalResponse">
