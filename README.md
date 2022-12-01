@@ -539,4 +539,3 @@ Funciona a través de dos roots en el index.html; uno para el renderizado genera
 - Establecer dos inputs de password para evitar equivocaciones a la hora de nuevo registro de usuario.
 - Poder modificar la contraseña del usuario logueado.
 - Hacer versión responsive web.
-- Mejora del código en general. Refactoring.
